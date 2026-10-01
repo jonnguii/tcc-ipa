@@ -7,7 +7,10 @@ def run_seed():
         supabase.table("erp_produtos").upsert(p, on_conflict="codigo").execute()
     print("Inserindo clientes...")
     for c in CLIENTES:
-        supabase.table("erp_clientes").upsert(c, on_conflict="cnpj_cpf").execute()
+        try:
+            supabase.table("erp_clientes").insert(c).execute()
+        except Exception:
+            pass # já existe
     print("Seed concluído!")
 
 if __name__ == "__main__":
