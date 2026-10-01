@@ -18,15 +18,15 @@ async def sabotage_middleware(request: Request, call_next):
 
 @app.get("/produtos", response_class=HTMLResponse)
 def listar_produtos(request: Request):
-    return templates.TemplateResponse("produtos.html", {"request": request, "produtos": repo.get_produtos()})
+    return templates.TemplateResponse(request=request, name="produtos.html", context={"produtos": repo.get_produtos()})
 
 @app.get("/clientes", response_class=HTMLResponse)
 def listar_clientes(request: Request):
-    return templates.TemplateResponse("clientes.html", {"request": request, "clientes": repo.get_clientes()})
+    return templates.TemplateResponse(request=request, name="clientes.html", context={"clientes": repo.get_clientes()})
 
 @app.get("/clientes/novo", response_class=HTMLResponse)
 def form_cliente(request: Request):
-    return templates.TemplateResponse("clientes_novo.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="clientes_novo.html")
 
 @app.post("/clientes/novo")
 def criar_cliente(nome: str = Form(...), cnpj_cpf: str = Form(...), email: str = Form(...)):
@@ -35,11 +35,11 @@ def criar_cliente(nome: str = Form(...), cnpj_cpf: str = Form(...), email: str =
 
 @app.get("/pedidos", response_class=HTMLResponse)
 def listar_pedidos(request: Request, ref: str = None):
-    return templates.TemplateResponse("pedidos.html", {"request": request, "pedidos": repo.get_pedidos(ref)})
+    return templates.TemplateResponse(request=request, name="pedidos.html", context={"pedidos": repo.get_pedidos(ref)})
 
 @app.get("/pedidos/novo", response_class=HTMLResponse)
 def form_pedido(request: Request):
-    return templates.TemplateResponse("pedidos_novo.html", {"request": request, "clientes": repo.get_clientes(), "produtos": repo.get_produtos()})
+    return templates.TemplateResponse(request=request, name="pedidos_novo.html", context={"clientes": repo.get_clientes(), "produtos": repo.get_produtos()})
 
 @app.post("/pedidos/novo")
 async def post_pedido(request: Request):
@@ -57,7 +57,7 @@ async def post_pedido(request: Request):
             itens.append({"produto_id": int(prod_id), "quantidade": float(qtd)})
             
     if not itens:
-        return templates.TemplateResponse("pedidos_novo.html", {"request": request, "error": "Adicione pelo menos 1 item.", "clientes": repo.get_clientes(), "produtos": repo.get_produtos()})
+        return templates.TemplateResponse(request=request, name="pedidos_novo.html", context={"error": "Adicione pelo menos 1 item.", "clientes": repo.get_clientes(), "produtos": repo.get_produtos()})
         
     try:
         pedido_id = repo.criar_pedido(cliente_id, data_entrega, observacoes, ref_externa, itens)
@@ -66,4 +66,4 @@ async def post_pedido(request: Request):
         err = str(e)
         if "erp_pedidos_ref_externa_key" in err or "duplicate key" in err:
             return RedirectResponse(url=f"/pedidos/novo?msg_duplicado=Pedido+duplicado:+{ref_externa}", status_code=303)
-        return templates.TemplateResponse("pedidos_novo.html", {"request": request, "error": str(e), "clientes": repo.get_clientes(), "produtos": repo.get_produtos()})
+        return templates.TemplateResponse(request=request, name="pedidos_novo.html", context={"error": str(e), "clientes": repo.get_clientes(), "produtos": repo.get_produtos()})
