@@ -1,6 +1,6 @@
 # Progresso do Projeto
 
-- [ ] FASE 0 - PREPARAÇÃO DA MÁQUINA E DO REPOSITÓRIO (A) MUST
+- [x] FASE 0 - PREPARAÇÃO DA MÁQUINA E DO REPOSITÓRIO (A) MUST
   - [x] 0.1 Apresentação e contexto
   - [x] 0.2 Verifique o Git
   - [x] 0.3 Decisão D1 Gerenciador
@@ -10,9 +10,9 @@
   - [x] 0.7 Estrutura de pastas
   - [x] 0.8 .gitignore e .env.example
   - [x] 0.9 uv init
-  - [ ] 0.10 docs
-  - [ ] 0.11 AGENTE_MENTOR.md
-  - [ ] 0.12 Primeiro commit
+  - [x] 0.10 docs
+  - [x] 0.11 AGENTE_MENTOR.md
+  - [x] 0.12 Primeiro commit
 - [ ] FASE 1 - SUPABASE (A) MUST
 - [ ] FASE 2 - ERP SIMULADO: BASE (A) MUST
 - [ ] FASE 3 - TRILHA RPA (B) MUST
