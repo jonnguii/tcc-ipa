@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Pedidos</h2>
+<table data-testid="tabela-pedidos">
+  <tr><th>Nº</th><th>Cliente</th><th>Data Entrega</th><th>Total</th><th>Ref Externa</th></tr>
+  {% for p in pedidos %}
+  <tr data-testid="linha-pedido-{{ p.id }}"><td>{{ p.id }}</td><td>{{ p.erp_clientes.nome }}</td><td>{{ p.data_entrega }}</td><td>{{ p.total }}</td><td>{{ p.ref_externa }}</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

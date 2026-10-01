@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Produtos</h2>
+<table>
+  <tr><th>ID</th><th>Código</th><th>Descrição</th><th>Unidade</th><th>Preço</th></tr>
+  {% for p in produtos %}
+  <tr><td>{{ p.id }}</td><td>{{ p.codigo }}</td><td>{{ p.descricao }}</td><td>{{ p.unidade }}</td><td>{{ p.preco }}</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Novo Pedido de Venda</h2>
+
+{% if request.query_params.get("msg_sucesso") %}
+<div class="msg-sucesso" data-testid="msg-sucesso">{{ request.query_params.get("msg_sucesso") }}</div>
+{% endif %}
+{% if request.query_params.get("msg_duplicado") %}
+<div class="msg-duplicado" data-testid="msg-duplicado">{{ request.query_params.get("msg_duplicado") }}</div>
+{% endif %}
+{% if error %}
+<div class="msg-erro" data-testid="msg-erro">{{ error }}</div>
+{% endif %}
+
+<form method="POST" action="/pedidos/novo">
+  <label>Cliente:</label><br>
+  <select name="cliente_id" data-testid="ped-cliente" required>
+    <option value="">Selecione...</option>
+    {% for c in clientes %}
+    <option value="{{ c.id }}">{{ c.nome }} ({{ c.cnpj_cpf }})</option>
+    {% endfor %}
+  </select><br><br>
+
+  <label>Data Entrega:</label><br>
+  <input type="date" name="data_entrega" data-testid="ped-data" required><br><br>
+
+  <label>Ref Externa:</label><br>
+  <input type="text" name="ref_externa" data-testid="ped-ref"><br><br>
+
+  <h3>Itens</h3>
+  <table>
+    <tr><th>Produto</th><th>Quantidade</th></tr>
+    {% for i in range(1, 7) %}
+    <tr>
+      <td>
+        <select name="produto_id_{{ i }}" data-testid="ped-linha-{{ i }}-produto">
+          <option value="">Selecione...</option>
+          {% for p in produtos %}
+          <option value="{{ p.id }}">{{ p.codigo }} - {{ p.descricao }}</option>
+          {% endfor %}
+        </select>
+      </td>
+      <td>
+        <input type="number" step="0.01" name="quantidade_{{ i }}" data-testid="ped-linha-{{ i }}-qtd">
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <label>Observações:</label><br>
+  <textarea name="observacoes" data-testid="ped-obs" rows="3" cols="40"></textarea><br><br>
+
+  <button type="submit" class="btn" data-testid="ped-salvar">Salvar Pedido</button>
+</form>
+{% endblock %}

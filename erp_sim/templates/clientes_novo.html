@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Novo Cliente</h2>
+<form method="POST" action="/clientes/novo">
+  <label>Nome:</label><br>
+  <input type="text" name="nome" data-testid="cli-nome" required><br><br>
+  <label>CNPJ/CPF:</label><br>
+  <input type="text" name="cnpj_cpf" data-testid="cli-cnpj"><br><br>
+  <label>Email:</label><br>
+  <input type="email" name="email" data-testid="cli-email"><br><br>
+  <button type="submit" class="btn" data-testid="cli-salvar">Salvar</button>
+</form>
+{% endblock %}

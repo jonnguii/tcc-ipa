@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ERP Simulado</title>
+<style>
+body { font-family: sans-serif; padding: 20px; }
+table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+.btn { padding: 8px 16px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer; }
+.msg-sucesso { color: green; font-weight: bold; margin-bottom: 10px; }
+.msg-erro { color: red; font-weight: bold; margin-bottom: 10px; }
+.msg-duplicado { color: orange; font-weight: bold; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<nav>
+  <a href="/produtos">Produtos</a> | 
+  <a href="/clientes">Clientes</a> | 
+  <a href="/pedidos">Pedidos</a> | 
+  <a href="/pedidos/novo">Novo Pedido</a>
+</nav>
+<hr>
+{% block content %}{% endblock %}
+</body>
+</html>
