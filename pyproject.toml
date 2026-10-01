@@ -1,0 +1,16 @@
+[project]
+name = "tcc-ipa"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "jonnguii", email = "jg.cravo@outlook.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+tcc-ipa = "tcc_ipa:main"
+
+[build-system]
+requires = ["uv_build>=0.12.21,<0.13.0"]
+build-backend = "uv_build"

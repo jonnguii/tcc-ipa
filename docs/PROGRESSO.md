@@ -1,0 +1,27 @@
+# Progresso do Projeto
+
+- [ ] FASE 0 - PREPARAÇÃO DA MÁQUINA E DO REPOSITÓRIO (A) MUST
+  - [x] 0.1 Apresentação e contexto
+  - [x] 0.2 Verifique o Git
+  - [x] 0.3 Decisão D1 Gerenciador
+  - [x] 0.4 Instalação do uv
+  - [x] 0.5 Instalação do Python
+  - [x] 0.6 Criação do repo
+  - [x] 0.7 Estrutura de pastas
+  - [x] 0.8 .gitignore e .env.example
+  - [x] 0.9 uv init
+  - [ ] 0.10 docs
+  - [ ] 0.11 AGENTE_MENTOR.md
+  - [ ] 0.12 Primeiro commit
+- [ ] FASE 1 - SUPABASE (A) MUST
+- [ ] FASE 2 - ERP SIMULADO: BASE (A) MUST
+- [ ] FASE 3 - TRILHA RPA (B) MUST
+- [ ] FASE 4 - CONTRATO E EXECUTOR STUB (A) MUST
+- [ ] FASE 5 - DATASET SINTÉTICO E GABARITO (A) MUST
+- [ ] FASE 6 - CAMADA DE IA (A) MUST
+- [ ] FASE 7 - REGRAS E ROTEAMENTO (A) MUST
+- [ ] FASE 8 - BPMN E ORQUESTRADOR (A) MUST
+- [ ] FASE 9 - REVISÃO HUMANA (A) SHOULD
+- [ ] FASE 10 - INTEGRAÇÃO COM O ROBÔ (A, com B) MUST
+- [ ] FASE 11 - EXPERIMENTOS (A; EXP5 é da B) MUST
+- [ ] FASE 12 - RESULTADOS, PRINTS E PUBLICAÇÃO (A, C) MUST
