@@ -14,6 +14,15 @@
   - [x] 0.11 AGENTE_MENTOR.md
   - [x] 0.12 Primeiro commit
 - [ ] FASE 1 - SUPABASE (A) MUST
+  - [ ] 1.1 Criar projeto Supabase
+  - [ ] 1.2 Entender notas RLS/Nuvem
+  - [ ] 1.3 Obter URL e Chave e salvar no .env
+  - [ ] 1.4 Escrever schema.sql
+  - [ ] 1.5 Executar schema
+  - [ ] 1.6 Dependências Supabase
+  - [ ] 1.7 Criar config.py
+  - [ ] 1.8 Script check_supabase.py
+  - [ ] 1.9 Atualizar README
 - [ ] FASE 2 - ERP SIMULADO: BASE (A) MUST
 - [ ] FASE 3 - TRILHA RPA (B) MUST
 - [ ] FASE 4 - CONTRATO E EXECUTOR STUB (A) MUST
