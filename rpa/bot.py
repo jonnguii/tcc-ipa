@@ -19,7 +19,7 @@ def executar(pedido: dict) -> dict:
             browser = p.chromium.launch(headless=False)
             page = browser.new_page()
 
-            # 2. Checa Idempotência
+            # 2. Checa Duplicidade
             ref_id = pedido.get("ref_id")
             page.goto(f"http://localhost:8000/pedidos?ref={ref_id}")
             # DICA: Verifique se a linha do pedido aparece na tabela. Se sim, é duplicado.

@@ -1,11 +1,9 @@
-=== GUIA PARA O DESENVOLVEDOR DE RPA (PESSOA B) ===
+=== GUIA PARA O DESENVOLVEDOR DE RPA ===
 
-Olá! A Pessoa A já deixou o frontend do ERP Simulado pronto e rodando localmente, e o esqueleto do robô está no arquivo `rpa/bot.py`.
-O seu objetivo na Fase 3 é programar o robô que vai preencher a tela de pedidos automaticamente usando o Playwright.
 
 --- PASSO 1: PREPARAR O AMBIENTE ---
 1. Certifique-se de que o ERP simulado está rodando. 
-   O terminal da Pessoa A (ou o seu) precisa estar com o comando rodando: `uv run uvicorn erp_sim.main:app --reload --port 8000`
+   O terminal precisa estar com o comando rodando: `uv run uvicorn erp_sim.main:app --reload --port 8000`
 2. Instale o Playwright rodando no terminal:
    `uv add playwright`
    `uv run playwright install chromium`
@@ -31,11 +29,9 @@ O jeito mais fácil de começar não é digitando código do zero, mas sim deixa
    Mude: `page.get_by_test_id("ped-data").fill("2026-10-10")`
    Para: `page.get_by_test_id("ped-data").fill(pedido["data_entrega"])`
 
---- PASSO 4: A LÓGICA DE IDEMPOTÊNCIA E RETORNO ---
+--- PASSO 4: A LÓGICA DE DUPLICIDADE E RETORNO ---
 Seu robô não pode duplicar pedidos se o servidor cair.
 1. Antes de cadastrar, o robô vai abrir `http://localhost:8000/pedidos?ref=ID_DA_REFERENCIA`.
 2. Se aparecer uma linha na tabela, significa que já foi lançado. O robô deve abortar e retornar o status "duplicado".
 3. Se der certo a gravação normal, ele precisa ler a mensagem verde de sucesso na tela e retornar `status="sucesso"`.
 4. Em qualquer caso, ele deve tirar um screenshot usando `page.screenshot(...)`. Tudo isso já tem dicas no `rpa/bot.py`!
-
-Boa sorte! Qualquer dúvida, o log do erro te dirá exatamente onde a execução empacou.

@@ -12,3 +12,6 @@ rpa/evidencias/
 
 # OS
 .DS_Store
+
+# IA
+.agents/
