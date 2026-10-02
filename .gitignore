@@ -14,5 +14,5 @@ rpa/evidencias/
 .DS_Store
 
 # IA
-.agents/docs/AGENTE_MENTOR.md
+.agents/
 cache/
