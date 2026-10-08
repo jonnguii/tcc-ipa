@@ -1,0 +1,40 @@
+{
+  "id": "DOC-0062",
+  "categoria": "limpo",
+  "tipo_arquivo": "png",
+  "pedido_verdade": {
+    "cliente": {
+      "id": 19
+    },
+    "data_entrega": "2026-11-26",
+    "itens": [
+      {
+        "codigo": "P-025",
+        "quantidade": 90
+      },
+      {
+        "codigo": "P-026",
+        "quantidade": 99
+      },
+      {
+        "codigo": "P-013",
+        "quantidade": 39
+      },
+      {
+        "codigo": "P-005",
+        "quantidade": 88
+      },
+      {
+        "codigo": "P-016",
+        "quantidade": 77
+      },
+      {
+        "codigo": "P-007",
+        "quantidade": 16
+      }
+    ],
+    "observacoes": ""
+  },
+  "rota_esperada": "AUTOMATICO",
+  "flags": []
+}

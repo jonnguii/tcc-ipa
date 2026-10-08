@@ -1,0 +1,40 @@
+{
+  "id": "DOC-0001",
+  "categoria": "ruidoso",
+  "tipo_arquivo": "txt",
+  "pedido_verdade": {
+    "cliente": {
+      "id": 18
+    },
+    "data_entrega": "2026-11-27",
+    "itens": [
+      {
+        "codigo": "P-016",
+        "quantidade": 88
+      },
+      {
+        "codigo": "P-011",
+        "quantidade": 42
+      },
+      {
+        "codigo": "P-030",
+        "quantidade": 99
+      },
+      {
+        "codigo": "P-025",
+        "quantidade": 100
+      },
+      {
+        "codigo": "P-018",
+        "quantidade": 8
+      },
+      {
+        "codigo": "P-015",
+        "quantidade": 30
+      }
+    ],
+    "observacoes": ""
+  },
+  "rota_esperada": "AUTOMATICO",
+  "flags": []
+}

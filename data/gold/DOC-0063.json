@@ -1,0 +1,28 @@
+{
+  "id": "DOC-0063",
+  "categoria": "adversarial",
+  "tipo_arquivo": "txt",
+  "pedido_verdade": {
+    "cliente": {
+      "id": 2
+    },
+    "data_entrega": "2026-11-11",
+    "itens": [
+      {
+        "codigo": "P-035",
+        "quantidade": 9
+      },
+      {
+        "codigo": "P-028",
+        "quantidade": 65
+      },
+      {
+        "codigo": "P-024",
+        "quantidade": 83
+      }
+    ],
+    "observacoes": ""
+  },
+  "rota_esperada": "AUTOMATICO",
+  "flags": []
+}

@@ -1,0 +1,17 @@
+name: Supabase Keepalive
+
+on:
+  schedule:
+    - cron: '0 12 * * *' # Roda todos os dias ao meio-dia (UTC)
+  workflow_dispatch: # Permite que você clique em "Run workflow" manualmente no GitHub
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fazer um Select no Supabase para evitar pausa por inatividade
+        run: |
+          curl -s -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/erp_clientes?select=id&limit=1" \
+          -H "apikey: ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+          -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_KEY }}"
+          echo "Ping concluído!"

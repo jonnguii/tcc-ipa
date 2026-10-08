@@ -1,0 +1,12 @@
+Bom dia. Segue nosso pedido de compra.
+Referência do Pedido: DOC-0034
+Empresa: Padaria Central (34167211000135)
+
+Itens solicitados:
+- 59x Produto 3 (P-003)
+- 45x Produto 31 (P-031)
+- 40x Produto 15 (P-015)
+- 30x Produto 13 (P-013)
+
+
+Favor entregar até a data de 2026-11-08.

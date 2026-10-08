@@ -1,0 +1,20 @@
+{
+  "id": "DOC-0017",
+  "categoria": "limpo",
+  "tipo_arquivo": "txt",
+  "pedido_verdade": {
+    "cliente": {
+      "id": 4
+    },
+    "data_entrega": "2026-11-03",
+    "itens": [
+      {
+        "codigo": "P-035",
+        "quantidade": 2
+      }
+    ],
+    "observacoes": ""
+  },
+  "rota_esperada": "AUTOMATICO",
+  "flags": []
+}

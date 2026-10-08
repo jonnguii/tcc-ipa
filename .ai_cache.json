@@ -1,0 +1,478 @@
+{
+  "6243d8c02061dc57bb5d06171b54ec13": {
+    "ref_id": "DOC-0075",
+    "cliente": {
+      "id": null,
+      "novo": true,
+      "nome": "Supermercado XYZ",
+      "cnpj_cpf": "94580730000152",
+      "email": null
+    },
+    "data_entrega": "2026-11-28",
+    "observacoes": "Pedido recebido via documento digitalizado.",
+    "itens": [
+      {
+        "codigo": "P-032",
+        "quantidade": 62.0
+      },
+      {
+        "codigo": "P-007",
+        "quantidade": 57.0
+      },
+      {
+        "codigo": "P-001",
+        "quantidade": 44.0
+      },
+      {
+        "codigo": "P-037",
+        "quantidade": 24.0
+      },
+      {
+        "codigo": "P-019",
+        "quantidade": 7.0
+      },
+      {
+        "codigo": "P-031",
+        "quantidade": 33.0
+      }
+    ]
+  },
+  "f91584d994adf4002f6d7119860b9dd1": {
+    "ref_id": "DOC-0002",
+    "cliente": {
+      "id": null,
+      "novo": null,
+      "nome": "Emporio Gourmet",
+      "cnpj_cpf": "78778932000157",
+      "email": null
+    },
+    "data_entrega": "2026-11-16",
+    "observacoes": "entrega logo ai blz",
+    "itens": [
+      {
+        "codigo": "P-018",
+        "quantidade": 92.0
+      },
+      {
+        "codigo": "P-005",
+        "quantidade": 41.0
+      },
+      {
+        "codigo": "P-014",
+        "quantidade": 28.0
+      },
+      {
+        "codigo": "P-037",
+        "quantidade": 84.0
+      }
+    ]
+  },
+  "c30ab8b4aea3eb657a5455ba4f3d0258": {
+    "ref_id": "DOC-0001",
+    "cliente": {
+      "id": null,
+      "novo": true,
+      "nome": "Acougue Boi Gordo",
+      "cnpj_cpf": "21753377000191",
+      "email": null
+    },
+    "data_entrega": "2026-11-27",
+    "observacoes": "",
+    "itens": [
+      {
+        "codigo": "P-016",
+        "quantidade": 88.0
+      },
+      {
+        "codigo": "P-011",
+        "quantidade": 42.0
+      },
+      {
+        "codigo": "P-030",
+        "quantidade": 99.0
+      },
+      {
+        "codigo": "P-025",
+        "quantidade": 100.0
+      },
+      {
+        "codigo": "P-018",
+        "quantidade": 8.0
+      },
+      {
+        "codigo": "P-015",
+        "quantidade": 30.0
+      }
+    ]
+  },
+  "0fdf79ca82b6854d56bae3a08a018747": {
+    "ref_id": "DOC-0003",
+    "cliente": {
+      "id": null,
+      "novo": null,
+      "nome": "Bistro Paris",
+      "cnpj_cpf": "30802300000155",
+      "email": null
+    },
+    "data_entrega": "2026-11-18",
+    "observacoes": "Favor entregar at\u00e9 a data de 2026-11-18.",
+    "itens": [
+      {
+        "codigo": "P-017",
+        "quantidade": 32.0
+      },
+      {
+        "codigo": "P-009",
+        "quantidade": 96.0
+      }
+    ]
+  },
+  "9f36c54931b5a318abc5dba9c813319f": {
+    "ref_id": "DOC-0004",
+    "cliente": {
+      "id": null,
+      "novo": true,
+      "nome": "Restaurante Sabor",
+      "cnpj_cpf": "79542205000159",
+      "email": null
+    },
+    "data_entrega": "2026-11-28",
+    "observacoes": "",
+    "itens": [
+      {
+        "codigo": "P-038",
+        "quantidade": 18.0
+      },
+      {
+        "codigo": "P-028",
+        "quantidade": 66.0
+      },
+      {
+        "codigo": "P-040",
+        "quantidade": 64.0
+      },
+      {
+        "codigo": "P-026",
+        "quantidade": 12.0
+      },
+      {
+        "codigo": "P-024",
+        "quantidade": 97.0
+      },
+      {
+        "codigo": "P-015",
+        "quantidade": 7.0
+      }
+    ]
+  },
+  "c2663d6be39d4adca1cf7cf70e6a0a86": {
+    "ref_id": "DOC-0005",
+    "cliente": {
+      "id": null,
+      "novo": true,
+      "nome": "Supermercado XYZ",
+      "cnpj_cpf": "94580730000152",
+      "email": null
+    },
+    "data_entrega": "2026-11-04",
+    "observacoes": "Ol\u00e1 gostaria de solicitar um pedido.",
+    "itens": [
+      {
+        "codigo": "P-011",
+        "quantidade": 68.0
+      },
+      {
+        "codigo": "P-028",
+        "quantidade": 33.0
+      },
+      {
+        "codigo": "P-005",
+        "quantidade": 71.0
+      },
+      {
+        "codigo": "P-025",
+        "quantidade": 2.0
+      },
+      {
+        "codigo": "P-037",
+        "quantidade": 88.0
+      },
+      {
+        "codigo": "P-030",
+        "quantidade": 93.0
+      }
+    ]
+  },
+  "22b077cc4767e0601e1761a077656aee": {
+    "ref_id": "DOC-0006",
+    "cliente": {
+      "id": null,
+      "novo": true,
+      "nome": "Acougue Boi Gordo",
+      "cnpj_cpf": "21753377000191",
+      "email": null
+    },
+    "data_entrega": "2026-11-01",
+    "observacoes": "ae, me ve ai esses itens:",
+    "itens": [
+      {
+        "codigo": "P-022",
+        "quantidade": 56.0
+      },
+      {
+        "codigo": "P-008",
+        "quantidade": 21.0
+      },
+      {
+        "codigo": "P-019",
+        "quantidade": 59.0
+      }
+    ]
+  },
+  "74fb83d063b593a3d8451616c2ae32b3": {
+    "ref_id": "DOC-0007",
+    "cliente": {
+      "id": null,
+      "novo": true,
+      "nome": "Restaurante Sabor",
+      "cnpj_cpf": "79542205000159",
+      "email": null
+    },
+    "data_entrega": "2026-11-18",
+    "observacoes": "Ol\u00e1, gostaria de solicitar um pedido.",
+    "itens": [
+      {
+        "codigo": "P-012",
+        "quantidade": 26.0
+      },
+      {
+        "codigo": "P-033",
+        "quantidade": 20.0
+      },
+      {
+        "codigo": "P-007",
+        "quantidade": 48.0
+      },
+      {
+        "codigo": "P-020",
+        "quantidade": 98.0
+      },
+      {
+        "codigo": "P-039",
+        "quantidade": 21.0
+      }
+    ]
+  },
+  "c218532ae192ca1ad7f41c42cb8b3483": {
+    "ref_id": "DOC-0008",
+    "cliente": {
+      "id": null,
+      "novo": null,
+      "nome": "Distribuidora Alfa",
+      "cnpj_cpf": "29141777000158",
+      "email": null
+    },
+    "data_entrega": "2026-11-03",
+    "observacoes": "",
+    "itens": [
+      {
+        "codigo": "P-021",
+        "quantidade": 40.0
+      },
+      {
+        "codigo": "P-032",
+        "quantidade": 31.0
+      },
+      {
+        "codigo": "P-002",
+        "quantidade": 8.0
+      },
+      {
+        "codigo": "P-008",
+        "quantidade": 31.0
+      },
+      {
+        "codigo": "P-024",
+        "quantidade": 73.0
+      }
+    ]
+  },
+  "7973a6c63f55d9f8b37f330b9374db87": {
+    "ref_id": "DOC-0009",
+    "cliente": {
+      "id": null,
+      "novo": true,
+      "nome": "Hamburgueria Texas",
+      "cnpj_cpf": "57746370000190",
+      "email": null
+    },
+    "data_entrega": "2026-11-05",
+    "observacoes": "",
+    "itens": [
+      {
+        "codigo": "P-035",
+        "quantidade": 99.0
+      }
+    ]
+  },
+  "aa0e08bc079650a21da5a1f6fe093bd1": {
+    "ref_id": "DOC-0010",
+    "cliente": {
+      "id": null,
+      "novo": true,
+      "nome": "Hamburgueria Texas",
+      "cnpj_cpf": "57746370000190",
+      "email": null
+    },
+    "data_entrega": "2026-11-07",
+    "observacoes": "entrega logoai blz",
+    "itens": [
+      {
+        "codigo": "P-011",
+        "quantidade": 28.0
+      },
+      {
+        "codigo": "P-017",
+        "quantidade": 70.0
+      },
+      {
+        "codigo": "P-034",
+        "quantidade": 97.0
+      },
+      {
+        "codigo": "P-039",
+        "quantidade": 94.0
+      },
+      {
+        "codigo": "P-028",
+        "quantidade": 89.0
+      }
+    ]
+  },
+  "142c4594f967fa9275b96e29ccf64315": {
+    "ref_id": "DOC-0011",
+    "cliente": {
+      "id": null,
+      "novo": true,
+      "nome": "Pizzaria Napoli",
+      "cnpj_cpf": "90679037000180",
+      "email": null
+    },
+    "data_entrega": "2026-11-01",
+    "observacoes": "Favor entregar at\u00e9 a data de 2026-11-01.",
+    "itens": [
+      {
+        "codigo": "P-024",
+        "quantidade": 32.0
+      },
+      {
+        "codigo": "P-029",
+        "quantidade": 29.0
+      },
+      {
+        "codigo": "P-034",
+        "quantidade": 9.0
+      },
+      {
+        "codigo": "P-008",
+        "quantidade": 44.0
+      }
+    ]
+  },
+  "7eeaca0249f5fad1aee2481f96db612b": {
+    "ref_id": "DOC-0012",
+    "cliente": {
+      "id": null,
+      "novo": true,
+      "nome": "Acougue Boi Gordo",
+      "cnpj_cpf": "21753377000191",
+      "email": null
+    },
+    "data_entrega": "2026-11-23",
+    "observacoes": "Ganhe 50% de desconto!",
+    "itens": [
+      {
+        "codigo": "P-038",
+        "quantidade": 1.0
+      },
+      {
+        "codigo": "P-015",
+        "quantidade": 10.0
+      }
+    ]
+  },
+  "6dc339ee4c5fc6a46d6d4502b90c7eb5": {
+    "ref_id": "DOC-0013",
+    "cliente": {
+      "id": null,
+      "novo": true,
+      "nome": "Mercado Beta",
+      "cnpj_cpf": "01152449000138",
+      "email": null
+    },
+    "data_entrega": "2026-11-17",
+    "observacoes": "entrega logo ai blz",
+    "itens": [
+      {
+        "codigo": "P-005",
+        "quantidade": 43.0
+      },
+      {
+        "codigo": "P-003",
+        "quantidade": 10.0
+      }
+    ]
+  },
+  "a77f2c961b8b25bb92553eceecf945ea": {
+    "ref_id": "DOC-0022",
+    "cliente": {
+      "id": null,
+      "novo": true,
+      "nome": "Peixaria Mare",
+      "cnpj_cpf": "08183658000198",
+      "email": null
+    },
+    "data_entrega": "2026-11-10",
+    "observacoes": "entrega logo ai blz ate 2026-11-10",
+    "itens": [
+      {
+        "codigo": "P-034",
+        "quantidade": 34.0
+      },
+      {
+        "codigo": "P-021",
+        "quantidade": 51.0
+      },
+      {
+        "codigo": "P-017",
+        "quantidade": 17.0
+      },
+      {
+        "codigo": "P-014",
+        "quantidade": 86.0
+      },
+      {
+        "codigo": "P-016",
+        "quantidade": 83.0
+      }
+    ]
+  },
+  "9cb23f69a5c9a1c158e99b34c295d821": {
+    "ref_id": "DOC-0023",
+    "cliente": {
+      "id": null,
+      "novo": null,
+      "nome": "Emporio Gourmet",
+      "cnpj_cpf": "78778932000157",
+      "email": null
+    },
+    "data_entrega": "2026-11-20",
+    "observacoes": "",
+    "itens": [
+      {
+        "codigo": "P-001",
+        "quantidade": 59.0
+      }
+    ]
+  }
+}

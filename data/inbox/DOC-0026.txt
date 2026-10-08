@@ -1,0 +1,13 @@
+Bom dia. Segue nosso pedido de compra.
+Referência do Pedido: DOC-0026
+Empresa: Pizzaria Napoli (90679037000180)
+
+Itens solicitados:
+- 18x Produto 34 (P-034)
+- 34x Produto 1 (P-001)
+- 15x Produto 36 (P-036)
+- 14x Produto 20 (P-020)
+- 96x Produto 7 (P-007)
+
+
+Favor entregar até a data de 2026-11-18.

@@ -1,0 +1,28 @@
+{
+  "id": "DOC-0051",
+  "categoria": "limpo",
+  "tipo_arquivo": "png",
+  "pedido_verdade": {
+    "cliente": {
+      "id": 14
+    },
+    "data_entrega": "2026-11-13",
+    "itens": [
+      {
+        "codigo": "P-035",
+        "quantidade": 8
+      },
+      {
+        "codigo": "P-030",
+        "quantidade": 27
+      },
+      {
+        "codigo": "P-027",
+        "quantidade": 54
+      }
+    ],
+    "observacoes": ""
+  },
+  "rota_esperada": "AUTOMATICO",
+  "flags": []
+}

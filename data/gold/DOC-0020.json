@@ -1,0 +1,40 @@
+{
+  "id": "DOC-0020",
+  "categoria": "limpo",
+  "tipo_arquivo": "txt",
+  "pedido_verdade": {
+    "cliente": {
+      "id": 19
+    },
+    "data_entrega": "2026-11-28",
+    "itens": [
+      {
+        "codigo": "P-035",
+        "quantidade": 65
+      },
+      {
+        "codigo": "P-004",
+        "quantidade": 68
+      },
+      {
+        "codigo": "P-021",
+        "quantidade": 21
+      },
+      {
+        "codigo": "P-039",
+        "quantidade": 8
+      },
+      {
+        "codigo": "P-037",
+        "quantidade": 66
+      },
+      {
+        "codigo": "P-031",
+        "quantidade": 11
+      }
+    ],
+    "observacoes": ""
+  },
+  "rota_esperada": "AUTOMATICO",
+  "flags": []
+}

@@ -1,0 +1,32 @@
+{
+  "id": "DOC-0016",
+  "categoria": "ruidoso",
+  "tipo_arquivo": "png",
+  "pedido_verdade": {
+    "cliente": {
+      "id": 18
+    },
+    "data_entrega": "2026-11-26",
+    "itens": [
+      {
+        "codigo": "P-009",
+        "quantidade": 60
+      },
+      {
+        "codigo": "P-028",
+        "quantidade": 32
+      },
+      {
+        "codigo": "P-012",
+        "quantidade": 10
+      },
+      {
+        "codigo": "P-018",
+        "quantidade": 57
+      }
+    ],
+    "observacoes": ""
+  },
+  "rota_esperada": "AUTOMATICO",
+  "flags": []
+}

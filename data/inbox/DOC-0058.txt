@@ -1,0 +1,5 @@
+pedido:DOC-0058
+cli:Mercado Beta
+doc:01152449000138
+- 26x Produto 16 (P-016)
+entrega logo ai blz ate 2026-11-27

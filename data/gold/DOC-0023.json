@@ -1,0 +1,20 @@
+{
+  "id": "DOC-0023",
+  "categoria": "limpo",
+  "tipo_arquivo": "png",
+  "pedido_verdade": {
+    "cliente": {
+      "id": 11
+    },
+    "data_entrega": "2026-11-20",
+    "itens": [
+      {
+        "codigo": "P-001",
+        "quantidade": 59
+      }
+    ],
+    "observacoes": ""
+  },
+  "rota_esperada": "AUTOMATICO",
+  "flags": []
+}

@@ -1,0 +1,12 @@
+Olá, gostaria de solicitar um pedido.
+Cliente: Distribuidora Alfa
+CNPJ: 29141777000158
+Itens:
+- 86x Produto 35 (P-035)
+- 43x Produto 13 (P-013)
+- 80x Produto 24 (P-024)
+- 41x Produto 28 (P-028)
+- 85x Produto 5 (P-005)
+
+Data de Entrega: 2026-11-28
+Referência: DOC-0039

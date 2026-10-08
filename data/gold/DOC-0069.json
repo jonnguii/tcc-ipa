@@ -1,0 +1,24 @@
+{
+  "id": "DOC-0069",
+  "categoria": "adversarial",
+  "tipo_arquivo": "pdf",
+  "pedido_verdade": {
+    "cliente": {
+      "id": 18
+    },
+    "data_entrega": "2026-11-03",
+    "itens": [
+      {
+        "codigo": "P-031",
+        "quantidade": 58
+      },
+      {
+        "codigo": "P-032",
+        "quantidade": 3
+      }
+    ],
+    "observacoes": ""
+  },
+  "rota_esperada": "AUTOMATICO",
+  "flags": []
+}
