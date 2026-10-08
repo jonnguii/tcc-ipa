@@ -1,0 +1,28 @@
+{
+  "id": "DOC-0071",
+  "categoria": "ruidoso",
+  "tipo_arquivo": "png",
+  "pedido_verdade": {
+    "cliente": {
+      "id": 18
+    },
+    "data_entrega": "2026-11-04",
+    "itens": [
+      {
+        "codigo": "P-023",
+        "quantidade": 40
+      },
+      {
+        "codigo": "P-030",
+        "quantidade": 33
+      },
+      {
+        "codigo": "P-018",
+        "quantidade": 30
+      }
+    ],
+    "observacoes": ""
+  },
+  "rota_esperada": "AUTOMATICO",
+  "flags": []
+}

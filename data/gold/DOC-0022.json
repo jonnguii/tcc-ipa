@@ -1,0 +1,36 @@
+{
+  "id": "DOC-0022",
+  "categoria": "ruidoso",
+  "tipo_arquivo": "pdf",
+  "pedido_verdade": {
+    "cliente": {
+      "id": 19
+    },
+    "data_entrega": "2026-11-10",
+    "itens": [
+      {
+        "codigo": "P-034",
+        "quantidade": 34
+      },
+      {
+        "codigo": "P-021",
+        "quantidade": 51
+      },
+      {
+        "codigo": "P-017",
+        "quantidade": 17
+      },
+      {
+        "codigo": "P-014",
+        "quantidade": 86
+      },
+      {
+        "codigo": "P-016",
+        "quantidade": 83
+      }
+    ],
+    "observacoes": ""
+  },
+  "rota_esperada": "AUTOMATICO",
+  "flags": []
+}

@@ -1,10 +1,17 @@
 === GUIA PARA O DESENVOLVEDOR DE RPA ===
 
+--- PASSO 0: INSTALAR O UV ---
+Este projeto usa o gerenciador `uv` em vez do `pip` ou `npm`.
+1. Para Windows (PowerShell): `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
+2. Para Mac/Linux (Terminal): `curl -LsSf https://astral.sh/uv/install.sh | sh`
+3. Feche e abra o terminal novamente para aplicar.
+*(Aviso: Se instalou via `pip install uv` e o terminal não reconhece, é erro de PATH. Recomendo usar os comandos acima. Se insistir no pip, você terá que adicionar `python -m ` antes de qualquer comando uv deste guia).*
 
 --- PASSO 1: PREPARAR O AMBIENTE ---
-1. Certifique-se de que o ERP simulado está rodando. 
+1. Configure o arquivo `.env` na raiz do projeto (use o `.env.example`). Preencha `SUPABASE_URL` e `SUPABASE_SERVICE_KEY` com as credenciais do banco, senão o ERP não liga.
+2. Certifique-se de que o ERP simulado está rodando. 
    O terminal precisa estar com o comando rodando: `uv run uvicorn erp_sim.main:app --reload --port 8000`
-2. Instale o Playwright rodando no terminal:
+3. Instale o Playwright rodando no terminal:
    `uv add playwright`
    `uv run playwright install chromium`
 

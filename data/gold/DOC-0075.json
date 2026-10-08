@@ -1,0 +1,40 @@
+{
+  "id": "DOC-0075",
+  "categoria": "limpo",
+  "tipo_arquivo": "pdf",
+  "pedido_verdade": {
+    "cliente": {
+      "id": 5
+    },
+    "data_entrega": "2026-11-28",
+    "itens": [
+      {
+        "codigo": "P-032",
+        "quantidade": 62
+      },
+      {
+        "codigo": "P-007",
+        "quantidade": 57
+      },
+      {
+        "codigo": "P-001",
+        "quantidade": 44
+      },
+      {
+        "codigo": "P-037",
+        "quantidade": 24
+      },
+      {
+        "codigo": "P-019",
+        "quantidade": 7
+      },
+      {
+        "codigo": "P-031",
+        "quantidade": 33
+      }
+    ],
+    "observacoes": ""
+  },
+  "rota_esperada": "AUTOMATICO",
+  "flags": []
+}

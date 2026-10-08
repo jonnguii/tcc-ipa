@@ -1,0 +1,11 @@
+Bom dia. Segue nosso pedido de compra.
+Referência do Pedido: DOC-0080
+Empresa: Mercearia Delta (52601815000120)
+
+Itens solicitados:
+- 23x Produto 6 (P-006)
+- 71x Produto 11 (P-011)
+- 10x Produto 16 (P-016)
+
+
+Favor entregar até a data de 2026-11-06.

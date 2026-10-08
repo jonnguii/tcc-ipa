@@ -1,0 +1,20 @@
+{
+  "id": "DOC-0037",
+  "categoria": "limpo",
+  "tipo_arquivo": "pdf",
+  "pedido_verdade": {
+    "cliente": {
+      "id": 9
+    },
+    "data_entrega": "2026-11-14",
+    "itens": [
+      {
+        "codigo": "P-007",
+        "quantidade": 77
+      }
+    ],
+    "observacoes": ""
+  },
+  "rota_esperada": "AUTOMATICO",
+  "flags": []
+}

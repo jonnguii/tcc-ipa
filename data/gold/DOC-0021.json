@@ -1,0 +1,36 @@
+{
+  "id": "DOC-0021",
+  "categoria": "adversarial",
+  "tipo_arquivo": "pdf",
+  "pedido_verdade": {
+    "cliente": {
+      "id": 3
+    },
+    "data_entrega": "2026-11-03",
+    "itens": [
+      {
+        "codigo": "P-005",
+        "quantidade": 32
+      },
+      {
+        "codigo": "P-016",
+        "quantidade": 75
+      },
+      {
+        "codigo": "P-026",
+        "quantidade": 77
+      },
+      {
+        "codigo": "P-008",
+        "quantidade": 6
+      },
+      {
+        "codigo": "P-037",
+        "quantidade": 80
+      }
+    ],
+    "observacoes": ""
+  },
+  "rota_esperada": "AUTOMATICO",
+  "flags": []
+}

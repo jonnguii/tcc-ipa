@@ -1,0 +1,32 @@
+{
+  "id": "DOC-0011",
+  "categoria": "limpo",
+  "tipo_arquivo": "png",
+  "pedido_verdade": {
+    "cliente": {
+      "id": 10
+    },
+    "data_entrega": "2026-11-01",
+    "itens": [
+      {
+        "codigo": "P-024",
+        "quantidade": 32
+      },
+      {
+        "codigo": "P-029",
+        "quantidade": 29
+      },
+      {
+        "codigo": "P-034",
+        "quantidade": 9
+      },
+      {
+        "codigo": "P-008",
+        "quantidade": 44
+      }
+    ],
+    "observacoes": ""
+  },
+  "rota_esperada": "AUTOMATICO",
+  "flags": []
+}

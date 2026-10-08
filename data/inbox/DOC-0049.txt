@@ -1,0 +1,9 @@
+Olá, gostaria de solicitar um pedido.
+Cliente: Pizzaria Napoli
+CNPJ: 90679037000180
+Itens:
+- 41x Produto 18 (P-018)
+- 70x Produto 22 (P-022)
+
+Data de Entrega: 2026-11-03
+Referência: DOC-0049
