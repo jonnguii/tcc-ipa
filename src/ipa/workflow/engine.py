@@ -257,10 +257,16 @@ class OrquestradorIPA:
         resultado_executor, ev_exec = handler_execucao_pedido(pedido_final, self.executor)
         eventos.append(ev_exec)
 
+        correcao_registro = {
+            "pedido": pedido_final.model_dump(),
+            "numero_pedido": resultado_executor.get("numero_pedido"),
+            "status_executor": resultado_executor.get("status"),
+        }
+
         resolver_pendencia(
             revisao_id=revisao_id,
             status="resolvida",
-            correcao=pedido_final.model_dump(),
+            correcao=correcao_registro,
             tempo_revisao_s=tempo_revisao_s,
         )
 

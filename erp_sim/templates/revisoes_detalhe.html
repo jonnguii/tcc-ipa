@@ -63,7 +63,17 @@
   <div>
     <strong>Status do Pedido:</strong> 
     {% if revisao.status == 'resolvida' %}
-      Este pedido já foi homologado e despachado para a esteira do robô em {{ revisao.tempo_revisao_s }} segundos.
+      Este pedido já foi homologado e despachado para a esteira em {{ revisao.tempo_revisao_s }} segundos.
+      {% if revisao.correcao and revisao.correcao.numero_pedido %}
+        <span style="margin-left: 10px;">
+          Pedido gerado no ERP: <strong>#{{ revisao.correcao.numero_pedido }}</strong>
+          <a href="/pedidos" class="btn btn-sm btn-secondary" style="margin-left: 8px;">Acessar Tela de Pedidos</a>
+        </span>
+      {% else %}
+        <span style="margin-left: 10px;">
+          <a href="/pedidos" class="btn btn-sm btn-secondary" style="margin-left: 8px;">Acessar Tela de Pedidos</a>
+        </span>
+      {% endif %}
     {% else %}
       Este pedido foi rejeitado e arquivado para auditoria em {{ revisao.tempo_revisao_s }} segundos.
     {% endif %}
@@ -78,14 +88,37 @@
   <div class="split-panel">
     <div class="panel-header">
       <h2 class="panel-title">Documento Original Recebido</h2>
-      <span class="badge-tag">{{ doc_nome or 'Arquivo de Origem' }}</span>
+      <div class="panel-header-actions">
+        <span class="badge-tag">{{ doc_nome or 'Arquivo de Origem' }}</span>
+        {% if doc_existe %}
+          <a href="/revisoes/{{ revisao.id }}/arquivo" target="_blank" class="btn btn-sm btn-secondary" title="Abrir arquivo em nova aba">
+            Abrir em Nova Aba
+          </a>
+        {% endif %}
+      </div>
     </div>
     <div class="panel-body">
-      {% if doc_conteudo %}
+      {% if doc_tipo == 'pdf' and doc_existe %}
+        <div class="media-container pdf-container">
+          <iframe src="/revisoes/{{ revisao.id }}/arquivo" class="media-frame" title="Visualizador de PDF Original">
+            Seu navegador não suporta visualização direta de PDF.
+            <a href="/revisoes/{{ revisao.id }}/arquivo" target="_blank">Clique aqui para baixar o PDF</a>.
+          </iframe>
+        </div>
+      {% elif doc_tipo == 'imagem' and doc_existe %}
+        <div class="media-container img-container">
+          <img src="/revisoes/{{ revisao.id }}/arquivo" alt="Documento Original {{ doc_nome }}" class="media-image" />
+        </div>
+      {% elif doc_conteudo %}
         <pre class="doc-viewer">{{ doc_conteudo }}</pre>
+      {% elif doc_existe %}
+        <div class="empty-state">
+          <p>Arquivo: <code>{{ doc_nome }}</code></p>
+          <a href="/revisoes/{{ revisao.id }}/arquivo" target="_blank" class="btn btn-secondary">Baixar/Visualizar Arquivo</a>
+        </div>
       {% elif doc_path %}
-        <p class="text-muted">Caminho do arquivo: <code>{{ doc_path }}</code></p>
-        <p class="text-muted">Prévia textual indisponível para este formato de mídia.</p>
+        <p class="text-muted">Caminho original do lote: <code>{{ doc_path }}</code></p>
+        <p class="text-muted">O arquivo físico não está acessível no disco local.</p>
       {% else %}
         <p class="text-muted">Conteúdo original não anexado diretamente a este lote.</p>
       {% endif %}
@@ -110,14 +143,14 @@
           <div class="form-group">
             <label for="cliente_nome">Razão Social / Nome:</label>
             <input type="text" id="cliente_nome" name="cliente_nome" class="form-control" 
-                   value="{{ pedido_original.cliente.nome if pedido_original.cliente else '' }}" required>
+                   value="{{ cliente_nome }}" placeholder="Nome ou Razão Social do Cliente" required>
           </div>
 
           <div class="form-row">
             <div class="form-group col-half">
               <label for="cliente_documento">CPF / CNPJ:</label>
               <input type="text" id="cliente_documento" name="cliente_documento" class="form-control font-mono" 
-                     value="{{ pedido_original.cliente.documento if pedido_original.cliente else '' }}">
+                     value="{{ cliente_doc }}" placeholder="00.000.000/0001-00">
             </div>
 
             <div class="form-group col-half">
@@ -159,9 +192,9 @@
                   {% endif %}
                 </td>
                 <td>
-                  <select name="item_codigo_{{ loop.index0 }}" class="form-control item-select">
+                  <select name="item_codigo_{{ loop.index0 }}" class="form-control item-select" onchange="atualizarPrecoCatalogo(this, {{ loop.index0 }})">
                     {% for p in catalogo %}
-                      <option value="{{ p.codigo }}" {% if p.codigo == item.codigo_resolvido %}selected{% endif %}>
+                      <option value="{{ p.codigo }}" data-preco="{{ p.preco }}" {% if p.codigo == item.codigo_resolvido %}selected{% endif %}>
                         {{ p.codigo }} - {{ p.descricao }} ({{ p.preco|moeda }})
                       </option>
                     {% endfor %}
@@ -169,11 +202,11 @@
                 </td>
                 <td style="width: 70px;">
                   <input type="number" name="item_qtd_{{ loop.index0 }}" class="form-control font-mono" 
-                         value="{{ item.quantidade }}" min="1" required>
+                         value="{{ item.quantidade|int if item.quantidade == item.quantidade|int else item.quantidade }}" min="1" step="1" required>
                 </td>
-                <td style="width: 100px;">
-                  <input type="number" step="0.01" name="item_preco_{{ loop.index0 }}" class="form-control font-mono" 
-                         value="{{ "%.2f"|format(item.preco_unitario or 0) }}" min="0" required>
+                <td style="width: 110px;">
+                  <input type="number" step="0.01" name="item_preco_{{ loop.index0 }}" id="item_preco_{{ loop.index0 }}" class="form-control font-mono" 
+                         value="{{ "%.2f"|format(item.preco_unitario) }}" min="0.01" required>
                 </td>
               </tr>
               {% endfor %}
@@ -199,8 +232,16 @@
   </div>
 </div>
 
-{% if revisao.status == 'pendente' %}
 <script>
+  function atualizarPrecoCatalogo(selectEl, idx) {
+    var opt = selectEl.options[selectEl.selectedIndex];
+    var preco = opt.getAttribute('data-preco');
+    var inputPreco = document.getElementById('item_preco_' + idx);
+    if (inputPreco && preco) {
+      inputPreco.value = parseFloat(preco).toFixed(2);
+    }
+  }
+
   (function() {
     var inicio = performance.now();
     var display = document.getElementById('timer-display');
@@ -217,7 +258,7 @@
 
     var intervalo = setInterval(function() {
       var decorrido = (performance.now() - inicio) / 1000;
-      if (display) {
+      if (display && display.textContent.indexOf('Finalizado') === -1) {
         display.textContent = formatarTempo(decorrido);
       }
     }, 100);
@@ -233,5 +274,4 @@
     }
   })();
 </script>
-{% endif %}
 {% endblock %}

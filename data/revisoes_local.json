@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Item com similaridade ambígua: 78%",
+    "payload": {
+      "ref_id": "TESTE-REV-001",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-12",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "pendente",
+    "correcao": null,
+    "simulada": true,
+    "tempo_revisao_s": null,
+    "criado_em": "2026-10-12T03:48:41.954385+00:00"
+  }
+]

@@ -242,25 +242,82 @@ def detalhe_revisao(request: Request, revisao_id: int):
                     pass
 
     catalogo = obter_catalogo_produtos()
+    catalogo_map = {p["codigo"]: p for p in catalogo}
+
+    # Tratamento para não exibir literal "None" nos campos do cliente
+    cli = (
+        pedido_original.get("cliente")
+        if isinstance(pedido_original, dict)
+        else getattr(pedido_original, "cliente", None)
+    )
+    cliente_nome = ""
+    cliente_doc = ""
+    if isinstance(cli, dict):
+        cliente_nome = cli.get("nome") or ""
+        cliente_doc = cli.get("cnpj_cpf") or cli.get("documento") or ""
+    elif cli:
+        cliente_nome = getattr(cli, "nome", "") or ""
+        cliente_doc = getattr(cli, "cnpj_cpf", "") or getattr(cli, "documento", "") or ""
+
+    if str(cliente_nome).strip().lower() in ("none", "null"):
+        cliente_nome = ""
+    if str(cliente_doc).strip().lower() in ("none", "null"):
+        cliente_doc = ""
 
     itens_view = []
     if itens_analisados:
         for it in itens_analisados:
+            cod = it.get("codigo_resolvido") or it.get("codigo_sugerido") or "P-001"
+            preco_cat = float(catalogo_map.get(cod, {}).get("preco", 1.0))
+            preco_raw = it.get("preco_unitario")
+            try:
+                preco = float(preco_raw) if preco_raw is not None and float(preco_raw) > 0 else preco_cat
+            except (ValueError, TypeError):
+                preco = preco_cat
+
+            qtd_raw = it.get("quantidade")
+            try:
+                qtd = float(qtd_raw) if qtd_raw is not None and float(qtd_raw) > 0 else 1.0
+            except (ValueError, TypeError):
+                qtd = 1.0
+
+            desc = it.get("descricao_original") or it.get("descricao_bruta", "")
+            if not desc or str(desc).strip().lower() in ("none", "null"):
+                desc = catalogo_map.get(cod, {}).get("descricao", cod)
+
             itens_view.append({
-                "descricao_original": it.get("descricao_original") or it.get("descricao_bruta", ""),
-                "codigo_resolvido": it.get("codigo_resolvido") or it.get("codigo_sugerido", ""),
+                "descricao_original": desc,
+                "codigo_resolvido": cod,
                 "score_fuzzy": it.get("score_similaridade") or it.get("confianca", 100.0),
-                "quantidade": it.get("quantidade", 1),
-                "preco_unitario": it.get("preco_unitario", 0.0),
+                "quantidade": qtd,
+                "preco_unitario": preco,
             })
     else:
         for it in pedido_original.get("itens", []):
+            cod = it.get("codigo") or it.get("codigo_produto") or "P-001"
+            preco_cat = float(catalogo_map.get(cod, {}).get("preco", 1.0))
+            preco_raw = it.get("preco_unitario")
+            try:
+                preco = float(preco_raw) if preco_raw is not None and float(preco_raw) > 0 else preco_cat
+            except (ValueError, TypeError):
+                preco = preco_cat
+
+            qtd_raw = it.get("quantidade")
+            try:
+                qtd = float(qtd_raw) if qtd_raw is not None and float(qtd_raw) > 0 else 1.0
+            except (ValueError, TypeError):
+                qtd = 1.0
+
+            desc = it.get("descricao_bruta") or it.get("descricao", "")
+            if not desc or str(desc).strip().lower() in ("none", "null"):
+                desc = catalogo_map.get(cod, {}).get("descricao", cod)
+
             itens_view.append({
-                "descricao_original": it.get("descricao_bruta") or it.get("descricao", ""),
-                "codigo_resolvido": it.get("codigo_produto", ""),
+                "descricao_original": desc,
+                "codigo_resolvido": cod,
                 "score_fuzzy": 100.0,
-                "quantidade": it.get("quantidade", 1),
-                "preco_unitario": it.get("preco_unitario", 0.0),
+                "quantidade": qtd,
+                "preco_unitario": preco,
             })
 
     return templates.TemplateResponse(
@@ -270,6 +327,8 @@ def detalhe_revisao(request: Request, revisao_id: int):
             "revisao": revisao,
             "payload": payload,
             "pedido_original": pedido_original,
+            "cliente_nome": cliente_nome,
+            "cliente_doc": cliente_doc,
             "itens": itens_view,
             "catalogo": catalogo,
             "doc_nome": doc_nome,
@@ -344,7 +403,12 @@ async def decisao_revisao(request: Request, revisao_id: int):
     idx = 0
     while f"item_codigo_{idx}" in form_data:
         cod = str(form_data.get(f"item_codigo_{idx}"))
-        qtd = float(form_data.get(f"item_qtd_{idx}", 1))
+        try:
+            qtd = float(form_data.get(f"item_qtd_{idx}", 1))
+            if qtd <= 0:
+                qtd = 1.0
+        except (ValueError, TypeError):
+            qtd = 1.0
         itens_corrigidos.append(
             ItemPedido(
                 codigo=cod,
