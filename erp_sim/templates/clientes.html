@@ -1,11 +1,61 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Clientes</h2>
-<a href="/clientes/novo" class="btn">Novo Cliente</a><br><br>
-<table data-testid="tabela-clientes">
-  <tr><th>ID</th><th>Nome</th><th>CNPJ/CPF</th><th>Email</th></tr>
-  {% for c in clientes %}
-  <tr><td>{{ c.id }}</td><td>{{ c.nome }}</td><td>{{ c.cnpj_cpf }}</td><td>{{ c.email }}</td></tr>
-  {% endfor %}
-</table>
+<div class="page-header">
+  <div>
+    <span class="page-eyebrow">Cadastros</span>
+    <h2>Clientes</h2>
+    <p class="page-description">Consulte e mantenha os dados dos seus clientes em um só lugar.</p>
+  </div>
+  <div class="page-actions">
+    <a href="/clientes/novo" class="btn btn-primary"><span aria-hidden="true">＋</span> Novo cliente</a>
+  </div>
+</div>
+
+<div class="table-container">
+  <div class="table-heading">
+    <div>
+      <h3>Todos os clientes</h3>
+      <p>Dados cadastrais e informações de contato</p>
+    </div>
+    <span class="result-count">{{ clientes|length }} registro{% if clientes|length != 1 %}s{% endif %}</span>
+  </div>
+  <table data-testid="tabela-clientes">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>CNPJ/CPF</th>
+        <th>E-mail</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in clientes %}
+      <tr>
+        <td>#{{ c.id }}</td>
+        <td><strong>{{ c.nome }}</strong></td>
+        <td>{{ c.cnpj_cpf }}</td>
+        <td>{{ c.email }}</td>
+        <td>
+          <div class="table-actions">
+            <a href="/clientes/{{ c.id }}/editar" class="btn btn-secondary btn-sm">Editar</a>
+            <form method="POST" action="/clientes/{{ c.id }}/excluir" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir este cliente?');">
+              <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if clientes|length == 0 %}
+<div class="empty-state">
+  <div class="empty-state-icon" aria-hidden="true">⌕</div>
+  <h3>Nenhum cliente por aqui ainda</h3>
+  <p>Cadastre seu primeiro cliente para começar a organizar os pedidos.</p>
+  <a href="/clientes/novo" class="btn btn-primary">Cadastrar cliente</a>
+</div>
+{% endif %}
 {% endblock %}

@@ -1,55 +1,266 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Novo Pedido de Venda</h2>
+<div class="form-container">
+  <div class="form-intro">
+    <span class="form-eyebrow">Pedidos / Nova operação</span>
+    <h2>Novo pedido</h2>
+    <p>Informe o cliente, a entrega e os produtos que fazem parte do pedido.</p>
+  </div>
 
-{% if request.query_params.get("msg_sucesso") %}
-<div class="msg-sucesso" data-testid="msg-sucesso">{{ request.query_params.get("msg_sucesso") }}</div>
-{% endif %}
-{% if request.query_params.get("msg_duplicado") %}
-<div class="msg-duplicado" data-testid="msg-duplicado">{{ request.query_params.get("msg_duplicado") }}</div>
-{% endif %}
-{% if error %}
-<div class="msg-erro" data-testid="msg-erro">{{ error }}</div>
-{% endif %}
+  {% if request.query_params.get("msg_sucesso") %}
+  <div class="msg-sucesso" data-testid="msg-sucesso">{{ request.query_params.get("msg_sucesso") }}</div>
+  {% endif %}
 
-<form method="POST" action="/pedidos/novo">
-  <label>Cliente:</label><br>
-  <select name="cliente_id" data-testid="ped-cliente" required>
-    <option value="">Selecione...</option>
-    {% for c in clientes %}
-    <option value="{{ c.id }}">{{ c.nome }} ({{ c.cnpj_cpf }})</option>
-    {% endfor %}
-  </select><br><br>
+  {% if request.query_params.get("msg_duplicado") %}
+  <div class="msg-duplicado" data-testid="msg-duplicado">{{ request.query_params.get("msg_duplicado") }}</div>
+  {% endif %}
 
-  <label>Data Entrega:</label><br>
-  <input type="date" name="data_entrega" data-testid="ped-data" required><br><br>
+  {% if error %}
+  <div class="msg-erro" data-testid="msg-erro">{{ error }}</div>
+  {% endif %}
 
-  <label>Ref Externa:</label><br>
-  <input type="text" name="ref_externa" data-testid="ped-ref"><br><br>
-
-  <h3>Itens</h3>
-  <table>
-    <tr><th>Produto</th><th>Quantidade</th></tr>
-    {% for i in range(1, 7) %}
-    <tr>
-      <td>
-        <select name="produto_id_{{ i }}" data-testid="ped-linha-{{ i }}-produto">
+  <form method="POST" action="/pedidos/novo" id="pedidoForm" novalidate>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="cliente_id" class="required">Cliente</label>
+        <select
+          name="cliente_id"
+          id="cliente_id"
+          data-testid="ped-cliente"
+          required
+        >
           <option value="">Selecione...</option>
-          {% for p in produtos %}
-          <option value="{{ p.id }}">{{ p.codigo }} - {{ p.descricao }}</option>
+          {% for c in clientes %}
+          <option value="{{ c.id }}">{{ c.nome }} ({{ c.cnpj_cpf }})</option>
           {% endfor %}
         </select>
-      </td>
-      <td>
-        <input type="number" step="0.01" name="quantidade_{{ i }}" data-testid="ped-linha-{{ i }}-qtd">
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
+        <span class="error-message" id="cliente_id-error">Selecione um cliente</span>
+      </div>
 
-  <label>Observações:</label><br>
-  <textarea name="observacoes" data-testid="ped-obs" rows="3" cols="40"></textarea><br><br>
+      <div class="form-group">
+        <label for="data_entrega" class="required">Data de Entrega</label>
+        <input
+          type="date"
+          id="data_entrega"
+          name="data_entrega"
+          data-testid="ped-data"
+          required
+        >
+        <span class="error-message" id="data_entrega-error">Data inválida</span>
+      </div>
+    </div>
 
-  <button type="submit" class="btn" data-testid="ped-salvar">Salvar Pedido</button>
-</form>
+    <div class="form-group">
+      <label for="ref_externa">Referência Externa</label>
+      <input
+        type="text"
+        id="ref_externa"
+        name="ref_externa"
+        data-testid="ped-ref"
+        placeholder="Código de referência do cliente"
+      >
+      <span class="help-text">Código único para identificar o pedido externamente</span>
+    </div>
+
+    <div class="section-heading">
+      <h3>Itens do pedido</h3>
+      <p>Adicione pelo menos um produto e informe a quantidade.</p>
+    </div>
+    <div class="table-container items-table">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 60%">Produto</th>
+            <th style="width: 30%">Quantidade</th>
+            <th style="width: 10%">Ação</th>
+          </tr>
+        </thead>
+        <tbody id="itensBody">
+          {% for i in range(1, 7) %}
+          <tr data-linha="{{ i }}">
+            <td>
+              <select
+                name="produto_id_{{ i }}"
+                id="produto_id_{{ i }}"
+                data-testid="ped-linha-{{ i }}-produto"
+                class="produto-select"
+                data-linha="{{ i }}"
+              >
+                <option value="">Selecione...</option>
+                {% for p in produtos %}
+                <option value="{{ p.id }}" data-preco="{{ p.preco }}">{{ p.codigo }} - {{ p.descricao }}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td>
+              <input
+                type="number"
+                step="1"
+                min="1"
+                name="quantidade_{{ i }}"
+                id="quantidade_{{ i }}"
+                data-testid="ped-linha-{{ i }}-qtd"
+                class="quantidade-input"
+                data-linha="{{ i }}"
+              >
+            </td>
+            <td>
+              <button type="button" class="btn btn-secondary btn-sm" onclick='limparLinha({{ i }})'>Limpar</button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="form-group">
+      <label for="observacoes">Observações</label>
+      <textarea
+        id="observacoes"
+        name="observacoes"
+        data-testid="ped-obs"
+        rows="3"
+        cols="40"
+        placeholder="Observações adicionais sobre o pedido..."
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <p><strong>Total Estimado:</strong> <span id="totalEstimado">R$ 0,00</span></p>
+    </div>
+
+    <button type="submit" class="btn btn-primary" data-testid="ped-salvar" id="submitBtn">
+      <span>Salvar Pedido</span>
+    </button>
+
+    <a href="/pedidos" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById('pedidoForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const itensBody = document.getElementById('itensBody');
+
+  // Mapeamento de preços
+  const precos = {};
+  document.querySelectorAll('.produto-select option').forEach(opt => {
+    if (opt.value) {
+      precos[opt.value] = parseFloat(opt.dataset.preco);
+    }
+  });
+
+  // Calcular total
+  function calcularTotal() {
+    let total = 0;
+    document.querySelectorAll('.quantidade-input').forEach(input => {
+      const linha = input.dataset.linha;
+      const select = document.getElementById(`produto_id_${linha}`);
+      const produtoId = select.value;
+      const quantidade = parseFloat(input.value) || 0;
+
+      if (produtoId && precos[produtoId]) {
+        total += precos[produtoId] * quantidade;
+      }
+    });
+
+    document.getElementById('totalEstimado').textContent =
+      total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  // Limpar linha
+  function limparLinha(linha) {
+    document.getElementById(`produto_id_${linha}`).value = '';
+    document.getElementById(`quantidade_${linha}`).value = '';
+    calcularTotal();
+  }
+
+  // Event listeners para cálculo automático
+  document.querySelectorAll('.produto-select').forEach(select => {
+    select.addEventListener('change', calcularTotal);
+  });
+
+  document.querySelectorAll('.quantidade-input').forEach(input => {
+    input.addEventListener('input', calcularTotal);
+  });
+
+  // Validação de itens
+  function validarItens() {
+    let itensValidos = 0;
+    document.querySelectorAll('.quantidade-input').forEach(input => {
+      const linha = input.dataset.linha;
+      const select = document.getElementById(`produto_id_${linha}`);
+      const quantidade = parseFloat(input.value) || 0;
+
+      if (select.value && quantidade > 0) {
+        itensValidos++;
+      }
+    });
+
+    return itensValidos > 0;
+  }
+
+  // Validação em tempo real
+  document.getElementById('cliente_id').addEventListener('change', function() {
+    const errorSpan = document.getElementById('cliente_id-error');
+    if (!this.value) {
+      this.classList.add('error');
+      errorSpan.classList.add('visible');
+    } else {
+      this.classList.remove('error');
+      this.classList.add('success');
+      errorSpan.classList.remove('visible');
+    }
+  });
+
+  document.getElementById('data_entrega').addEventListener('change', function() {
+    const errorSpan = document.getElementById('data_entrega-error');
+    if (!this.value) {
+      this.classList.add('error');
+      errorSpan.classList.add('visible');
+    } else {
+      this.classList.remove('error');
+      this.classList.add('success');
+      errorSpan.classList.remove('visible');
+    }
+  });
+
+  // Loading state ao submeter
+  form.addEventListener('submit', function(e) {
+    let valid = true;
+
+    // Validar cliente
+    if (!document.getElementById('cliente_id').value) {
+      document.getElementById('cliente_id').classList.add('error');
+      document.getElementById('cliente_id-error').classList.add('visible');
+      valid = false;
+    }
+
+    // Validar data
+    if (!document.getElementById('data_entrega').value) {
+      document.getElementById('data_entrega').classList.add('error');
+      document.getElementById('data_entrega-error').classList.add('visible');
+      valid = false;
+    }
+
+    // Validar itens
+    if (!validarItens()) {
+      showToast('Adicione pelo menos 1 item ao pedido', 'error');
+      valid = false;
+    }
+
+    if (!valid) {
+      e.preventDefault();
+      return;
+    }
+
+    // Loading state
+    submitBtn.classList.add('loading');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner"></span><span>Salvando...</span>';
+  });
+
+  // Inicializar
+  calcularTotal();
+</script>
 {% endblock %}

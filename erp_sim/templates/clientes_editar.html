@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-container">
+  <div class="form-intro">
+    <span class="form-eyebrow">Clientes / Cadastro #{{ cliente.id }}</span>
+    <h2>Editar cliente</h2>
+    <p>Atualize os dados de contato e identificação deste cliente.</p>
+  </div>
+
+  {% if error %}
+  <div class="msg-erro">{{ error }}</div>
+  {% endif %}
+
+  <form method="POST" action="/clientes/{{ cliente.id }}/editar" id="clienteForm" novalidate>
+    <div class="form-group">
+      <label for="nome" class="required">Nome</label>
+      <input
+        type="text"
+        id="nome"
+        name="nome"
+        required
+        minlength="3"
+        value="{{ cliente.nome }}"
+        placeholder="Nome completo do cliente"
+      >
+      <span class="error-message" id="nome-error">O nome deve ter pelo menos 3 caracteres</span>
+    </div>
+
+    <div class="form-group">
+      <label for="cnpj_cpf">CNPJ/CPF</label>
+      <input
+        type="text"
+        id="cnpj_cpf"
+        name="cnpj_cpf"
+        value="{{ cliente.cnpj_cpf }}"
+        placeholder="00.000.000/0000-00 ou 000.000.000-00"
+      >
+      <span class="help-text">Formato opcional: 00.000.000/0000-00 ou 000.000.000-00</span>
+      <span class="error-message" id="cnpj_cpf-error">CNPJ/CPF inválido</span>
+    </div>
+
+    <div class="form-group">
+      <label for="email" class="required">E-mail</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        value="{{ cliente.email }}"
+        placeholder="cliente@exemplo.com"
+      >
+      <span class="error-message" id="email-error">E-mail inválido</span>
+    </div>
+
+    <button type="submit" class="btn btn-primary" id="submitBtn">
+      <span>Atualizar Cliente</span>
+    </button>
+
+    <a href="/clientes" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById('clienteForm');
+  const submitBtn = document.getElementById('submitBtn');
+
+  // Validação de e-mail
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  // Validação básica de CNPJ/CPF (apenas formato)
+  function isValidCNPJCPF(value) {
+    if (!value) return true; // Opcional
+    const cleaned = value.replace(/\D/g, '');
+    return cleaned.length === 11 || cleaned.length === 14;
+  }
+
+  // Validação em tempo real
+  document.getElementById('email').addEventListener('input', function() {
+    const errorSpan = document.getElementById('email-error');
+    if (this.value && !isValidEmail(this.value)) {
+      this.classList.add('error');
+      errorSpan.classList.add('visible');
+    } else {
+      this.classList.remove('error');
+      this.classList.add('success');
+      errorSpan.classList.remove('visible');
+    }
+  });
+
+  document.getElementById('cnpj_cpf').addEventListener('input', function() {
+    const errorSpan = document.getElementById('cnpj_cpf-error');
+    if (this.value && !isValidCNPJCPF(this.value)) {
+      this.classList.add('error');
+      errorSpan.classList.add('visible');
+    } else {
+      this.classList.remove('error');
+      this.classList.add('success');
+      errorSpan.classList.remove('visible');
+    }
+  });
+
+  document.getElementById('nome').addEventListener('input', function() {
+    const errorSpan = document.getElementById('nome-error');
+    if (this.value && this.value.length < 3) {
+      this.classList.add('error');
+      errorSpan.classList.add('visible');
+    } else {
+      this.classList.remove('error');
+      this.classList.add('success');
+      errorSpan.classList.remove('visible');
+    }
+  });
+
+  // Loading state ao submeter
+  form.addEventListener('submit', function(e) {
+    // Validação final
+    let valid = true;
+
+    if (!isValidEmail(document.getElementById('email').value)) {
+      document.getElementById('email').classList.add('error');
+      document.getElementById('email-error').classList.add('visible');
+      valid = false;
+    }
+
+    if (document.getElementById('nome').value.length < 3) {
+      document.getElementById('nome').classList.add('error');
+      document.getElementById('nome-error').classList.add('visible');
+      valid = false;
+    }
+
+    if (!valid) {
+      e.preventDefault();
+      showToast('Por favor, corrija os erros antes de enviar', 'error');
+      return;
+    }
+
+    // Loading state
+    submitBtn.classList.add('loading');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner"></span><span>Atualizando...</span>';
+  });
+</script>
+{% endblock %}

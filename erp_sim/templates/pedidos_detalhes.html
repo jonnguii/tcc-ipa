@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <div class="page-header detail-page-header">
+    <div>
+      <span class="page-eyebrow">Pedidos / Consulta</span>
+      <h2>Pedido <span class="detail-id">#{{ pedido.id }}</span></h2>
+      <p class="page-description">Resumo da entrega, cliente e itens deste pedido.</p>
+    </div>
+    <a href="/pedidos" class="btn btn-secondary">Voltar aos pedidos</a>
+  </div>
+
+  <div class="form-container details-card">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Cliente</label>
+        <p><strong>{{ pedido.erp_clientes.nome }}</strong></p>
+        <p class="detail-secondary">{{ pedido.erp_clientes.cnpj_cpf }}</p>
+      </div>
+
+      <div class="form-group">
+        <label>Data de Entrega</label>
+        <p><strong>{{ pedido.data_entrega }}</strong></p>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Referência Externa</label>
+        <p><code>{{ pedido.ref_externa }}</code></p>
+      </div>
+
+      <div class="form-group">
+        <label>Total do Pedido</label>
+        <p class="detail-total">
+          {{ pedido.total|float(0)|round(2) }}
+        </p>
+      </div>
+    </div>
+
+    {% if pedido.observacoes %}
+    <div class="form-group">
+      <label>Observações</label>
+      <p>{{ pedido.observacoes }}</p>
+    </div>
+    {% endif %}
+
+    <div class="form-group">
+      <label>Data de Criação</label>
+      <p class="detail-secondary">{{ pedido.criado_em }}</p>
+    </div>
+  </div>
+
+  <div class="section-heading detail-items-heading">
+    <h3>Itens do pedido</h3>
+    <p>{{ pedido.itens|length }} item{% if pedido.itens|length != 1 %}s{% endif %} nesta operação</p>
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Descrição</th>
+          <th>Unidade</th>
+          <th>Quantidade</th>
+          <th>Preço Unit.</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in pedido.itens %}
+        <tr>
+          <td><code>{{ item.erp_produtos.codigo }}</code></td>
+          <td>{{ item.erp_produtos.descricao }}</td>
+          <td>{{ item.erp_produtos.unidade }}</td>
+          <td>{{ item.quantidade }}</td>
+          <td>{{ item.preco_unit|float(0)|round(2) }}</td>
+          <td class="detail-line-total">
+            {{ (item.quantidade * item.preco_unit)|float(0)|round(2) }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5" class="detail-table-total-label">Total</td>
+          <td class="detail-table-total">
+            {{ pedido.total|float(0)|round(2) }}
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  {% if pedido.itens|length == 0 %}
+  <p style="text-align: center; color: var(--gray-500); padding: 2rem;">
+    Este pedido não possui itens.
+  </p>
+  {% endif %}
+</div>
+{% endblock %}
