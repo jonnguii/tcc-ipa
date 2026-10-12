@@ -211,6 +211,14 @@
               </tr>
               {% endfor %}
             </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="3" style="text-align: right; padding-right: 12px; font-weight: 600;">Total Previsto do Pedido:</th>
+                <th style="text-align: left; font-size: 14px; color: var(--primary); font-family: var(--font-mono); font-weight: 700;">
+                  <span id="valor-total-pedido">R$ 0,00</span>
+                </th>
+              </tr>
+            </tfoot>
           </table>
         </fieldset>
 
@@ -233,12 +241,31 @@
 </div>
 
 <script>
+  function calcularTotalPedido() {
+    var total = 0;
+    var rows = document.querySelectorAll('.items-table tbody tr');
+    rows.forEach(function(row, idx) {
+      var inputQtd = row.querySelector('input[name="item_qtd_' + idx + '"]');
+      var inputPreco = row.querySelector('input[name="item_preco_' + idx + '"]');
+      if (inputQtd && inputPreco) {
+        var qtd = parseFloat(inputQtd.value) || 0;
+        var preco = parseFloat(inputPreco.value) || 0;
+        total += qtd * preco;
+      }
+    });
+    var el = document.getElementById('valor-total-pedido');
+    if (el) {
+      el.textContent = 'R$ ' + total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+  }
+
   function atualizarPrecoCatalogo(selectEl, idx) {
     var opt = selectEl.options[selectEl.selectedIndex];
     var preco = opt.getAttribute('data-preco');
     var inputPreco = document.getElementById('item_preco_' + idx);
     if (inputPreco && preco) {
       inputPreco.value = parseFloat(preco).toFixed(2);
+      calcularTotalPedido();
     }
   }
 
@@ -247,6 +274,12 @@
     var display = document.getElementById('timer-display');
     var inputTempo = document.getElementById('tempo_revisao_s');
     var form = document.getElementById('form-revisao');
+
+    // Inicializa o cálculo do total do pedido
+    calcularTotalPedido();
+    document.querySelectorAll('.items-table input').forEach(function(inp) {
+      inp.addEventListener('input', calcularTotalPedido);
+    });
 
     function formatarTempo(segundos) {
       var min = Math.floor(segundos / 60);
