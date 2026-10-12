@@ -175,4 +175,32 @@ Por isso criamos o **Split View** (`/revisoes/{id}`):
 - **Aprovar e Despachar ao Robô:** O operador confere, ajusta se necessário e clica em Aprovar. O robô da esteira acorda na hora e cadastra o pedido no ERP.
 - **Rejeitar Pedido:** Se for um e-mail falso ou tentativa de golpe, o operador rejeita com justificativa, ficando tudo arquivado para segurança e auditoria.
 
+## 12. O Dublê vs. O Robô de Verdade (Fase 10)
+
+### O Dublê (Stub) vs. O Ator Principal (Playwright)
+Imagine a produção de um filme com cenas complexas:
+- Nos ensaios técnicos de iluminação e posicionamento de câmera, a equipe usa um **boneco de teste ou dublê** para não cansar o ator principal. No nosso sistema, esse é o **`StubExecutor`**: ele responde em 50 milissegundos, simula a gravação e permite testar todo o fluxo do sistema sem gastar memória nem abrir navegadores.
+- No dia da gravação oficial, entra em ação o **ator principal**. No nosso sistema, esse é o **Robô Real (`rpa/bot.py`)**, operado pelo **Playwright Chromium**:
+  1. Ele abre uma janela real de navegador (em modo *headless* silencioso ou visível);
+  2. Acessa a tela de pedidos do ERP (`http://localhost:8000/pedidos/novo`);
+  3. Preenche a Razão Social, a Data de Entrega e a Referência Externa;
+  4. Adiciona cada linha de produto e sua respectiva quantidade;
+  5. Clica no botão Salvar e aguarda a mensagem verde de confirmação;
+  6. Tira uma foto da tela inteira (*screenshot*) e salva na pasta `rpa/evidencias/` como comprovante irrefutável de auditoria.
+
+### O que é Idempotência Zero (Proteção Anti-Duplicidade)?
+Se a energia cair no meio do processamento ou o operador clicar no botão duas vezes sem querer, uma empresa comum corre o risco de faturar duas vezes o mesmo pedido e mandar dois caminhões de entrega por engano.
+
+Para impedir isso, o robô possui **Idempotência Garantida**:
+- Antes de encostar em qualquer botão de cadastro, o robô abre a consulta do ERP (`/pedidos?ref=DOC-XXXX`).
+- Se o pedido já existir no banco, ele aborta a criação imediatamente, anota o status como `duplicado`, reaproveita o número oficial já existente e não gera nenhuma linha a mais no banco.
+
+### Como rodar o lote com o robô de verdade?
+No terminal, basta trocar `--executor stub` por `--executor rpa`:
+```bash
+uv run python -m src.ipa.run --limite 5 --executor rpa
+```
+Se rodar o mesmo comando pela segunda vez consecutiva, você verá todos os documentos mudando para `duplicado` em frações de segundo, comprovando a proteção patrimonial da empresa.
+
+
 

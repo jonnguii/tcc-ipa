@@ -684,5 +684,41 @@
         "quantidade": 11.0
       }
     ]
+  },
+  "b49ebc186b6fd23aeed500053dc266eb": {
+    "ref_id": "TESTE-ORQ-RPA-1791784347714",
+    "cliente": {
+      "id": null,
+      "novo": true,
+      "nome": "Metal\u00fargica Silva & Filhos Ltda",
+      "cnpj_cpf": "12.345.678/0001-95",
+      "email": null
+    },
+    "data_entrega": "2026-11-20",
+    "observacoes": "Pedido de compra recebido via mensagem",
+    "itens": [
+      {
+        "codigo": "P-001",
+        "quantidade": 5.0
+      }
+    ]
+  },
+  "0266282aaabc3d058b92819d72512528": {
+    "ref_id": "TESTE-ORQ-RPA-1791784367993",
+    "cliente": {
+      "id": null,
+      "novo": true,
+      "nome": "Metal\u00fargica Silva & Filhos Ltda",
+      "cnpj_cpf": "12.345.678/0001-95",
+      "email": null
+    },
+    "data_entrega": "2026-11-20",
+    "observacoes": "",
+    "itens": [
+      {
+        "codigo": "P-001",
+        "quantidade": 5.0
+      }
+    ]
   }
 }

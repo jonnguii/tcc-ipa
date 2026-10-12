@@ -251,7 +251,26 @@ class OrquestradorIPA:
         else:
             # Usa o original gravado no payload
             dados_originais = pendencia.get("payload", {}).get("pedido_original", {})
-            pedido_final = PedidoExtraido.model_validate(dados_originais)
+        # Garantir resolução cadastral do cliente antes do envio ao robô
+        if pedido_final.cliente and not pedido_final.cliente.id:
+            import re as _re
+            from src.ipa.rules.resolver import resolver_cliente
+
+            res_cli = resolver_cliente(pedido_final.cliente, clientes_cadastrados=self.clientes_cadastrados)
+            if res_cli.get("cliente_id"):
+                pedido_final.cliente.id = res_cli["cliente_id"]
+            elif res_cli.get("status") == "CLIENTE_NOVO_VALIDO":
+                pedido_final.cliente.novo = True
+                pedido_final.cliente.email = (
+                    res_cli.get("cliente", {}).get("email")
+                    or pedido_final.cliente.email
+                    or "contato@cliente.com"
+                )
+            else:
+                pedido_final.cliente.novo = True
+                if not pedido_final.cliente.email:
+                    slug = _re.sub(r"[^a-zA-Z0-9]", "", (pedido_final.cliente.nome or "cliente").lower()) or "cliente"
+                    pedido_final.cliente.email = f"contato@{slug}.com.br"
 
         estado_atual = EstadoWorkflow.EXECUTOR_RPA
         resultado_executor, ev_exec = handler_execucao_pedido(pedido_final, self.executor)

@@ -35,5 +35,10 @@
   - **UI Split View**: Tela no ERP dividida em duas colunas (documento original à esquerda vs formulário interativo de correção à direita com integração ao catálogo de produtos).
   - **Cronômetro Operacional**: Medição automática do tempo de homologação humana (`tempo_revisao_s`) em milissegundos para viabilizar as comparações estatísticas do TCC.
   - **Higienização Visual**: Remoção de emojis e artefatos decorativos para manter aderência estrita aos padrões corporativos e de acessibilidade WCAG.
-  - **Qualidade**: 33 testes automatizados passando no `pytest` com 100% de sucesso e zero regressão.
+  - **Fase 10 concluída (Integração com o Robô Real Playwright - Trilha B)**:
+  - **Ponte Orquestrador <-> RPA**: Conexão da esteira à execução real do navegador Chromium via `RpaExecutor` e `rpa/bot.py`.
+  - **Prova de Idempotência Zero**: Validação em lote demonstrando que reexecuções de documentos previamente cadastrados retornam status `duplicado` e não duplicam linhas no ERP, reduzindo o tempo de processamento pela metade.
+  - **Despacho pela Revisão Humana**: Garantida a resolução e cadastramento de clientes ao aprovar pendências na tela `/revisoes/{id}`, despachando o robô real de forma transparente.
+  - **Evidências Visuais de Auditoria**: Geração automatizada de prints de tela cheia em `rpa/evidencias/` para comprovação de cada transação realizada.
+  - **Qualidade e Testes de Integração**: Suíte `tests/test_integracao_rpa.py` adicionada, totalizando 36 testes automatizados verdes com 100% de aprovação no `pytest`.
 
