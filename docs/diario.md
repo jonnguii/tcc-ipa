@@ -24,3 +24,16 @@
   - **Validação Fiscal**: Implementado o cálculo oficial da Receita Federal para os dois dígitos verificadores de CPF e CNPJ.
   - **Triagem em 3 Vias**: O roteador classifica os pedidos em **AUTOMATICO** (despacho direto ao RPA), **REVISAO** (fila para operador humano) e **REJEICAO** (bloqueio de fraudes e prompt injection).
 - **Qualidade e Testes**: Criada a suíte `tests/test_regras.py` rodando com 22 testes unitários no pytest com 100% de aprovação e zero regressão no robô Playwright.
+
+## 2026-10-12
+- **Fase 8 concluída (BPMN 2.0 e Orquestrador de Estados)**:
+  - **Decisão (Arquitetura BPMN)**: Modelagem formal do processo TO-BE em XML BPMN 2.0 compatível com visualizadores padrão da indústria (`bpmn.io`).
+  - **Máquina de Estados**: Orquestrador determinístico que impede avanço de etapas sem validação prévia. Instrumentação de métricas com `time.perf_counter` em cada estágio.
+  - **Execução em Lote**: Criado `src/ipa/run.py` com suporte ao StubExecutor para testes velozes sem sobrecarga de navegador.
+- **Fase 9 concluída (Interface de Revisão Humana - Human-in-the-Loop)**:
+  - **Fila de Pendências**: Conexão com a tabela `ipa_revisoes` no Supabase com resiliência a fallback local (`src/ipa/review/fila.py`).
+  - **UI Split View**: Tela no ERP dividida em duas colunas (documento original à esquerda vs formulário interativo de correção à direita com integração ao catálogo de produtos).
+  - **Cronômetro Operacional**: Medição automática do tempo de homologação humana (`tempo_revisao_s`) em milissegundos para viabilizar as comparações estatísticas do TCC.
+  - **Higienização Visual**: Remoção de emojis e artefatos decorativos para manter aderência estrita aos padrões corporativos e de acessibilidade WCAG.
+  - **Qualidade**: 33 testes automatizados passando no `pytest` com 100% de sucesso e zero regressão.
+

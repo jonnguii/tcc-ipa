@@ -52,7 +52,13 @@ class OrquestradorIPA:
         executor_customizado: ExecutorPedido | None = None,
         catalogo_produtos: list[dict[str, Any]] | None = None,
         clientes_cadastrados: list[dict[str, Any]] | None = None,
+        executor: ExecutorPedido | str | None = None,
     ) -> None:
+        if isinstance(executor, str):
+            tipo_executor = executor
+        elif executor is not None:
+            executor_customizado = executor
+
         self.tipo_executor = tipo_executor
         self.executor = executor_customizado or obter_executor(tipo=tipo_executor)
         self.catalogo_produtos = catalogo_produtos
@@ -176,3 +182,105 @@ class OrquestradorIPA:
             res = self.processar_documento(caminho)
             resultados.append(res)
         return resultados
+
+    def retomar_apos_revisao(
+        self,
+        revisao_id: int,
+        acao: str,  # 'aprovar' | 'rejeitar'
+        pedido_corrigido: PedidoExtraido | dict[str, Any] | None = None,
+        tempo_revisao_s: float | None = None,
+    ) -> ResultadoExecucaoWorkflow:
+        """Retoma o ciclo de vida de um pedido após deliberação de um operador humano (Fase 9).
+        
+        Espelha o fluxo BPMN:
+        - Se aprovado: REVISAO_HUMANA -> EXECUTOR_RPA -> CONCLUIDO
+        - Se rejeitado: REVISAO_HUMANA -> REJEITADO
+        """
+        import uuid
+        from src.ipa.metrics.eventos import CronometroEtapa
+        from src.ipa.review.fila import obter_pendencia, resolver_pendencia
+
+        inicio_total = time.perf_counter()
+        run_id = f"review-resume-{uuid.uuid4().hex[:8]}"
+        eventos: list[EventoEtapa] = []
+
+        pendencia = obter_pendencia(revisao_id)
+        if not pendencia:
+            raise ValueError(f"Pendência de revisão {revisao_id} não encontrada.")
+
+        doc_caminho = pendencia.get("payload", {}).get("documento", "")
+        doc_id = Path(doc_caminho).name if doc_caminho else f"revisao_{revisao_id}"
+        estado_atual = EstadoWorkflow.REVISAO_HUMANA
+
+        if acao.lower() == "rejeitar":
+            if not validar_transicao(estado_atual, EstadoWorkflow.REJEITADO):
+                raise RuntimeError(f"Transição inválida de {estado_atual} para REJEITADO")
+
+            resolver_pendencia(
+                revisao_id=revisao_id,
+                status="rejeitada",
+                correcao=None,
+                tempo_revisao_s=tempo_revisao_s,
+            )
+            estado_atual = EstadoWorkflow.REJEITADO
+            tempo_total = round(time.perf_counter() - inicio_total, 4)
+
+            return ResultadoExecucaoWorkflow(
+                run_id=run_id,
+                doc_id=doc_id,
+                caminho_documento=doc_caminho,
+                estado_final=estado_atual,
+                decisao_roteamento="REVISAO_REJEITADA",
+                resultado_executor=None,
+                pendencia_revisao=pendencia,
+                pedido_processado=None,
+                eventos=eventos,
+                tempo_total_s=tempo_total,
+                erro=None,
+            )
+
+        # Se aprovado / corrigido:
+        if not validar_transicao(estado_atual, EstadoWorkflow.EXECUTOR_RPA):
+            raise RuntimeError(f"Transição inválida de {estado_atual} para EXECUTOR_RPA")
+
+        # Reconstruir o PedidoExtraido
+        if isinstance(pedido_corrigido, PedidoExtraido):
+            pedido_final = pedido_corrigido
+        elif isinstance(pedido_corrigido, dict):
+            pedido_final = PedidoExtraido.model_validate(pedido_corrigido)
+        else:
+            # Usa o original gravado no payload
+            dados_originais = pendencia.get("payload", {}).get("pedido_original", {})
+            pedido_final = PedidoExtraido.model_validate(dados_originais)
+
+        estado_atual = EstadoWorkflow.EXECUTOR_RPA
+        resultado_executor, ev_exec = handler_execucao_pedido(pedido_final, self.executor)
+        eventos.append(ev_exec)
+
+        resolver_pendencia(
+            revisao_id=revisao_id,
+            status="resolvida",
+            correcao=pedido_final.model_dump(),
+            tempo_revisao_s=tempo_revisao_s,
+        )
+
+        estado_atual = (
+            EstadoWorkflow.CONCLUIDO
+            if resultado_executor.get("status") in ("sucesso", "duplicado")
+            else EstadoWorkflow.FALHA
+        )
+
+        tempo_total = round(time.perf_counter() - inicio_total, 4)
+        return ResultadoExecucaoWorkflow(
+            run_id=run_id,
+            doc_id=doc_id,
+            caminho_documento=doc_caminho,
+            estado_final=estado_atual,
+            decisao_roteamento="REVISAO_APROVADA",
+            resultado_executor=resultado_executor,
+            pendencia_revisao=pendencia,
+            pedido_processado=pedido_final,
+            eventos=eventos,
+            tempo_total_s=tempo_total,
+            erro=None,
+        )

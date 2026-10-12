@@ -82,8 +82,25 @@ def handler_revisao_pendencia(
     caminho_doc: str | Path | None = None,
 ) -> tuple[dict[str, Any], EventoEtapa]:
     """Estágio 4: Registro de pendência na fila de revisão humana (Fase 9)."""
+    from src.ipa.review.fila import inserir_pendencia
+
     with CronometroEtapa("REVISAO_HUMANA") as crono:
+        payload_dados = {
+            "ref_id": pedido.ref_id,
+            "pedido_original": pedido.model_dump(),
+            "itens_analisados": [it.model_dump() for it in resultado_roteamento.itens_roteados],
+            "documento": str(caminho_doc) if caminho_doc else None,
+        }
+        
+        registro = inserir_pendencia(
+            payload=payload_dados,
+            motivos=resultado_roteamento.motivos,
+            tipo="REVISAO",
+            caminho_doc=str(caminho_doc) if caminho_doc else None,
+        )
+
         pendencia = {
+            "revisao_id": registro.get("id"),
             "ref_id": pedido.ref_id,
             "status": "pendente",
             "motivos": resultado_roteamento.motivos,
@@ -91,6 +108,7 @@ def handler_revisao_pendencia(
             "pedido_original": pedido.model_dump(),
             "itens_analisados": [it.model_dump() for it in resultado_roteamento.itens_roteados],
         }
+        crono.detalhes["revisao_id"] = registro.get("id")
         crono.detalhes["ref_id"] = pedido.ref_id
         crono.detalhes["total_motivos"] = len(resultado_roteamento.motivos)
 

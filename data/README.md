@@ -152,3 +152,27 @@ uv run python -m src.ipa.run --limite 5 --executor stub
 ```
 Isso mostrará na tela uma tabela com cada documento, a rota que o sistema escolheu e o tempo que ele levou em frações de segundo.
 
+## 11. O que é a Revisão Humana e o Split View? (Fase 9)
+
+### A Cabine de Inspeção (Human-in-the-Loop)
+Em uma fábrica de automóveis, a maior parte da montagem é feita por braços robóticos velozes. Mas se um sensor nota que um parafuso ficou torto ou que a cor parece diferente, a esteira desvia aquele chassi para uma **cabine de inspeção manual**, onde um especialista humano olha de perto com calma.
+
+O conceito de **Human-in-the-Loop (Humano no Circuito)** é exatamente isso:
+- A Inteligência Artificial faz 90% do trabalho pesado e repetitivo em segundos.
+- Mas quando o cliente mandou um texto confuso, uma data no passado ou um nome de produto muito esquisito, a IA **não tenta adivinhar** e nem joga lixo no banco de dados.
+- O pedido vai para a **Fila de Revisão Humana** (`/revisoes`).
+
+### O que é a Tela de Split View (Visão Lado a Lado)?
+Revisar pedido abrindo dez abas diferentes ou alternando janelas no Windows cansa a visão e causa erros humanos. 
+
+Por isso criamos o **Split View** (`/revisoes/{id}`):
+1. **Lado Esquerdo:** O papel ou texto original do fornecedor, do jeitinho que ele mandou.
+2. **Lado Direito:** O que a IA entendeu, com os campos já organizados e botões fáceis.
+3. **Alertas em Amarelo:** Se o produto teve uma pontuação duvidosa (score menor que 85%), o campo ganha um crachá de aviso para o operador bater o olho imediatamente naquele ponto crítico.
+4. **O Cronômetro Invisível:** Enquanto o operador humano analisa e corrige os campos, um cronômetro mede com precisão quantos segundos foram gastos. Isso serve para provar cientificamente no TCC quanto tempo a empresa economizou com a automação.
+
+### O que o operador faz?
+- **Aprovar e Despachar ao Robô:** O operador confere, ajusta se necessário e clica em Aprovar. O robô da esteira acorda na hora e cadastra o pedido no ERP.
+- **Rejeitar Pedido:** Se for um e-mail falso ou tentativa de golpe, o operador rejeita com justificativa, ficando tudo arquivado para segurança e auditoria.
+
+
