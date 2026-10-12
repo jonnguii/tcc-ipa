@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-container">
+  <div class="form-intro">
+    <span class="form-eyebrow">Produtos / Cadastro #{{ produto.id }}</span>
+    <h2>Editar produto</h2>
+    <p>Atualize a descrição, unidade ou preço do item.</p>
+  </div>
+
+  {% if error %}
+  <div class="msg-erro">{{ error }}</div>
+  {% endif %}
+
+  <form method="POST" action="/produtos/{{ produto.id }}/editar" id="produtoForm" novalidate>
+    <div class="form-group">
+      <label for="codigo" class="required">Código</label>
+      <input
+        type="text"
+        id="codigo"
+        name="codigo"
+        required
+        value="{{ produto.codigo }}"
+        pattern="[A-Za-z0-9\-]+"
+      >
+      <span class="help-text">Código único do produto (ex: P-001)</span>
+      <span class="error-message" id="codigo-error">Código é obrigatório</span>
+    </div>
+
+    <div class="form-group">
+      <label for="descricao" class="required">Descrição</label>
+      <input
+        type="text"
+        id="descricao"
+        name="descricao"
+        required
+        minlength="3"
+        value="{{ produto.descricao }}"
+        placeholder="Descrição do produto"
+      >
+      <span class="error-message" id="descricao-error">Descrição deve ter pelo menos 3 caracteres</span>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="unidade" class="required">Unidade</label>
+        <select id="unidade" name="unidade" required>
+          <option value="">Selecione...</option>
+          <option value="UN" {% if produto.unidade == 'UN' %}selected{% endif %}>UN - Unidade</option>
+          <option value="CX" {% if produto.unidade == 'CX' %}selected{% endif %}>CX - Caixa</option>
+          <option value="PCT" {% if produto.unidade == 'PCT' %}selected{% endif %}>PCT - Pacote</option>
+          <option value="KG" {% if produto.unidade == 'KG' %}selected{% endif %}>KG - Quilograma</option>
+          <option value="L" {% if produto.unidade == 'L' %}selected{% endif %}>L - Litro</option>
+          <option value="M" {% if produto.unidade == 'M' %}selected{% endif %}>M - Metro</option>
+          <option value="M2" {% if produto.unidade == 'M2' %}selected{% endif %}>M² - Metro Quadrado</option>
+        </select>
+        <span class="error-message" id="unidade-error">Selecione uma unidade</span>
+      </div>
+
+      <div class="form-group">
+        <label for="preco" class="required">Preço</label>
+        <input
+          type="number"
+          id="preco"
+          name="preco"
+          required
+          min="0"
+          step="0.01"
+          value="{{ produto.preco }}"
+          placeholder="0.00"
+        >
+        <span class="error-message" id="preco-error">Preço deve ser maior ou igual a 0</span>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" id="submitBtn">
+      <span>Atualizar Produto</span>
+    </button>
+
+    <a href="/produtos" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById('produtoForm');
+  const submitBtn = document.getElementById('submitBtn');
+
+  // Validação em tempo real
+  document.getElementById('codigo').addEventListener('input', function() {
+    const errorSpan = document.getElementById('codigo-error');
+    if (!this.value) {
+      this.classList.add('error');
+      errorSpan.classList.add('visible');
+    } else {
+      this.classList.remove('error');
+      this.classList.add('success');
+      errorSpan.classList.remove('visible');
+    }
+  });
+
+  document.getElementById('descricao').addEventListener('input', function() {
+    const errorSpan = document.getElementById('descricao-error');
+    if (this.value && this.value.length < 3) {
+      this.classList.add('error');
+      errorSpan.classList.add('visible');
+    } else {
+      this.classList.remove('error');
+      this.classList.add('success');
+      errorSpan.classList.remove('visible');
+    }
+  });
+
+  document.getElementById('unidade').addEventListener('change', function() {
+    const errorSpan = document.getElementById('unidade-error');
+    if (!this.value) {
+      this.classList.add('error');
+      errorSpan.classList.add('visible');
+    } else {
+      this.classList.remove('error');
+      this.classList.add('success');
+      errorSpan.classList.remove('visible');
+    }
+  });
+
+  document.getElementById('preco').addEventListener('input', function() {
+    const errorSpan = document.getElementById('preco-error');
+    if (this.value === '' || parseFloat(this.value) < 0) {
+      this.classList.add('error');
+      errorSpan.classList.add('visible');
+    } else {
+      this.classList.remove('error');
+      this.classList.add('success');
+      errorSpan.classList.remove('visible');
+    }
+  });
+
+  // Loading state ao submeter
+  form.addEventListener('submit', function(e) {
+    let valid = true;
+
+    if (!document.getElementById('codigo').value) {
+      document.getElementById('codigo').classList.add('error');
+      document.getElementById('codigo-error').classList.add('visible');
+      valid = false;
+    }
+
+    if (document.getElementById('descricao').value.length < 3) {
+      document.getElementById('descricao').classList.add('error');
+      document.getElementById('descricao-error').classList.add('visible');
+      valid = false;
+    }
+
+    if (!document.getElementById('unidade').value) {
+      document.getElementById('unidade').classList.add('error');
+      document.getElementById('unidade-error').classList.add('visible');
+      valid = false;
+    }
+
+    if (!document.getElementById('preco').value || parseFloat(document.getElementById('preco').value) < 0) {
+      document.getElementById('preco').classList.add('error');
+      document.getElementById('preco-error').classList.add('visible');
+      valid = false;
+    }
+
+    if (!valid) {
+      e.preventDefault();
+      showToast('Por favor, corrija os erros antes de enviar', 'error');
+      return;
+    }
+
+    submitBtn.classList.add('loading');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner"></span><span>Atualizando...</span>';
+  });
+</script>
+{% endblock %}

@@ -1,13 +1,145 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Novo Cliente</h2>
-<form method="POST" action="/clientes/novo">
-  <label>Nome:</label><br>
-  <input type="text" name="nome" data-testid="cli-nome" required><br><br>
-  <label>CNPJ/CPF:</label><br>
-  <input type="text" name="cnpj_cpf" data-testid="cli-cnpj"><br><br>
-  <label>Email:</label><br>
-  <input type="email" name="email" data-testid="cli-email"><br><br>
-  <button type="submit" class="btn" data-testid="cli-salvar">Salvar</button>
-</form>
+<div class="form-container">
+  <div class="form-intro">
+    <span class="form-eyebrow">Clientes / Novo cadastro</span>
+    <h2>Novo cliente</h2>
+    <p>Preencha os dados abaixo para adicionar um cliente ao sistema.</p>
+  </div>
+
+  {% if error %}
+  <div class="msg-erro" data-testid="msg-erro">{{ error }}</div>
+  {% endif %}
+
+  <form method="POST" action="/clientes/novo" id="clienteForm" novalidate>
+    <div class="form-group">
+      <label for="nome" class="required">Nome</label>
+      <input
+        type="text"
+        id="nome"
+        name="nome"
+        data-testid="cli-nome"
+        required
+        minlength="3"
+        placeholder="Nome completo do cliente"
+      >
+      <span class="error-message" id="nome-error">O nome deve ter pelo menos 3 caracteres</span>
+    </div>
+
+    <div class="form-group">
+      <label for="cnpj_cpf">CNPJ/CPF</label>
+      <input
+        type="text"
+        id="cnpj_cpf"
+        name="cnpj_cpf"
+        data-testid="cli-cnpj"
+        placeholder="00.000.000/0000-00 ou 000.000.000-00"
+      >
+      <span class="help-text">Formato opcional: 00.000.000/0000-00 ou 000.000.000-00</span>
+      <span class="error-message" id="cnpj_cpf-error">CNPJ/CPF inválido</span>
+    </div>
+
+    <div class="form-group">
+      <label for="email" class="required">E-mail</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        data-testid="cli-email"
+        required
+        placeholder="cliente@exemplo.com"
+      >
+      <span class="error-message" id="email-error">E-mail inválido</span>
+    </div>
+
+    <button type="submit" class="btn btn-primary" data-testid="cli-salvar" id="submitBtn">
+      <span>Salvar</span>
+    </button>
+
+    <a href="/clientes" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById('clienteForm');
+  const submitBtn = document.getElementById('submitBtn');
+
+  // Validação de e-mail
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  // Validação básica de CNPJ/CPF (apenas formato)
+  function isValidCNPJCPF(value) {
+    if (!value) return true; // Opcional
+    const cleaned = value.replace(/\D/g, '');
+    return cleaned.length === 11 || cleaned.length === 14;
+  }
+
+  // Validação em tempo real
+  document.getElementById('email').addEventListener('input', function() {
+    const errorSpan = document.getElementById('email-error');
+    if (this.value && !isValidEmail(this.value)) {
+      this.classList.add('error');
+      errorSpan.classList.add('visible');
+    } else {
+      this.classList.remove('error');
+      this.classList.add('success');
+      errorSpan.classList.remove('visible');
+    }
+  });
+
+  document.getElementById('cnpj_cpf').addEventListener('input', function() {
+    const errorSpan = document.getElementById('cnpj_cpf-error');
+    if (this.value && !isValidCNPJCPF(this.value)) {
+      this.classList.add('error');
+      errorSpan.classList.add('visible');
+    } else {
+      this.classList.remove('error');
+      this.classList.add('success');
+      errorSpan.classList.remove('visible');
+    }
+  });
+
+  document.getElementById('nome').addEventListener('input', function() {
+    const errorSpan = document.getElementById('nome-error');
+    if (this.value && this.value.length < 3) {
+      this.classList.add('error');
+      errorSpan.classList.add('visible');
+    } else {
+      this.classList.remove('error');
+      this.classList.add('success');
+      errorSpan.classList.remove('visible');
+    }
+  });
+
+  // Loading state ao submeter
+  form.addEventListener('submit', function(e) {
+    // Validação final
+    let valid = true;
+
+    if (!isValidEmail(document.getElementById('email').value)) {
+      document.getElementById('email').classList.add('error');
+      document.getElementById('email-error').classList.add('visible');
+      valid = false;
+    }
+
+    if (document.getElementById('nome').value.length < 3) {
+      document.getElementById('nome').classList.add('error');
+      document.getElementById('nome-error').classList.add('visible');
+      valid = false;
+    }
+
+    if (!valid) {
+      e.preventDefault();
+      showToast('Por favor, corrija os erros antes de enviar', 'error');
+      return;
+    }
+
+    // Loading state
+    submitBtn.classList.add('loading');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner"></span><span>Salvando...</span>';
+  });
+</script>
 {% endblock %}

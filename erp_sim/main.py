@@ -7,7 +7,14 @@ from erp_sim import repo
 from src.ipa.config import settings
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="erp_sim/static"), name="static")
 templates = Jinja2Templates(directory="erp_sim/templates")
+
+
+@app.get("/", include_in_schema=False)
+def inicio():
+    return RedirectResponse(url="/pedidos", status_code=303)
+
 
 @app.middleware("http")
 async def sabotage_middleware(request: Request, call_next):
@@ -19,6 +26,41 @@ async def sabotage_middleware(request: Request, call_next):
 @app.get("/produtos", response_class=HTMLResponse)
 def listar_produtos(request: Request):
     return templates.TemplateResponse(request=request, name="produtos.html", context={"produtos": repo.get_produtos()})
+
+@app.get("/produtos/novo", response_class=HTMLResponse)
+def form_produto_novo(request: Request):
+    return templates.TemplateResponse(request=request, name="produtos_novo.html")
+
+@app.post("/produtos/novo")
+def criar_produto(codigo: str = Form(...), descricao: str = Form(...), unidade: str = Form(...), preco: str = Form(...)):
+    try:
+        preco_float = float(preco)
+        repo.criar_produto(codigo, descricao, unidade, preco_float)
+        return RedirectResponse(url="/produtos?msg=Produto+criado", status_code=303)
+    except Exception as e:
+        return templates.TemplateResponse(request=request, name="produtos_novo.html", context={"error": str(e)})
+
+@app.get("/produtos/{produto_id}/editar", response_class=HTMLResponse)
+def form_produto_editar(request: Request, produto_id: int):
+    produto = repo.get_produto_by_id(produto_id)
+    if not produto:
+        return RedirectResponse(url="/produtos?msg_erro=Produto+não+encontrado", status_code=303)
+    return templates.TemplateResponse(request=request, name="produtos_editar.html", context={"produto": produto})
+
+@app.post("/produtos/{produto_id}/editar")
+def atualizar_produto(request: Request, produto_id: int, codigo: str = Form(...), descricao: str = Form(...), unidade: str = Form(...), preco: str = Form(...)):
+    try:
+        preco_float = float(preco)
+        repo.atualizar_produto(produto_id, codigo, descricao, unidade, preco_float)
+        return RedirectResponse(url="/produtos?msg=Produto+atualizado", status_code=303)
+    except Exception as e:
+        produto = repo.get_produto_by_id(produto_id)
+        return templates.TemplateResponse(request=request, name="produtos_editar.html", context={"produto": produto, "error": str(e)})
+
+@app.post("/produtos/{produto_id}/excluir")
+def excluir_produto(produto_id: int):
+    repo.excluir_produto(produto_id)
+    return RedirectResponse(url="/produtos?msg=Produto+excluído", status_code=303)
 
 @app.get("/clientes", response_class=HTMLResponse)
 def listar_clientes(request: Request):
@@ -33,6 +75,27 @@ def criar_cliente(nome: str = Form(...), cnpj_cpf: str = Form(...), email: str =
     repo.criar_cliente(nome, cnpj_cpf, email)
     return RedirectResponse(url="/clientes?msg=Cliente+criado", status_code=303)
 
+@app.get("/clientes/{cliente_id}/editar", response_class=HTMLResponse)
+def form_cliente_editar(request: Request, cliente_id: int):
+    cliente = repo.get_cliente_by_id(cliente_id)
+    if not cliente:
+        return RedirectResponse(url="/clientes?msg_erro=Cliente+não+encontrado", status_code=303)
+    return templates.TemplateResponse(request=request, name="clientes_editar.html", context={"cliente": cliente})
+
+@app.post("/clientes/{cliente_id}/editar")
+def atualizar_cliente(request: Request, cliente_id: int, nome: str = Form(...), cnpj_cpf: str = Form(...), email: str = Form(...)):
+    try:
+        repo.atualizar_cliente(cliente_id, nome, cnpj_cpf, email)
+        return RedirectResponse(url="/clientes?msg=Cliente+atualizado", status_code=303)
+    except Exception as e:
+        cliente = repo.get_cliente_by_id(cliente_id)
+        return templates.TemplateResponse(request=request, name="clientes_editar.html", context={"cliente": cliente, "error": str(e)})
+
+@app.post("/clientes/{cliente_id}/excluir")
+def excluir_cliente(cliente_id: int):
+    repo.excluir_cliente(cliente_id)
+    return RedirectResponse(url="/clientes?msg=Cliente+excluído", status_code=303)
+
 @app.get("/pedidos", response_class=HTMLResponse)
 def listar_pedidos(request: Request, ref: str = None):
     return templates.TemplateResponse(request=request, name="pedidos.html", context={"pedidos": repo.get_pedidos(ref)})
@@ -40,6 +103,13 @@ def listar_pedidos(request: Request, ref: str = None):
 @app.get("/pedidos/novo", response_class=HTMLResponse)
 def form_pedido(request: Request):
     return templates.TemplateResponse(request=request, name="pedidos_novo.html", context={"clientes": repo.get_clientes(), "produtos": repo.get_produtos()})
+
+@app.get("/pedidos/{pedido_id}", response_class=HTMLResponse)
+def ver_pedido_detalhes(request: Request, pedido_id: int):
+    pedido = repo.get_pedido_detalhes(pedido_id)
+    if not pedido:
+        return templates.TemplateResponse(request=request, name="pedidos.html", context={"pedidos": repo.get_pedidos(), "error": "Pedido não encontrado"})
+    return templates.TemplateResponse(request=request, name="pedidos_detalhes.html", context={"pedido": pedido})
 
 @app.post("/pedidos/novo")
 async def post_pedido(request: Request):

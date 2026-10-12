@@ -1,10 +1,60 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Pedidos</h2>
-<table data-testid="tabela-pedidos">
-  <tr><th>Nº</th><th>Cliente</th><th>Data Entrega</th><th>Total</th><th>Ref Externa</th></tr>
-  {% for p in pedidos %}
-  <tr data-testid="linha-pedido-{{ p.id }}"><td>{{ p.id }}</td><td>{{ p.erp_clientes.nome }}</td><td>{{ p.data_entrega }}</td><td>{{ p.total }}</td><td>{{ p.ref_externa }}</td></tr>
-  {% endfor %}
-</table>
+<div class="page-header">
+  <div>
+    <span class="page-eyebrow">Visão geral</span>
+    <h2>Pedidos</h2>
+    <p class="page-description">Acompanhe os pedidos e consulte os detalhes de cada operação.</p>
+  </div>
+  <div class="page-actions">
+    <a href="/pedidos/novo" class="btn btn-primary"><span aria-hidden="true">＋</span> Novo pedido</a>
+  </div>
+</div>
+
+<div class="table-container">
+  <div class="table-heading">
+    <div>
+      <h3>Todos os pedidos</h3>
+      <p>Histórico de pedidos cadastrados</p>
+    </div>
+    <span class="result-count">{{ pedidos|length }} pedido{% if pedidos|length != 1 %}s{% endif %}</span>
+  </div>
+  <table data-testid="tabela-pedidos">
+    <thead>
+      <tr>
+        <th>Nº</th>
+        <th>Cliente</th>
+        <th>Data Entrega</th>
+        <th>Total</th>
+        <th>Ref Externa</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in pedidos %}
+      <tr data-testid="linha-pedido-{{ p.id }}">
+        <td><strong>#{{ p.id }}</strong></td>
+        <td>{{ p.erp_clientes.nome }}</td>
+        <td>{{ p.data_entrega }}</td>
+        <td style="font-weight: 700; color: var(--success);">
+          {{ p.total|float(0)|round(2) }}
+        </td>
+        <td><code>{{ p.ref_externa }}</code></td>
+        <td>
+          <a href="/pedidos/{{ p.id }}" class="btn btn-secondary btn-sm">Detalhes</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if pedidos|length == 0 %}
+<div class="empty-state">
+  <div class="empty-state-icon" aria-hidden="true">▤</div>
+  <h3>Nenhum pedido cadastrado</h3>
+  <p>Crie seu primeiro pedido para acompanhar entregas e valores por aqui.</p>
+  <a href="/pedidos/novo" class="btn btn-primary">Criar pedido</a>
+</div>
+{% endif %}
 {% endblock %}
