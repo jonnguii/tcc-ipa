@@ -42,3 +42,113 @@ uv run python avaliador.py
 ```
 
 **Módulo de Cache:** A API do Gemini bloqueia requisições em massa no plano gratuito. Por isso, construímos o arquivo `src/ipa/ai/cache.py` (salvo no disco como `.ai_cache.json`). Ele salva a resposta de um PDF já analisado. Se o avaliador tentar analisar o mesmo arquivo duas vezes, ele puxa instantaneamente do cache em vez de gastar sua cota do Google.
+
+## 7. O que é o Motor de Regras e Roteamento? (Fase 7)
+Depois que a Inteligência Artificial lê o documento e extrai as informações brutas, nós **não** mandamos o pedido direto para o robô cadastrar no ERP. Seria arriscado confiar cegamente na IA, pois ela pode se enganar ou ser induzida ao erro por textos maliciosos.
+
+Por isso, construímos o **Motor de Regras** (`src/ipa/rules/`). Ele funciona como um "filtro de segurança" ou um "gerente rigoroso" antes de qualquer lançamento:
+
+### A. Normalização de Texto
+O cliente pode escrever `"p-1"`, `"p01"`, `"P 001"` ou colocar acentos (`Açúcar`), gírias e pontuações estranhas. A normalização limpa o texto, tira os acentos e padroniza tudo para o código exato que o ERP reconhece (`P-001`), além de garantir que números com vírgula (ex: `3,5`) virem decimais corretos.
+
+### B. Validação Fiscal e de Datas
+Aqui o sistema checa as regras matemáticas e operacionais básicas:
+- **CPF e CNPJ Válidos:** O sistema calcula os dígitos verificadores (a conta matemática oficial da Receita Federal) para garantir que ninguém inventou um número falso.
+- **Datas Coerentes:** Bloqueia pedidos com datas no passado ou calendários impossíveis (como 29 de fevereiro em ano não bissexto).
+- **Quantidades Reais:** Garante que a quantidade seja um número positivo (ninguém compra `-2` unidades).
+
+### C. Casamento Fuzzy (O que é "Fuzzy Matching"?)
+Imagine que o catálogo do ERP só possui cadastrado o nome `"Produto 1"`, mas no WhatsApp o cliente escreveu `"prod 01"` ou com um erro de digitação como `"Prduto 1"`. Um sistema tradicional não acharia nada e travaria.
+O **Fuzzy Matching** (casamento aproximado ou "busca difusa", calculado pela biblioteca **RapidFuzz**) compara as palavras letra por letra e calcula uma nota de similaridade de 0 a 100%:
+- **Score $\ge$ 85% (Alta Certeza):** O sistema tem certeza de qual produto se trata e faz a correção automática do código para o ERP.
+- **Score entre 70% e 84% (Ambíguo):** O sistema desconfia de qual produto seja, mas não tem certeza suficiente para bater o martelo sozinho.
+- **Score $<$ 70% (Não Encontrado):** O produto é considerado inexistente no catálogo.
+
+### D. Roteamento (A Decisão Final do Pedido)
+O **Roteamento** é a triagem que decide qual destino cada pedido terá, separando em 3 vias:
+1. **Automático (Via Verde):** Todos os dados estão 100% corretos, o cliente existe, a data é futura e os produtos foram identificados com certeza ($\ge 85\%$). O pedido vai direto para o robô RPA preencher a tela do ERP sem precisar de ninguém no teclado.
+2. **Revisão Humana (Via Amarela):** O cliente é novo mas faltou o e-mail, ou a data de entrega é retroativa, ou o nome do produto é duvidoso (ambíguo). Em vez de cadastrar errado ou travar, o pedido vai para uma fila de pendências para um operador humano analisar.
+3. **Rejeição (Via Vermelha):** O documento está em branco, é um e-mail de propaganda sem itens, tem CPF comprovadamente fraudulento ou é uma tentativa de ataque (*Prompt Injection*, quando tentam mandar o sistema apagar o banco de dados). O pedido é cancelado imediatamente com o motivo registrado para auditoria.
+
+### Como testar as regras e o roteamento?
+Você pode rodar os 22 testes automatizados pelo terminal:
+```bash
+uv run pytest -v
+```
+Todos os cenários (pedidos perfeitos, pedidos com erros de digitação, pedidos para revisão e tentativas de ataque) são validados em frações de segundo.
+
+## 8. A Esteira Completa: Do Documento ao ERP (Visão Geral de Ponta a Ponta)
+Para entender como tudo se conecta em um processo contínuo, imagine uma empresa real recebendo pedidos todos os dias:
+
+```
+[1. Documento Chega] ──> [2. IA Interpreta] ──> [3. Regras Filtram] ──> [4. Robô Digita no ERP]
+(data/inbox/)            (src/ipa/ai/)           (src/ipa/rules/)         (rpa/bot.py -> erp_sim/)
+                                                        │
+                                                        ├── Se ambíguo: Fila de Revisão Humana
+                                                        └── Se fraude: Rejeitado e Arquivado
+```
+
+1. **Chegada do Documento (`data/inbox/`):** O cliente envia um pedido por foto de papel (PNG), ordem de compra (PDF) ou mensagem de WhatsApp (TXT).
+2. **Leitura Inteligente (`src/ipa/ai/`):** A Inteligência Artificial (Google Gemini) lê o documento com visão computacional e extrai os dados sem inventar conversa, montando uma ficha técnica estruturada.
+3. **Filtro de Segurança e Triagem (`src/ipa/rules/`):** O Motor de Regras analisa a ficha:
+   - Limpa o texto e padroniza os códigos dos produtos.
+   - Faz a conta matemática oficial da Receita Federal para checar se o CNPJ/CPF é verdadeiro.
+   - Usa o **RapidFuzz** para tolerar erros de digitação e casar o nome com o catálogo oficial.
+   - Decide a rota: **Automático** (vai pro robô), **Revisão** (vai pra um humano olhar) ou **Rejeição** (cancela).
+4. **Execução no ERP pelo Robô (`rpa/` -> `erp_sim/`):** Se aprovado no fluxo automático, o robô Playwright abre o navegador, navega até o formulário do ERP, digita tudo com precisão, salva o pedido e tira uma foto da tela como comprovante.
+5. **Comprovação Científica (`data/gold/`):** Com o script `avaliador.py`, nós comparamos o que o sistema fez contra o gabarito perfeito (`gold`). Isso gera as notas científicas do TCC (quantos pedidos foram acertados, quantos foram corrigidos e o tempo economizado).
+
+## 9. O que cada pasta do projeto faz? (Mapa Rápido)
+Se você estiver navegando pelo projeto pela primeira vez, aqui está o resumo do que cada pasta contém:
+
+- **`data/inbox/`**: A "caixa de entrada" com os 80 pedidos dos clientes (textos, PDFs e fotos).
+- **`data/gold/`**: O "gabarito perfeito" com a verdade absoluta de cada pedido para checagem científica.
+- **`data/generator/`**: Os códigos que criaram os 80 documentos e o gabarito usando fórmulas matemáticas idênticas (seed 42).
+- **`src/ipa/ai/`**: Onde fica o "cérebro" da IA (conexão com a API do Gemini e o sistema de cache de economia).
+- **`src/ipa/rules/`**: Onde fica o "gerente de regras" (validação de CPF/CNPJ, datas, RapidFuzz e decisões).
+- **`rpa/`**: Onde fica o "robô digitador" (código Playwright que preenche as telas do ERP e salva comprovantes).
+- **`src/ipa/workflow/`**: Onde fica o "maestro da fábrica" (a máquina de estados que orquestra a passagem do pedido de uma etapa para a outra).
+- **`docs/diagramas/`**: Onde fica o fluxograma visual oficial de processos (BPMN 2.0) que pode ser aberto no site bpmn.io.
+- **`tests/`**: Os testes automatizados que comprovam que nada no sistema está quebrado (`uv run pytest`).
+
+## 10. O que é o Orquestrador e o BPMN? (Fase 8)
+
+### O Maestro da Fábrica (O Orquestrador)
+Imagine uma linha de produção industrial: não adianta ter o motor mais potente e as melhores peças se não houver uma **esteira rolante** que leve o carro de um setor ao outro na ordem correta. 
+
+O **Orquestrador** (`src/ipa/workflow/`) é o maestro do sistema. Em vez de você ter que rodar a IA na mão, depois rodar o validador na mão e depois ligar o robô na mão, o Orquestrador faz tudo sozinho em sequência:
+1. Pega o documento que chegou na pasta `inbox/`.
+2. Chama a Inteligência Artificial para ler.
+3. Passa o resultado pelo Motor de Regras e RapidFuzz.
+4. Despacha para o robô cadastrar ou envia para a fila de revisão humana.
+5. Mede no cronômetro quantos segundos cada etapa demorou para gerar as estatísticas do TCC.
+
+### A Máquina de Estados (Proibido Pular Etapas!)
+Para evitar falhas e bagunça, o Orquestrador usa um conceito clássico da computação chamado **Máquina de Estados**. 
+Pense nisso como um "crachá" que o documento carrega enquanto viaja pela esteira:
+- Ele começa com o crachá **`INICIADO`**.
+- Passa para **`EXTRACAO_IA`**.
+- Depois para **`REGRAS_TRIAGEM`**.
+- Se for aprovado, vai para **`EXECUTOR_RPA`**.
+- Só quando o robô confirma o cadastro ele ganha o crachá final **`CONCLUIDO`**.
+
+A regra de ouro é: **um documento é proibido de pular etapas**. Ele nunca pode ir direto do início para o robô sem antes passar obrigatoriamente pela validação de regras.
+
+### O que é o Diagrama BPMN?
+BPMN (*Business Process Model and Notation*) é a linguagem visual internacional usada por consultores de negócios e engenheiros para desenhar processos com caixinhas e setas. 
+
+Nós desenhamos o fluxo completo da nossa esteira no padrão oficial da OMG:
+- O arquivo [`docs/diagramas/bpmn_to_be.bpmn`](file:///home/jonnguii/Desktop/projects/tcc-ipa/docs/diagramas/bpmn_to_be.bpmn) pode ser arrastado e aberto diretamente no site gratuito [bpmn.io](https://bpmn.io).
+- O código em Python da máquina de estados foi programado para ser um **espelho exato** desse desenho.
+
+### O que é o "Robô Falso" (Stub)?
+Para testar 10 ou 50 pedidos de uma vez, se tivéssemos que abrir o navegador de verdade a cada pedido, o teste demoraria muitos minutos. 
+Por isso, construímos o **StubExecutor** (um "dublê" do robô). Ele simula em 0,05 segundo que clicou na tela do ERP e devolve o número do pedido gerado, permitindo que a gente teste a lógica do sistema inteiro em alta velocidade.
+
+### Como testar o Orquestrador em lote?
+Para ver a esteira inteira processando documentos da pasta `inbox`:
+```bash
+uv run python -m src.ipa.run --limite 5 --executor stub
+```
+Isso mostrará na tela uma tabela com cada documento, a rota que o sistema escolheu e o tempo que ele levou em frações de segundo.
+

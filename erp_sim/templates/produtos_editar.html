@@ -2,9 +2,7 @@
 {% block content %}
 <div class="form-container">
   <div class="form-intro">
-    <span class="form-eyebrow">Produtos / Cadastro #{{ produto.id }}</span>
     <h2>Editar produto</h2>
-    <p>Atualize a descrição, unidade ou preço do item.</p>
   </div>
 
   {% if error %}
@@ -57,7 +55,7 @@
       </div>
 
       <div class="form-group">
-        <label for="preco" class="required">Preço</label>
+        <label for="preco" class="required">Preço (R$)</label>
         <input
           type="number"
           id="preco"

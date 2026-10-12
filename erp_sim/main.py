@@ -11,6 +11,18 @@ app.mount("/static", StaticFiles(directory="erp_sim/static"), name="static")
 templates = Jinja2Templates(directory="erp_sim/templates")
 
 
+def formato_moeda(valor):
+    try:
+        num = float(valor)
+        # Formata com separador de milhar e decimal no padrão pt-BR
+        return f"R$ {num:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    except (ValueError, TypeError):
+        return "R$ 0,00"
+
+
+templates.env.filters["moeda"] = formato_moeda
+
+
 @app.get("/", include_in_schema=False)
 def inicio():
     return RedirectResponse(url="/pedidos", status_code=303)

@@ -36,13 +36,13 @@ def rodar_avaliacao():
             itens_ok = (len(resultado.itens) == len(gabarito_itens))
             
             if data_ok and itens_ok:
-                print(f"✅ {doc_id} -> IA extraiu com precisão!")
+                print(f"[OK] {doc_id} -> IA extraiu com precisao")
                 acertos += 1
             else:
-                print(f"❌ {doc_id} -> Erro de extração. Data OK? {data_ok} | Itens OK? {itens_ok}")
+                print(f"[ERRO] {doc_id} -> Erro de extracao. Data OK? {data_ok} | Itens OK? {itens_ok}")
                 
         except Exception as e:
-            print(f"❌ {doc_id} -> ERRO CRÍTICO na IA: {e}")
+            print(f"[FALHA] {doc_id} -> Erro critico na IA: {e}")
             
         total += 1
         

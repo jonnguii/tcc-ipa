@@ -39,6 +39,7 @@ Preencha `SUPABASE_URL` e `SUPABASE_SERVICE_KEY` com os valores do projeto
 Supabase. Não compartilhe o `.env` nem publique suas chaves. Para executar
 apenas o ERP e o RPA, não é necessário configurar as chaves Gemini.
 
+**SOMENTE O ADMIN DO BANCO DE DADOS**
 Na primeira configuração do Supabase, execute `supabase/schema.sql` pelo SQL
 Editor do painel do Supabase e, depois, cadastre os dados iniciais:
 
@@ -97,34 +98,18 @@ O resultado inclui `status`, número do pedido, duração e, quando disponível,
 o caminho da captura de tela. As evidências ficam em `rpa/evidencias/` (pasta
 ignorada pelo Git).
 
-### Testar com o navegador visível
+### Executando com o script de teste
 
-O padrão é executar o Chromium em modo headless. Para ver o navegador, defina
-a variável no segundo terminal **antes** de executar o bloco Python:
+Você também pode executar o teste automatizado diretamente:
 
-```powershell
-$env:RPA_HEADLESS = "false"
+```bash
+uv run python teste_rpa.py
 ```
 
-### Repetir a demonstração
+Para ver o navegador em tempo real na tela:
 
-`ref_id` identifica o pedido e evita duplicidades. Ao repetir a execução, use
-uma nova referência, por exemplo `DEMO-20261008-02`. Se reutilizar a mesma, o
-robô deve informar que o pedido já existe em vez de criá-lo novamente.
-
-## 4. Validar o dataset (opcional)
-
-O conjunto sintético tem 80 documentos. Para validar os gabaritos e os splits:
-
-```powershell
-uv run python -m data.generator.validar
-```
-
-Para regenerar os documentos:
-
-```powershell
-uv run python -m data.generator.gerar
-```
+- **Linux / macOS:** `RPA_HEADLESS=false uv run python teste_rpa.py`
+- **Windows (PowerShell):** `$env:RPA_HEADLESS = "false"; uv run python teste_rpa.py`
 
 ## Problemas comuns
 

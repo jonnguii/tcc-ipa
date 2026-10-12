@@ -92,7 +92,7 @@ def main():
         elif tipo == "png":
             salvar_png(inbox_dir / f"{doc_id}.png", texto)
             
-    print(f"✅ Sucesso! Olhe os textos fabricados na pasta {inbox_dir.resolve()}")
+    print(f"[OK] Sucesso! Documentos fabricados na pasta {inbox_dir.resolve()}")
 
 if __name__ == "__main__":
     main()

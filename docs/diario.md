@@ -15,3 +15,12 @@
 - **Fase 5 e 6 concluídas**: Implementação da camada de IA com o Gemini (modelo `gemini-2.5-flash` congelado por estabilidade após erros 503 no 3.8).
 - **Decisão (Cache)**: Criado um sistema local de cache em MD5 (`src/ipa/ai/cache.py`) para não consumir cota repetida da API nas chamadas já feitas do dataset de desenvolvimento.
 - **Aprendizado (Rate Limit)**: Adicionado controle de concorrência (`time.sleep(4)`) no avaliador para lidar com o *rate limit* restrito (15 RPM) do "Free Tier" do Google AI Studio, provando que é possível testar o TCC sem custo.
+
+## 2026-10-11
+- **Integração RPA da Trilha B**: Importado o entregável de RPA (`rpa/bot.py`) e criada a suíte de validação de ponta a ponta (`teste_rpa.py`) com Playwright Chromium. Mantida a master como fonte da verdade estrita para dados e IA.
+- **Higienização Visual e De-Slop**: Removidos micro-animações, switchers decorativos de dark mode e emojis nos logs do terminal para conferir sobriedade técnica ao software. O CSS do ERP foi recalibrado para alto contraste (fundo neutro sólido `#e2e8f0` e superfícies brancas com grades nítidas) seguindo diretrizes de acessibilidade WCAG e sistemas corporativos legados. Adicionado filtro Jinja2 de moeda brasileira (`R$`).
+- **Fase 7 concluída (Motor de Regras e Roteamento)**: Criado o motor determinístico em `src/ipa/rules/` para agir como barreira de segurança contra alucinações de IA.
+  - **Decisão (Fuzzy Matching)**: Adotada a biblioteca `rapidfuzz` para casamento aproximado contra o catálogo oficial `P-001` a `P-040`, com tolerância a apelidos e erros de digitação (corte automático em $\ge 85\%$).
+  - **Validação Fiscal**: Implementado o cálculo oficial da Receita Federal para os dois dígitos verificadores de CPF e CNPJ.
+  - **Triagem em 3 Vias**: O roteador classifica os pedidos em **AUTOMATICO** (despacho direto ao RPA), **REVISAO** (fila para operador humano) e **REJEICAO** (bloqueio de fraudes e prompt injection).
+- **Qualidade e Testes**: Criada a suíte `tests/test_regras.py` rodando com 22 testes unitários no pytest com 100% de aprovação e zero regressão no robô Playwright.
