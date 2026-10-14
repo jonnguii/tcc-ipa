@@ -1,4 +1,5 @@
 from pathlib import Path
+import time
 from google import genai
 from google.genai import types
 from src.ipa.config import settings
@@ -43,15 +44,42 @@ def processar_documento(caminho_arquivo: str) -> PedidoExtraido:
         conteudo.append(arquivo_upload)
 
     try:
-        # Envia para a IA
-        response = client.models.generate_content(
-            model=settings.gemini_model,
-            contents=conteudo,
-            config=types.GenerateContentConfig(
-                response_mime_type="application/json",
-                response_schema=PedidoExtraido,
-            ),
-        )
+        # Envia para a IA com retry em caso de 503 (alta demanda) ou 429 (limite de taxa)
+        modelos_para_tentar = [settings.gemini_model]
+        if "flash-lite" not in settings.gemini_model:
+            modelos_para_tentar.append("gemini-3.5-flash-lite")
+
+        response = None
+        ultimo_erro = None
+
+        for modelo_atual in modelos_para_tentar:
+            for tentativa in range(3):
+                try:
+                    response = client.models.generate_content(
+                        model=modelo_atual,
+                        contents=conteudo,
+                        config=types.GenerateContentConfig(
+                            response_mime_type="application/json",
+                            response_schema=PedidoExtraido,
+                            temperature=0.1,
+                        ),
+                    )
+                    if response and response.text:
+                        break
+                except Exception as e:
+                    ultimo_erro = e
+                    msg = str(e)
+                    if ("503" in msg or "429" in msg or "UNAVAILABLE" in msg) and tentativa < 2:
+                        espera = (tentativa + 1) * 2
+                        print(f"⚠️ Gemini ocupado ({modelo_atual}). Aguardando {espera}s (tentativa {tentativa+1}/3)...")
+                        time.sleep(espera)
+                    else:
+                        break
+            if response and response.text:
+                break
+
+        if not response or not response.text:
+            raise ultimo_erro or RuntimeError("Resposta vazia da API do Gemini")
         
         resultado = PedidoExtraido.model_validate_json(response.text)
         
