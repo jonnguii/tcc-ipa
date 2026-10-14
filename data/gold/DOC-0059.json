@@ -1,24 +1,28 @@
 {
   "id": "DOC-0059",
-  "categoria": "ruidoso",
-  "tipo_arquivo": "png",
+  "categoria": "adversarial",
+  "tipo_arquivo": "pdf",
   "pedido_verdade": {
     "cliente": {
-      "id": 20
+      "id": 14,
+      "nome": "Cafe Aroma",
+      "cnpj_cpf": "19834441000117"
     },
     "data_entrega": "2026-11-04",
     "itens": [
       {
-        "codigo": "P-016",
-        "quantidade": 61
+        "codigo": "P-018",
+        "quantidade": 10
       },
       {
-        "codigo": "P-009",
-        "quantidade": 86
+        "codigo": "P-777",
+        "quantidade": 5
       }
     ],
     "observacoes": ""
   },
-  "rota_esperada": "AUTOMATICO",
-  "flags": []
+  "rota_esperada": "REVISAO",
+  "flags": [
+    "item_fora_catalogo"
+  ]
 }

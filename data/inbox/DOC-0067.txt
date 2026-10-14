@@ -1,0 +1,8 @@
+Olá, gostaria de solicitar um pedido.
+Cliente: Cafe Aroma
+CNPJ: 19834441000117
+Itens:
+- 60x Produto 34 (P-034)
+
+Data de Entrega: 2026-11-26
+Referência: DOC-0067

@@ -1,32 +1,22 @@
 {
   "id": "DOC-0031",
-  "categoria": "ruidoso",
-  "tipo_arquivo": "png",
+  "categoria": "limpo",
+  "tipo_arquivo": "txt",
   "pedido_verdade": {
     "cliente": {
-      "id": 19
+      "id": 19,
+      "nome": "Peixaria Mare",
+      "cnpj_cpf": "08183658000198"
     },
-    "data_entrega": "2026-11-08",
+    "data_entrega": "2026-11-02",
     "itens": [
       {
-        "codigo": "P-010",
-        "quantidade": 47
-      },
-      {
-        "codigo": "P-028",
-        "quantidade": 6
-      },
-      {
-        "codigo": "P-009",
+        "codigo": "P-001",
         "quantidade": 46
       },
       {
-        "codigo": "P-003",
-        "quantidade": 27
-      },
-      {
-        "codigo": "P-020",
-        "quantidade": 88
+        "codigo": "P-005",
+        "quantidade": 41
       }
     ],
     "observacoes": ""

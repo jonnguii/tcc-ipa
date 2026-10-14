@@ -1,36 +1,32 @@
 {
   "id": "DOC-0041",
-  "categoria": "limpo",
-  "tipo_arquivo": "png",
+  "categoria": "adversarial",
+  "tipo_arquivo": "pdf",
   "pedido_verdade": {
     "cliente": {
-      "id": 6
+      "id": 15,
+      "nome": "Bistro Paris",
+      "cnpj_cpf": "30802300000155"
     },
-    "data_entrega": "2026-11-20",
+    "data_entrega": "2026-11-07",
     "itens": [
       {
-        "codigo": "P-037",
-        "quantidade": 39
-      },
-      {
-        "codigo": "P-020",
-        "quantidade": 37
-      },
-      {
-        "codigo": "P-026",
-        "quantidade": 27
+        "codigo": "P-028",
+        "quantidade": 10
       },
       {
         "codigo": "P-036",
-        "quantidade": 56
+        "quantidade": 13
       },
       {
-        "codigo": "P-001",
-        "quantidade": 75
+        "codigo": "P-032",
+        "quantidade": 19
       }
     ],
     "observacoes": ""
   },
   "rota_esperada": "AUTOMATICO",
-  "flags": []
+  "flags": [
+    "ruido_marketing"
+  ]
 }

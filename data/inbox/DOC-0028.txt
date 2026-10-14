@@ -1,6 +1,12 @@
-ae, me ve ai esses itens:
-- 36x Produto 17 (P-017)
-- 6x Produto 4 (P-004)
-- 1x Produto 6 (P-006)
-- 43x Produto 28 (P-028)
-pra 2026-11-25 ref DOC-0028 cpnj 86454284000101 cliete Cantina da Mama
+Bom dia. Segue nosso pedido de compra.
+Referência do Pedido: DOC-0028
+Empresa: Lanchonete Omega (39825979000172)
+
+Itens solicitados:
+- 36x Produto 5 (P-005)
+- 11x Produto 35 (P-035)
+- 17x Produto 9 (P-009)
+- 34x Produto 31 (P-031)
+
+
+Favor entregar até a data de 2026-11-28.

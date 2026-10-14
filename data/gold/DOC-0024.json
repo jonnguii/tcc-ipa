@@ -1,20 +1,28 @@
 {
   "id": "DOC-0024",
   "categoria": "adversarial",
-  "tipo_arquivo": "pdf",
+  "tipo_arquivo": "png",
   "pedido_verdade": {
     "cliente": {
-      "id": 4
+      "id": 17,
+      "nome": "Cantina da Mama",
+      "cnpj_cpf": "86454284000101"
     },
-    "data_entrega": "2026-11-17",
+    "data_entrega": "2026-11-18",
     "itens": [
       {
-        "codigo": "P-035",
-        "quantidade": 28
+        "codigo": "P-010",
+        "quantidade": 49
+      },
+      {
+        "codigo": "P-024",
+        "quantidade": 11
       }
     ],
     "observacoes": ""
   },
   "rota_esperada": "AUTOMATICO",
-  "flags": []
+  "flags": [
+    "ruido_marketing"
+  ]
 }

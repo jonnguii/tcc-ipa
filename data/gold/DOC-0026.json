@@ -1,32 +1,18 @@
 {
   "id": "DOC-0026",
   "categoria": "limpo",
-  "tipo_arquivo": "txt",
+  "tipo_arquivo": "pdf",
   "pedido_verdade": {
     "cliente": {
-      "id": 10
+      "id": 1,
+      "nome": "Distribuidora Alfa",
+      "cnpj_cpf": "29141777000158"
     },
-    "data_entrega": "2026-11-18",
+    "data_entrega": "2026-11-27",
     "itens": [
       {
-        "codigo": "P-034",
-        "quantidade": 18
-      },
-      {
-        "codigo": "P-001",
-        "quantidade": 34
-      },
-      {
-        "codigo": "P-036",
-        "quantidade": 15
-      },
-      {
-        "codigo": "P-020",
-        "quantidade": 14
-      },
-      {
-        "codigo": "P-007",
-        "quantidade": 96
+        "codigo": "P-024",
+        "quantidade": 57
       }
     ],
     "observacoes": ""

@@ -1,0 +1,10 @@
+Bom dia. Segue nosso pedido de compra.
+Referência do Pedido: DOC-0037
+Empresa: Cafe Aroma (19834441000117)
+
+Itens solicitados:
+- 16x Produto 18 (P-018)
+- 56x Produto 30 (P-030)
+
+
+Favor entregar até a data de 2026-11-03.

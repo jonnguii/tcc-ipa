@@ -46,10 +46,17 @@ def main() -> None:
         arquivos = [arq for arq in arquivos if Path(arq).stem in alvos_normalizados]
 
     # 2. Filtro por Split
-    if args.split == "dev":
-        arquivos = arquivos[:30]
-    elif args.split == "teste":
-        arquivos = arquivos[30:]
+    if args.split:
+        caminho_splits = Path("data/splits.json")
+        if caminho_splits.exists():
+            try:
+                splits_info = json.loads(caminho_splits.read_text(encoding="utf-8"))
+                docs_split = set(splits_info.get(args.split, []))
+                arquivos = [arq for arq in arquivos if Path(arq).stem in docs_split]
+            except Exception:
+                arquivos = arquivos[:30] if args.split == "dev" else arquivos[30:]
+        else:
+            arquivos = arquivos[:30] if args.split == "dev" else arquivos[30:]
 
     # 3. Filtro por Categoria (lendo do gabarito em data/gold)
     if args.categoria:

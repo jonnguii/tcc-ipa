@@ -1,36 +1,18 @@
 {
   "id": "DOC-0020",
   "categoria": "limpo",
-  "tipo_arquivo": "txt",
+  "tipo_arquivo": "pdf",
   "pedido_verdade": {
     "cliente": {
-      "id": 19
+      "id": 14,
+      "nome": "Cafe Aroma",
+      "cnpj_cpf": "19834441000117"
     },
-    "data_entrega": "2026-11-28",
+    "data_entrega": "2026-11-20",
     "itens": [
       {
-        "codigo": "P-035",
-        "quantidade": 65
-      },
-      {
-        "codigo": "P-004",
-        "quantidade": 68
-      },
-      {
-        "codigo": "P-021",
-        "quantidade": 21
-      },
-      {
-        "codigo": "P-039",
-        "quantidade": 8
-      },
-      {
-        "codigo": "P-037",
-        "quantidade": 66
-      },
-      {
-        "codigo": "P-031",
-        "quantidade": 11
+        "codigo": "P-025",
+        "quantidade": 25
       }
     ],
     "observacoes": ""

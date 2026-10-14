@@ -1,0 +1,6 @@
+pedido urgente retroativo:
+cli:Lanchonete Omega
+doc:39825979000172
+- 17x Produto 27 (P-027)
+- 50x Produto 37 (P-037)
+precisava disso pra data de 2025-01-15 blz? ref:DOC-0076

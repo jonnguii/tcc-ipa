@@ -1,24 +1,19 @@
 {
   "id": "DOC-0013",
-  "categoria": "ruidoso",
+  "categoria": "adversarial",
   "tipo_arquivo": "txt",
   "pedido_verdade": {
     "cliente": {
-      "id": 2
+      "id": null,
+      "nome": null,
+      "cnpj_cpf": null
     },
-    "data_entrega": "2026-11-17",
-    "itens": [
-      {
-        "codigo": "P-005",
-        "quantidade": 43
-      },
-      {
-        "codigo": "P-003",
-        "quantidade": 10
-      }
-    ],
-    "observacoes": ""
+    "data_entrega": "",
+    "itens": [],
+    "observacoes": "Mensagem institucional / dúvida de atendimento sem pedido de compra."
   },
-  "rota_esperada": "AUTOMATICO",
-  "flags": []
+  "rota_esperada": "REJEICAO",
+  "flags": [
+    "nao_pedido"
+  ]
 }

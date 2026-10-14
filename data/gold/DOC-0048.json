@@ -1,28 +1,26 @@
 {
   "id": "DOC-0048",
-  "categoria": "ruidoso",
-  "tipo_arquivo": "txt",
+  "categoria": "limpo",
+  "tipo_arquivo": "png",
   "pedido_verdade": {
     "cliente": {
-      "id": 16
+      "id": 7,
+      "nome": "Mercearia Delta",
+      "cnpj_cpf": "52601815000120"
     },
-    "data_entrega": "2026-11-15",
+    "data_entrega": "2026-11-10",
     "itens": [
       {
-        "codigo": "P-017",
-        "quantidade": 63
+        "codigo": "P-009",
+        "quantidade": 57
       },
       {
-        "codigo": "P-016",
-        "quantidade": 81
+        "codigo": "P-023",
+        "quantidade": 16
       },
       {
-        "codigo": "P-018",
-        "quantidade": 31
-      },
-      {
-        "codigo": "P-034",
-        "quantidade": 36
+        "codigo": "P-005",
+        "quantidade": 24
       }
     ],
     "observacoes": ""

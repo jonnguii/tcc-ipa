@@ -4,21 +4,21 @@
   "tipo_arquivo": "png",
   "pedido_verdade": {
     "cliente": {
-      "id": 18
+      "id": 9,
+      "nome": "Restaurante Sabor",
+      "cnpj_cpf": "79542205000159"
     },
-    "data_entrega": "2026-11-23",
+    "data_entrega": "2026-11-06",
     "itens": [
       {
-        "codigo": "P-038",
-        "quantidade": 1
-      },
-      {
-        "codigo": "P-015",
-        "quantidade": 10
+        "codigo": "P-039",
+        "quantidade": 41
       }
     ],
     "observacoes": ""
   },
   "rota_esperada": "AUTOMATICO",
-  "flags": []
+  "flags": [
+    "ruido_marketing"
+  ]
 }

@@ -1,24 +1,18 @@
 {
   "id": "DOC-0054",
-  "categoria": "ruidoso",
-  "tipo_arquivo": "pdf",
+  "categoria": "limpo",
+  "tipo_arquivo": "png",
   "pedido_verdade": {
     "cliente": {
-      "id": 13
+      "id": 4,
+      "nome": "Padaria Central",
+      "cnpj_cpf": "34167211000135"
     },
-    "data_entrega": "2026-11-01",
+    "data_entrega": "2026-11-02",
     "itens": [
       {
-        "codigo": "P-026",
-        "quantidade": 17
-      },
-      {
-        "codigo": "P-011",
-        "quantidade": 80
-      },
-      {
-        "codigo": "P-030",
-        "quantidade": 69
+        "codigo": "P-010",
+        "quantidade": 35
       }
     ],
     "observacoes": ""

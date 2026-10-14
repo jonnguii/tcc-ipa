@@ -1,0 +1,10 @@
+Olá, gostaria de solicitar um pedido.
+Cliente: Padaria Central
+CNPJ: 34167211000135
+Itens:
+- 52x Produto 23 (P-023)
+- 3x Produto 39 (P-039)
+- 47x Produto 17 (P-017)
+
+Data de Entrega: 2026-11-15
+Referência: DOC-0007

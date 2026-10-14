@@ -1,0 +1,12 @@
+Bom dia. Segue nosso pedido de compra.
+Referência do Pedido: DOC-0052
+Empresa: Restaurante Sabor (79542205000159)
+
+Itens solicitados:
+- 54x Produto 17 (P-017)
+- 18x Produto 4 (P-004)
+- 3x Produto 6 (P-006)
+- 1x Produto 28 (P-028)
+
+
+Favor entregar até a data de 2026-11-11.

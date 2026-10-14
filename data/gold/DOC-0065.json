@@ -1,32 +1,30 @@
 {
   "id": "DOC-0065",
-  "categoria": "adversarial",
+  "categoria": "limpo",
   "tipo_arquivo": "pdf",
   "pedido_verdade": {
     "cliente": {
-      "id": 9
+      "id": 11,
+      "nome": "Emporio Gourmet",
+      "cnpj_cpf": "78778932000157"
     },
-    "data_entrega": "2026-11-29",
+    "data_entrega": "2026-11-02",
     "itens": [
       {
-        "codigo": "P-035",
-        "quantidade": 35
+        "codigo": "P-039",
+        "quantidade": 58
       },
       {
-        "codigo": "P-031",
-        "quantidade": 42
+        "codigo": "P-033",
+        "quantidade": 37
       },
       {
-        "codigo": "P-030",
-        "quantidade": 32
+        "codigo": "P-008",
+        "quantidade": 13
       },
       {
-        "codigo": "P-028",
-        "quantidade": 12
-      },
-      {
-        "codigo": "P-038",
-        "quantidade": 36
+        "codigo": "P-025",
+        "quantidade": 17
       }
     ],
     "observacoes": ""

@@ -54,6 +54,9 @@ PADROES_ADVERSARIAIS = [
     r"drop\s+table",
     r"<\s*script[^>]*>",
     r"prompt\s+injection",
+    r"bypass\s+all\s+rules",
+    r"override\s+system\s+prompt",
+    r"disregard\s+security\s+policies",
 ]
 
 

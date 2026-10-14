@@ -1,24 +1,18 @@
 {
   "id": "DOC-0032",
   "categoria": "limpo",
-  "tipo_arquivo": "txt",
+  "tipo_arquivo": "pdf",
   "pedido_verdade": {
     "cliente": {
-      "id": 4
+      "id": 8,
+      "nome": "Bar do Joao",
+      "cnpj_cpf": "35623012000157"
     },
-    "data_entrega": "2026-11-28",
+    "data_entrega": "2026-11-11",
     "itens": [
       {
-        "codigo": "P-036",
-        "quantidade": 96
-      },
-      {
-        "codigo": "P-027",
-        "quantidade": 20
-      },
-      {
-        "codigo": "P-040",
-        "quantidade": 31
+        "codigo": "P-003",
+        "quantidade": 56
       }
     ],
     "observacoes": ""

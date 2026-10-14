@@ -1,16 +1,26 @@
 {
   "id": "DOC-0074",
   "categoria": "limpo",
-  "tipo_arquivo": "png",
+  "tipo_arquivo": "pdf",
   "pedido_verdade": {
     "cliente": {
-      "id": 9
+      "id": 20,
+      "nome": "Hortifruti Verde",
+      "cnpj_cpf": "24159206000127"
     },
-    "data_entrega": "2026-11-10",
+    "data_entrega": "2026-11-05",
     "itens": [
       {
-        "codigo": "P-004",
-        "quantidade": 71
+        "codigo": "P-006",
+        "quantidade": 15
+      },
+      {
+        "codigo": "P-016",
+        "quantidade": 52
+      },
+      {
+        "codigo": "P-020",
+        "quantidade": 13
       }
     ],
     "observacoes": ""

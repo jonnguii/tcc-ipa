@@ -1,0 +1,8 @@
+Olá, gostaria de solicitar um pedido.
+Cliente: Cantina da Mama
+CNPJ: 86454284000101
+Itens:
+- 21x Produto 39 (P-039)
+
+Data de Entrega: 2026-11-16
+Referência: DOC-0025

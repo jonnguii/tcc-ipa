@@ -1,28 +1,32 @@
 {
   "id": "DOC-0071",
-  "categoria": "ruidoso",
-  "tipo_arquivo": "png",
+  "categoria": "adversarial",
+  "tipo_arquivo": "pdf",
   "pedido_verdade": {
     "cliente": {
-      "id": 18
+      "id": 6,
+      "nome": "Atacado Sigma",
+      "cnpj_cpf": "91740029000165"
     },
-    "data_entrega": "2026-11-04",
+    "data_entrega": "2026-11-14",
     "itens": [
       {
-        "codigo": "P-023",
-        "quantidade": 40
+        "codigo": "P-026",
+        "quantidade": 20
       },
       {
-        "codigo": "P-030",
-        "quantidade": 33
+        "codigo": "P-036",
+        "quantidade": 19
       },
       {
-        "codigo": "P-018",
-        "quantidade": 30
+        "codigo": "P-001",
+        "quantidade": 14
       }
     ],
     "observacoes": ""
   },
   "rota_esperada": "AUTOMATICO",
-  "flags": []
+  "flags": [
+    "ruido_marketing"
+  ]
 }

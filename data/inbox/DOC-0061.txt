@@ -1,0 +1,11 @@
+Bom dia. Segue nosso pedido de compra.
+Referência do Pedido: DOC-0061
+Empresa: Bistro Paris (30802300000155)
+
+Itens solicitados:
+- 43x Produto 20 (P-020)
+- 13x Produto 15 (P-015)
+- 26x Produto 2 (P-002)
+
+
+Favor entregar até a data de 2026-11-11.

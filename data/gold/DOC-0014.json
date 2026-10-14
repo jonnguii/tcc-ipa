@@ -4,33 +4,19 @@
   "tipo_arquivo": "pdf",
   "pedido_verdade": {
     "cliente": {
-      "id": 9
+      "id": 18,
+      "nome": "Acougue Boi Gordo",
+      "cnpj_cpf": "21753377000191"
     },
-    "data_entrega": "2026-11-14",
+    "data_entrega": "2026-11-21",
     "itens": [
       {
-        "codigo": "P-032",
-        "quantidade": 61
-      },
-      {
-        "codigo": "P-014",
-        "quantidade": 53
-      },
-      {
-        "codigo": "P-035",
+        "codigo": "P-011",
         "quantidade": 25
       },
       {
-        "codigo": "P-009",
-        "quantidade": 13
-      },
-      {
-        "codigo": "P-031",
-        "quantidade": 13
-      },
-      {
-        "codigo": "P-016",
-        "quantidade": 85
+        "codigo": "P-030",
+        "quantidade": 18
       }
     ],
     "observacoes": ""

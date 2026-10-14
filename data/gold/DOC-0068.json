@@ -1,16 +1,22 @@
 {
   "id": "DOC-0068",
-  "categoria": "adversarial",
+  "categoria": "ruidoso",
   "tipo_arquivo": "pdf",
   "pedido_verdade": {
     "cliente": {
-      "id": 7
+      "id": 18,
+      "nome": "Acougue Boi Gordo",
+      "cnpj_cpf": "21753377000191"
     },
-    "data_entrega": "2026-11-14",
+    "data_entrega": "2026-11-11",
     "itens": [
       {
-        "codigo": "P-016",
-        "quantidade": 93
+        "codigo": "P-024",
+        "quantidade": 5
+      },
+      {
+        "codigo": "P-028",
+        "quantidade": 43
       }
     ],
     "observacoes": ""

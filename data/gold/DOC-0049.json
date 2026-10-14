@@ -4,17 +4,27 @@
   "tipo_arquivo": "txt",
   "pedido_verdade": {
     "cliente": {
-      "id": 10
+      "id": 6,
+      "nome": "Atacado Sigma",
+      "cnpj_cpf": "91740029000165"
     },
-    "data_entrega": "2026-11-03",
+    "data_entrega": "2026-11-10",
     "itens": [
       {
-        "codigo": "P-018",
-        "quantidade": 41
+        "codigo": "P-035",
+        "quantidade": 1
       },
       {
-        "codigo": "P-022",
-        "quantidade": 70
+        "codigo": "P-020",
+        "quantidade": 43
+      },
+      {
+        "codigo": "P-040",
+        "quantidade": 53
+      },
+      {
+        "codigo": "P-034",
+        "quantidade": 36
       }
     ],
     "observacoes": ""

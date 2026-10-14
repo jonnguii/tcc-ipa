@@ -1,0 +1,10 @@
+Bom dia. Segue nosso pedido de compra.
+Referência do Pedido: DOC-0031
+Empresa: Peixaria Mare (08183658000198)
+
+Itens solicitados:
+- 46x Produto 1 (P-001)
+- 41x Produto 5 (P-005)
+
+
+Favor entregar até a data de 2026-11-02.

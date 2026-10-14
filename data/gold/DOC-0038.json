@@ -1,28 +1,18 @@
 {
   "id": "DOC-0038",
-  "categoria": "ruidoso",
+  "categoria": "limpo",
   "tipo_arquivo": "pdf",
   "pedido_verdade": {
     "cliente": {
-      "id": 11
+      "id": 15,
+      "nome": "Bistro Paris",
+      "cnpj_cpf": "30802300000155"
     },
-    "data_entrega": "2026-11-23",
+    "data_entrega": "2026-11-18",
     "itens": [
       {
-        "codigo": "P-039",
-        "quantidade": 74
-      },
-      {
-        "codigo": "P-033",
-        "quantidade": 25
-      },
-      {
-        "codigo": "P-008",
-        "quantidade": 33
-      },
-      {
-        "codigo": "P-025",
-        "quantidade": 6
+        "codigo": "P-004",
+        "quantidade": 42
       }
     ],
     "observacoes": ""

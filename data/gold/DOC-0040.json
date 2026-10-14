@@ -1,32 +1,30 @@
 {
   "id": "DOC-0040",
-  "categoria": "limpo",
-  "tipo_arquivo": "png",
+  "categoria": "ruidoso",
+  "tipo_arquivo": "txt",
   "pedido_verdade": {
     "cliente": {
-      "id": 10
+      "id": 16,
+      "nome": "Hamburgueria Texas",
+      "cnpj_cpf": "57746370000190"
     },
-    "data_entrega": "2026-11-13",
+    "data_entrega": "2026-11-26",
     "itens": [
       {
-        "codigo": "P-020",
-        "quantidade": 71
-      },
-      {
-        "codigo": "P-027",
-        "quantidade": 17
-      },
-      {
-        "codigo": "P-021",
+        "codigo": "P-014",
         "quantidade": 25
       },
       {
         "codigo": "P-026",
-        "quantidade": 54
+        "quantidade": 1
       },
       {
-        "codigo": "P-019",
-        "quantidade": 86
+        "codigo": "P-004",
+        "quantidade": 25
+      },
+      {
+        "codigo": "P-011",
+        "quantidade": 17
       }
     ],
     "observacoes": ""

@@ -1,24 +1,22 @@
 {
   "id": "DOC-0051",
-  "categoria": "limpo",
+  "categoria": "ruidoso",
   "tipo_arquivo": "png",
   "pedido_verdade": {
     "cliente": {
-      "id": 14
+      "id": 10,
+      "nome": "Pizzaria Napoli",
+      "cnpj_cpf": "90679037000180"
     },
-    "data_entrega": "2026-11-13",
+    "data_entrega": "2026-11-28",
     "itens": [
       {
-        "codigo": "P-035",
-        "quantidade": 8
+        "codigo": "P-022",
+        "quantidade": 44
       },
       {
-        "codigo": "P-030",
-        "quantidade": 27
-      },
-      {
-        "codigo": "P-027",
-        "quantidade": 54
+        "codigo": "P-014",
+        "quantidade": 41
       }
     ],
     "observacoes": ""

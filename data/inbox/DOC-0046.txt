@@ -1,0 +1,10 @@
+Olá, gostaria de solicitar um pedido.
+Cliente: Peixaria Mare
+CNPJ: 08183658000198
+Itens:
+- 16x Produto 17 (P-017)
+- 17x Produto 14 (P-014)
+- 26x Produto 21 (P-021)
+
+Data de Entrega: 2026-11-05
+Referência: DOC-0046

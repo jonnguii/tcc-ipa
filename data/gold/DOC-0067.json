@@ -1,24 +1,18 @@
 {
   "id": "DOC-0067",
   "categoria": "limpo",
-  "tipo_arquivo": "png",
+  "tipo_arquivo": "txt",
   "pedido_verdade": {
     "cliente": {
-      "id": 12
+      "id": 14,
+      "nome": "Cafe Aroma",
+      "cnpj_cpf": "19834441000117"
     },
-    "data_entrega": "2026-11-01",
+    "data_entrega": "2026-11-26",
     "itens": [
       {
-        "codigo": "P-022",
-        "quantidade": 90
-      },
-      {
-        "codigo": "P-018",
-        "quantidade": 36
-      },
-      {
-        "codigo": "P-039",
-        "quantidade": 72
+        "codigo": "P-034",
+        "quantidade": 60
       }
     ],
     "observacoes": ""

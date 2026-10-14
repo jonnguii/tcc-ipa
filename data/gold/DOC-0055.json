@@ -1,32 +1,22 @@
 {
   "id": "DOC-0055",
-  "categoria": "adversarial",
-  "tipo_arquivo": "pdf",
+  "categoria": "ruidoso",
+  "tipo_arquivo": "txt",
   "pedido_verdade": {
     "cliente": {
-      "id": 19
+      "id": 12,
+      "nome": "Quitanda Frescor",
+      "cnpj_cpf": "74852605000147"
     },
-    "data_entrega": "2026-11-07",
+    "data_entrega": "2026-11-12",
     "itens": [
       {
-        "codigo": "P-002",
-        "quantidade": 24
-      },
-      {
-        "codigo": "P-006",
-        "quantidade": 7
-      },
-      {
         "codigo": "P-028",
-        "quantidade": 34
+        "quantidade": 3
       },
       {
         "codigo": "P-009",
-        "quantidade": 49
-      },
-      {
-        "codigo": "P-030",
-        "quantidade": 42
+        "quantidade": 20
       }
     ],
     "observacoes": ""

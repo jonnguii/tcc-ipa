@@ -1,28 +1,28 @@
 {
   "id": "DOC-0080",
-  "categoria": "limpo",
-  "tipo_arquivo": "txt",
+  "categoria": "ruidoso",
+  "tipo_arquivo": "pdf",
   "pedido_verdade": {
     "cliente": {
-      "id": 7
+      "id": null,
+      "nome": "Padaria Nova Esperanca sem doc",
+      "cnpj_cpf": null
     },
-    "data_entrega": "2026-11-06",
+    "data_entrega": "2026-11-27",
     "itens": [
       {
-        "codigo": "P-006",
-        "quantidade": 23
-      },
-      {
         "codigo": "P-011",
-        "quantidade": 71
+        "quantidade": 33
       },
       {
-        "codigo": "P-016",
-        "quantidade": 10
+        "codigo": "P-031",
+        "quantidade": 21
       }
     ],
-    "observacoes": ""
+    "observacoes": "Cliente novo sem CNPJ informado no documento."
   },
-  "rota_esperada": "AUTOMATICO",
-  "flags": []
+  "rota_esperada": "REVISAO",
+  "flags": [
+    "cliente_incompleto"
+  ]
 }

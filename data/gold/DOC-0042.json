@@ -1,32 +1,24 @@
 {
   "id": "DOC-0042",
-  "categoria": "ruidoso",
+  "categoria": "adversarial",
   "tipo_arquivo": "png",
   "pedido_verdade": {
     "cliente": {
-      "id": 11
+      "id": null,
+      "nome": "Mercado Popular do Bairro",
+      "cnpj_cpf": null
     },
-    "data_entrega": "2026-11-10",
+    "data_entrega": "2026-11-24",
     "itens": [
       {
-        "codigo": "P-029",
-        "quantidade": 95
-      },
-      {
-        "codigo": "P-014",
-        "quantidade": 22
-      },
-      {
-        "codigo": "P-033",
-        "quantidade": 85
-      },
-      {
-        "codigo": "P-031",
-        "quantidade": 11
+        "codigo": "P-038",
+        "quantidade": 39
       }
     ],
-    "observacoes": ""
+    "observacoes": "Cliente novo sem CNPJ informado no documento."
   },
-  "rota_esperada": "AUTOMATICO",
-  "flags": []
+  "rota_esperada": "REVISAO",
+  "flags": [
+    "cliente_incompleto"
+  ]
 }
