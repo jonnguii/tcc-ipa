@@ -30,7 +30,6 @@ def processar_documento(caminho_arquivo: str) -> PedidoExtraido:
     """
     
     conteudo = [prompt]
-    arquivo_upload = None
     
     # Roteamento baseado na extensão do arquivo
     if path.suffix.lower() == ".txt":
@@ -38,57 +37,58 @@ def processar_documento(caminho_arquivo: str) -> PedidoExtraido:
             texto = f.read()
         conteudo.append(f"\nMENSAGEM:\n{texto}")
     else:
-        # É arquivo binário (PDF ou PNG)
-        print(f"Fazendo upload temporário do {path.suffix.upper()} para o Gemini...")
-        arquivo_upload = client.files.upload(file=str(path))
-        conteudo.append(arquivo_upload)
+        # Arquivo binário: envia inline via bytes sem passar pela Files API lenta
+        mime_map = {
+            ".png": "image/png",
+            ".jpg": "image/jpeg",
+            ".jpeg": "image/jpeg",
+            ".pdf": "application/pdf",
+        }
+        mime = mime_map.get(path.suffix.lower(), "application/octet-stream")
+        with open(path, "rb") as f:
+            dados_binarios = f.read()
+        parte_binaria = types.Part.from_bytes(data=dados_binarios, mime_type=mime)
+        conteudo.append(parte_binaria)
 
-    try:
-        # Envia para a IA com retry em caso de 503 (alta demanda) ou 429 (limite de taxa)
-        modelos_para_tentar = [settings.gemini_model]
-        if "flash-lite" not in settings.gemini_model:
-            modelos_para_tentar.append("gemini-3.5-flash-lite")
+    # Envia para a IA com retry em caso de 503 (alta demanda) ou 429 (limite de taxa)
+    modelos_para_tentar = [settings.gemini_model]
+    if "flash-lite" not in settings.gemini_model:
+        modelos_para_tentar.append("gemini-3.5-flash-lite")
 
-        response = None
-        ultimo_erro = None
+    response = None
+    ultimo_erro = None
 
-        for modelo_atual in modelos_para_tentar:
-            for tentativa in range(3):
-                try:
-                    response = client.models.generate_content(
-                        model=modelo_atual,
-                        contents=conteudo,
-                        config=types.GenerateContentConfig(
-                            response_mime_type="application/json",
-                            response_schema=PedidoExtraido,
-                            temperature=0.1,
-                        ),
-                    )
-                    if response and response.text:
-                        break
-                except Exception as e:
-                    ultimo_erro = e
-                    msg = str(e)
-                    if ("503" in msg or "429" in msg or "UNAVAILABLE" in msg) and tentativa < 2:
-                        espera = (tentativa + 1) * 2
-                        print(f"⚠️ Gemini ocupado ({modelo_atual}). Aguardando {espera}s (tentativa {tentativa+1}/3)...")
-                        time.sleep(espera)
-                    else:
-                        break
-            if response and response.text:
-                break
+    for modelo_atual in modelos_para_tentar:
+        for tentativa in range(3):
+            try:
+                response = client.models.generate_content(
+                    model=modelo_atual,
+                    contents=conteudo,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                        response_schema=PedidoExtraido,
+                        temperature=0.1,
+                    ),
+                )
+                if response and response.text:
+                    break
+            except Exception as e:
+                ultimo_erro = e
+                msg = str(e)
+                if ("503" in msg or "429" in msg or "UNAVAILABLE" in msg) and tentativa < 2:
+                    espera = (tentativa + 1) * 2
+                    print(f"⚠️ Gemini ocupado ({modelo_atual}). Aguardando {espera}s (tentativa {tentativa+1}/3)...")
+                    time.sleep(espera)
+                else:
+                    break
+        if response and response.text:
+            break
 
-        if not response or not response.text:
-            raise ultimo_erro or RuntimeError("Resposta vazia da API do Gemini")
-        
-        resultado = PedidoExtraido.model_validate_json(response.text)
-        
-        # 2. Salva no cache para a próxima vez
-        save_to_cache(caminho_arquivo, resultado)
-        return resultado
-        
-    finally:
-        # Limpeza: Sempre deletar arquivos do servidor do Google depois de usados!
-        if arquivo_upload:
-            client.files.delete(name=arquivo_upload.name)
-            print("Arquivo apagado do servidor do Google.")
+    if not response or not response.text:
+        raise ultimo_erro or RuntimeError("Resposta vazia da API do Gemini")
+    
+    resultado = PedidoExtraido.model_validate_json(response.text)
+    
+    # 2. Salva no cache para a próxima vez
+    save_to_cache(caminho_arquivo, resultado)
+    return resultado
