@@ -18,9 +18,15 @@ from src.ipa.executor import StubExecutor
 from src.ipa.workflow import OrquestradorIPA
 
 
+import json
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Executa o Orquestrador IPA em lotes de documentos da inbox.")
     parser.add_argument("--limite", "-n", type=int, default=10, help="Quantidade máxima de documentos a processar (default: 10).")
+    parser.add_argument("--inicio", "-i", type=int, default=1, help="Número/offset do documento inicial (1 a 80).")
+    parser.add_argument("--docs", "-d", type=str, default="", help="IDs específicos separados por vírgula (ex: DOC-0012,DOC-0039).")
+    parser.add_argument("--categoria", "-c", choices=["limpo", "ruidoso", "adversarial"], default=None, help="Filtrar por categoria.")
+    parser.add_argument("--split", "-s", choices=["dev", "teste"], default=None, help="Filtrar por split (dev: 1-30, teste: 31-80).")
     parser.add_argument("--executor", "-e", choices=["stub", "rpa"], default="stub", help="Tipo de executor a utilizar.")
     parser.add_argument("--pasta", "-p", type=str, default="data/inbox", help="Pasta com os documentos de entrada.")
     args = parser.parse_args()
@@ -30,10 +36,56 @@ def main() -> None:
         print(f"[ERRO] Nenhum documento encontrado em '{args.pasta}'.")
         sys.exit(1)
 
-    selecionados = arquivos[: args.limite]
+    # 1. Filtro por IDs específicos
+    if args.docs:
+        alvos = {d.strip().upper() for d in args.docs.split(",") if d.strip()}
+        # Suporta tanto "39" quanto "DOC-0039"
+        alvos_normalizados = set()
+        for a in alvos:
+            alvos_normalizados.add(a if a.startswith("DOC-") else f"DOC-{int(a):04d}")
+        arquivos = [arq for arq in arquivos if Path(arq).stem in alvos_normalizados]
+
+    # 2. Filtro por Split
+    if args.split == "dev":
+        arquivos = arquivos[:30]
+    elif args.split == "teste":
+        arquivos = arquivos[30:]
+
+    # 3. Filtro por Categoria (lendo do gabarito em data/gold)
+    if args.categoria:
+        filtrados = []
+        for arq in arquivos:
+            doc_id = Path(arq).stem
+            gold_file = Path("data/gold") / f"{doc_id}.json"
+            if gold_file.exists():
+                try:
+                    cat = json.loads(gold_file.read_text(encoding="utf-8")).get("categoria", "").lower()
+                    if cat == args.categoria.lower():
+                        filtrados.append(arq)
+                except Exception:
+                    pass
+        arquivos = filtrados
+
+    # 4. Offset de início e limite
+    if not args.docs:
+        offset = max(0, args.inicio - 1)
+        selecionados = arquivos[offset : offset + args.limite]
+    else:
+        selecionados = arquivos
+
+    if not selecionados:
+        print(f"[AVISO] Nenhum documento atendeu aos filtros selecionados.")
+        sys.exit(0)
+
     print(f"\n=======================================================")
     print(f" ORQUESTRADOR IPA: Executando Lote ({len(selecionados)} docs)")
     print(f" Modo do Executor: {args.executor.upper()}")
+    if args.docs:
+        print(f" Filtro IDs:       {args.docs}")
+    if args.categoria:
+        print(f" Categoria:        {args.categoria.upper()}")
+    if args.split:
+        print(f" Split:            {args.split.upper()}")
     print(f"=======================================================\n")
 
     orquestrador = OrquestradorIPA(tipo_executor=args.executor)
