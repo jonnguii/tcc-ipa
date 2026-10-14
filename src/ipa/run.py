@@ -9,6 +9,11 @@ import sys
 import time
 from pathlib import Path
 
+# Garante que a raiz do projeto esteja no path ao rodar diretamente o script
+raiz_projeto = Path(__file__).resolve().parents[2]
+if str(raiz_projeto) not in sys.path:
+    sys.path.insert(0, str(raiz_projeto))
+
 from src.ipa.executor import StubExecutor
 from src.ipa.workflow import OrquestradorIPA
 
