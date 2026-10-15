@@ -35,18 +35,21 @@ uv run uvicorn erp_sim.main:app --port 8000
 ### Executando o teste automatizado (Modo Invisível / Padrão):
 Abra outro terminal e execute:
 ```bash
-uv run python teste_rpa.py
+uv run python -m src.ipa.run --limite 1 --executor rpa
 ```
-O robô executará em segundo plano (headless) em cerca de 4 segundos e exibirá o comprovante e o número do pedido gerado no terminal.
+Ou execute a suíte de testes de integração com Playwright:
+```bash
+uv run pytest tests/test_integracao_rpa.py -v
+```
 
 ### Assistindo o robô trabalhar ao vivo na sua tela (Modo Visível):
-Para demonstrar para a banca examinadora do TCC ou para ver o navegador abrindo e digitando em tempo real:
+Para demonstrar para a banca examinadora do TCC ou ver o navegador abrindo e digitando em tempo real:
 
 - **Linux / macOS:**
   ```bash
-  RPA_HEADLESS=false uv run python teste_rpa.py
+  RPA_HEADLESS=false uv run python -m src.ipa.run --limite 1 --executor rpa
   ```
 - **Windows (PowerShell):**
   ```powershell
-  $env:RPA_HEADLESS = "false"; uv run python teste_rpa.py
+  $env:RPA_HEADLESS = "false"; uv run python -m src.ipa.run --limite 1 --executor rpa
   ```

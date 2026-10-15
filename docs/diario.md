@@ -35,10 +35,23 @@
   - **UI Split View**: Tela no ERP dividida em duas colunas (documento original à esquerda vs formulário interativo de correção à direita com integração ao catálogo de produtos).
   - **Cronômetro Operacional**: Medição automática do tempo de homologação humana (`tempo_revisao_s`) em milissegundos para viabilizar as comparações estatísticas do TCC.
   - **Higienização Visual**: Remoção de emojis e artefatos decorativos para manter aderência estrita aos padrões corporativos e de acessibilidade WCAG.
-  - **Fase 10 concluída (Integração com o Robô Real Playwright - Trilha B)**:
+- **Fase 10 concluída (Integração com o Robô Real Playwright - Trilha B)**:
   - **Ponte Orquestrador <-> RPA**: Conexão da esteira à execução real do navegador Chromium via `RpaExecutor` e `rpa/bot.py`.
   - **Prova de Idempotência Zero**: Validação em lote demonstrando que reexecuções de documentos previamente cadastrados retornam status `duplicado` e não duplicam linhas no ERP, reduzindo o tempo de processamento pela metade.
   - **Despacho pela Revisão Humana**: Garantida a resolução e cadastramento de clientes ao aprovar pendências na tela `/revisoes/{id}`, despachando o robô real de forma transparente.
   - **Evidências Visuais de Auditoria**: Geração automatizada de prints de tela cheia em `rpa/evidencias/` para comprovação de cada transação realizada.
   - **Qualidade e Testes de Integração**: Suíte `tests/test_integracao_rpa.py` adicionada, totalizando 36 testes automatizados verdes com 100% de aprovação no `pytest`.
+
+## 2026-10-14
+- **Fase 11 concluída (Bateria Experimental Científica e Congelamento)**:
+  - **Congelamento Metodológico**: Tag git `freeze-v1` criada antes da execução no conjunto de TESTE para garantia de integridade contra vazamento de dados.
+  - **EXP1 (Produtividade)**: Demonstração de speed-up de 8.2x (mediana de 9.03s no IPA contra 74.37s no processo manual humano) e 0% de erro operacional contra 10% de erros manuais.
+  - **EXP2 (Regex Baseline vs IA)**: O parser determinístico regex obteve acurácia de apenas 29.3% nos ruidosos e 20% nos adversariais; a IA atingiu 55% e 100% respectivamente, com ganho de até +80 pontos percentuais.
+  - **EXP3 (Extração de Entidades)**: Acurácia exata de 100% para Cliente e Data de Entrega, e F1-score médio de 0.82 nos produtos e quantidades no conjunto de teste.
+  - **EXP4 (Curva Risco vs Cobertura)**: Varredura de limiar de confiança (0.50 a 0.99) comprovando que a malha de regras assegura alta cobertura mantendo o erro residual sob controle estrito.
+  - **EXP5 (Idempotência e Resiliência do Robô)**: 100% de taxa de sucesso na primeira submissão e 100% de detecção de duplicidade na re-execução (zero duplicações).
+  - **EXP6 (Auditoria Adversarial)**: Taxa de bloqueio de 83.3% para injeções de prompt no motor determinístico de segurança.
+  - **EXP7 (Custos e Latência)**: Custo financeiro médio calculado em R$ 0,00044 por pedido (~R$ 0,05 a cada 100 pedidos), com latência mediana ponta a ponta com cache de apenas 0.20s.
+  - **Artefatos Produzidos**: CSVs brutos em `results/raw/`, tabelas científicas T1 a T6 em `results/tables/` e relatório executivo em `results/RESULTADOS.md`.
+  - **Organização Arquitetural**: Criação de `docs/DICIONARIO_SISTEMA.md`, `docs/GUIA_COMANDOS.md`, READMEs dedicados em todas as pastas e remoção de scripts obsoletos da raiz.
 
