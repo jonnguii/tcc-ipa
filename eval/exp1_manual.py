@@ -48,6 +48,7 @@ def main() -> None:
     parser.add_argument("--participante", "-p", type=str, default="Participante 1", help="Nome ou identificador do operador.")
     parser.add_argument("--lote", "-l", type=int, choices=[1, 2, 3], default=1, help="Lote de 10 documentos (1: docs 1-10, 2: docs 11-20, 3: docs 21-30).")
     parser.add_argument("--simular", action="store_true", help="Gera dados sintéticos realistas para preenchimento de teste manual de base.")
+    parser.add_argument("--reset", action="store_true", help="Zera o arquivo de resultados para iniciar uma nova coleta do zero.")
     args = parser.parse_args()
 
     todos_docs = selecionar_documentos_exp1()
@@ -57,6 +58,35 @@ def main() -> None:
     csv_path = raiz_projeto / "results" / "raw" / "exp1_manual.csv"
     csv_path.parent.mkdir(parents=True, exist_ok=True)
 
+    if args.reset and csv_path.exists():
+        csv_path.unlink()
+        print(f"🗑️ Arquivo {csv_path.name} resetado com sucesso para nova coleta!")
+
+    # Se o arquivo atual contiver dados da simulação prévia ("Participante 1") e um operador real
+    # estiver iniciando a coleta, salva backup do simulado e inicia o CSV limpo para a pessoa.
+    if not args.simular and csv_path.exists() and csv_path.stat().st_size > 0:
+        with open(csv_path, "r", encoding="utf-8") as f:
+            linhas = [l for l in f.readlines() if l.strip()]
+        if len(linhas) > 1 and "Participante 1" in linhas[1] and args.participante != "Participante 1":
+            simulado_path = raiz_projeto / "results" / "raw" / "exp1_manual_simulado.csv"
+            if not simulado_path.exists():
+                import shutil
+                shutil.copy2(csv_path, simulado_path)
+            csv_path.unlink()
+            print(f"ℹ️ Detectada coleta de operador real ('{args.participante}').")
+            print(f"   Backup do baseline simulado preservado em: {simulado_path.name}")
+            print(f"   Iniciando registro de dados empíricos reais limpos!\n")
+
+    # Identifica documentos que já foram registrados pelo operador para permitir retomar de onde parou (sem duplicar)
+    docs_ja_registrados: set[str] = set()
+    if csv_path.exists() and csv_path.stat().st_size > 0:
+        with open(csv_path, "r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            header = next(reader, None)
+            for row in reader:
+                if len(row) >= 2:
+                    docs_ja_registrados.add(row[1].strip())
+
     arquivo_existe = csv_path.exists()
 
     if args.simular:
@@ -65,7 +95,7 @@ def main() -> None:
         print(f"\n[EXP1] Gerando baseline manual simulado para {len(docs_lote)} documentos...")
         with open(csv_path, "a", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
-            if not arquivo_existe:
+            if not arquivo_existe or csv_path.stat().st_size == 0:
                 writer.writerow(["participante", "doc_id", "categoria", "tipo_arquivo", "tempo_s", "erros"])
             for doc_id in docs_lote:
                 gold_path = raiz_projeto / "data" / "gold" / f"{doc_id}.json"
@@ -85,17 +115,17 @@ def main() -> None:
         return
 
     print("\n" + "=" * 65)
-    print(f" EXP1: COLETA DE TEMPO MANUAL (LINHA DE BASE)")
+    print(" EXP1: COLETA DE TEMPO MANUAL (LINHA DE BASE DO TCC)")
     print(f" Operador:      {args.participante}")
-    print(f" Lote:          {args.lote} (10 documentos)")
-    print(f" URL do ERP:    http://localhost:8000/pedidos/novo")
+    print(f" Lote:          {args.lote} de 3 (Documentos {inicio + 1} a {inicio + 10} do conjunto TESTE)")
+    print(" URL do ERP:    http://localhost:8000/pedidos/novo")
     print("=" * 65)
-    print("Instruções:")
+    print("Instruções para o Operador:")
     print("1. Abra a tela de 'Novo Pedido' no ERP.")
-    print("2. A cada documento exibido, abra o arquivo correspondente em data/inbox/.")
-    print("3. Pressione [ENTER] no terminal no momento em que começar a ler.")
+    print("2. A cada documento exibido, leia o pedido mostrado na tela ou abra o arquivo.")
+    print("3. Pressione [ENTER] no terminal no momento em que começar a digitar.")
     print("4. Digite os dados na tela do ERP e clique em 'Salvar Pedido'.")
-    print("5. Assim que a tela confirmar 'Pedido Criado', pressione [ENTER] no terminal.\n")
+    print("5. Assim que o ERP salvar com sucesso, pressione [ENTER] no terminal.\n")
 
     input("Pressione [ENTER] quando estiver com o ERP aberto para começar...")
 
@@ -105,15 +135,27 @@ def main() -> None:
             writer.writerow(["participante", "doc_id", "categoria", "tipo_arquivo", "tempo_s", "erros"])
 
         for idx, doc_id in enumerate(docs_lote, start=1):
+            if doc_id in docs_ja_registrados:
+                print(f"[{idx}/10] ⏩ Documento {doc_id} já registrado anteriormente. Pulando...")
+                continue
+
             gold_path = raiz_projeto / "data" / "gold" / f"{doc_id}.json"
             gold = json.loads(gold_path.read_text(encoding="utf-8"))
             cat = gold.get("categoria", "limpo")
             tipo = gold.get("tipo_arquivo", "txt")
             caminho_doc = raiz_projeto / "data" / "inbox" / f"{doc_id}.{tipo}"
 
-            print("-" * 65)
-            print(f"[{idx}/10] Documento: {doc_id} ({caminho_doc.name})")
-            print(f"Caminho: {caminho_doc}")
+            print("\n" + "-" * 65)
+            print(f"[{idx}/10] Documento do Teste: {doc_id} ({caminho_doc.name})")
+            print(f"Arquivo: {caminho_doc}")
+
+            if tipo == "txt" and caminho_doc.exists():
+                conteudo_txt = caminho_doc.read_text(encoding="utf-8").strip()
+                print("┌── [ CONTEÚDO DO PEDIDO ] ──────────────────────────────")
+                for linha in conteudo_txt.splitlines():
+                    print(f"│  {linha}")
+                print("└────────────────────────────────────────────────────────")
+
             input("-> Pressione [ENTER] para INICIAR a cronometragem...")
             t_inicio = time.perf_counter()
 
@@ -126,9 +168,10 @@ def main() -> None:
 
             writer.writerow([args.participante, doc_id, cat, tipo, duracao_s, erros])
             f.flush()
+            docs_ja_registrados.add(doc_id)
 
     print("\n" + "=" * 65)
-    print(f"✅ Coleta do lote {args.lote} finalizada com sucesso!")
+    print(f"✅ Coleta do lote {args.lote} finalizada!")
     print(f"Dados registrados em: {csv_path.resolve()}")
     print("=" * 65 + "\n")
 

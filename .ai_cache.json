@@ -1372,5 +1372,23 @@
         "quantidade": 5.0
       }
     ]
+  },
+  "0a2c0ead210b5999e11e55c96e9463e1": {
+    "ref_id": "doc-0008",
+    "cliente": {
+      "id": null,
+      "novo": null,
+      "nome": "acougue boi gordo",
+      "cnpj_cpf": "21753377000191",
+      "email": null
+    },
+    "data_entrega": "2026-11-18",
+    "observacoes": "",
+    "itens": [
+      {
+        "codigo": "p-025",
+        "quantidade": 6.0
+      }
+    ]
   }
 }

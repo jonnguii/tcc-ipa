@@ -44,13 +44,18 @@ def form_produto_novo(request: Request):
     return templates.TemplateResponse(request=request, name="produtos_novo.html")
 
 @app.post("/produtos/novo")
-def criar_produto(codigo: str = Form(...), descricao: str = Form(...), unidade: str = Form(...), preco: str = Form(...)):
+def criar_produto(request: Request, codigo: str = Form(...), descricao: str = Form(...), unidade: str = Form(...), preco: str = Form(...)):
     try:
         preco_float = float(preco)
         repo.criar_produto(codigo, descricao, unidade, preco_float)
         return RedirectResponse(url="/produtos?msg=Produto+criado", status_code=303)
     except Exception as e:
-        return templates.TemplateResponse(request=request, name="produtos_novo.html", context={"error": str(e)})
+        err = str(e)
+        if "erp_produtos_codigo_key" in err or "duplicate key" in err:
+            msg_erro = f"Já existe um produto cadastrado com o código '{codigo}'. Escolha outro código."
+        else:
+            msg_erro = f"Erro ao salvar produto: {err}"
+        return templates.TemplateResponse(request=request, name="produtos_novo.html", context={"error": msg_erro})
 
 @app.get("/produtos/{produto_id}/editar", response_class=HTMLResponse)
 def form_produto_editar(request: Request, produto_id: int):
@@ -66,8 +71,13 @@ def atualizar_produto(request: Request, produto_id: int, codigo: str = Form(...)
         repo.atualizar_produto(produto_id, codigo, descricao, unidade, preco_float)
         return RedirectResponse(url="/produtos?msg=Produto+atualizado", status_code=303)
     except Exception as e:
+        err = str(e)
+        if "erp_produtos_codigo_key" in err or "duplicate key" in err:
+            msg_erro = f"Já existe outro produto cadastrado com o código '{codigo}'."
+        else:
+            msg_erro = f"Erro ao atualizar produto: {err}"
         produto = repo.get_produto_by_id(produto_id)
-        return templates.TemplateResponse(request=request, name="produtos_editar.html", context={"produto": produto, "error": str(e)})
+        return templates.TemplateResponse(request=request, name="produtos_editar.html", context={"produto": produto, "error": msg_erro})
 
 @app.post("/produtos/{produto_id}/excluir")
 def excluir_produto(produto_id: int):
@@ -83,9 +93,17 @@ def form_cliente(request: Request):
     return templates.TemplateResponse(request=request, name="clientes_novo.html")
 
 @app.post("/clientes/novo")
-def criar_cliente(nome: str = Form(...), cnpj_cpf: str = Form(...), email: str = Form(...)):
-    repo.criar_cliente(nome, cnpj_cpf, email)
-    return RedirectResponse(url="/clientes?msg=Cliente+criado", status_code=303)
+def criar_cliente(request: Request, nome: str = Form(...), cnpj_cpf: str = Form(...), email: str = Form(...)):
+    try:
+        repo.criar_cliente(nome, cnpj_cpf, email)
+        return RedirectResponse(url="/clientes?msg=Cliente+criado", status_code=303)
+    except Exception as e:
+        err = str(e)
+        if "duplicate key" in err:
+            msg_erro = f"Já existe um cliente cadastrado com este documento ({cnpj_cpf}) ou e-mail ({email})."
+        else:
+            msg_erro = f"Erro ao salvar cliente: {err}"
+        return templates.TemplateResponse(request=request, name="clientes_novo.html", context={"error": msg_erro})
 
 @app.get("/clientes/{cliente_id}/editar", response_class=HTMLResponse)
 def form_cliente_editar(request: Request, cliente_id: int):
