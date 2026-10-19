@@ -15,7 +15,13 @@ Desenvolvido como projeto de Trabalho de Conclusão de Curso (TCC) em Sistemas d
 
 ---
 
-## Fluxo da Esteira
+## Fluxo da Esteira (Arquitetura BPMN 2.0 TO-BE)
+
+[![Diagrama de Processo BPMN 2.0 - Arquitetura TO-BE](docs/diagramas/bpmn_to_be.png)](docs/diagramas/bpmn_to_be.svg)
+
+> **Modelagem Oficial**: [`bpmn_to_be.bpmn`](docs/diagramas/bpmn_to_be.bpmn) (editável no [bpmn.io](https://demo.bpmn.io)) • [Vetor SVG](docs/diagramas/bpmn_to_be.svg) • [Documentação dos diagramas](docs/diagramas/README.md)
+
+### Resumo Lógico da Triagem
 
 ```text
 [ Documento de Entrada ] (TXT, PDF, PNG em data/inbox/)
@@ -157,7 +163,7 @@ Os resultados são consolidados em:
 
 - [Dicionário do Sistema e Decisões Técnicas](docs/DICIONARIO_SISTEMA.md)
 - [Manual Operacional de Comandos (CLI)](docs/GUIA_COMANDOS.md)
-- [Diagrama de Processo BPMN 2.0](docs/diagramas/bpmn_to_be.bpmn)
+- [Diagramas de Processo BPMN 2.0 (Imagem, SVG e BPMN)](docs/diagramas/README.md)
 - [Diário de Bordo](docs/diario.md)
 - [Rastreamento de Progresso](docs/PROGRESSO.md)
 
