@@ -60,8 +60,10 @@ def main() -> None:
             print(f"[{idx}/{len(docs_teste)}] Extraindo {doc_id}...", end="", flush=True)
 
             pedido_pred = processar_documento(str(caminho_doc))
-            res_roteamento = rotear_pedido(pedido_pred)
-            avaliacao = avaliar_campos_criticos(pedido_pred, gold)
+            texto_bruto = caminho_doc.read_text(encoding="utf-8", errors="ignore") if tipo == "txt" else None
+            res_roteamento = rotear_pedido(pedido_pred, texto_bruto_documento=texto_bruto)
+            pedido_resolvido = res_roteamento.pedido_pronto if res_roteamento.pedido_pronto else pedido_pred
+            avaliacao = avaliar_campos_criticos(pedido_resolvido, gold)
 
             writer.writerow([
                 doc_id,
@@ -92,7 +94,7 @@ def main() -> None:
         taxa = (acertos / tot) * 100.0 if tot > 0 else 0.0
         print(f"• Categoria {cat.upper():<12}: F1 Médio={f1_medio:.4f} | Acertos Completos={acertos}/{tot} ({taxa:.1f}%)")
 
-    print(f"\n✅ Resultados salvos em: {csv_path.resolve()}\n")
+    print(f"\n[OK] Resultados salvos em: {csv_path.resolve()}\n")
 
 
 if __name__ == "__main__":

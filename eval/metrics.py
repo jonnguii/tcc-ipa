@@ -12,8 +12,8 @@ from src.ipa.schemas import PedidoExtraido
 
 def calcular_metricas_itens(itens_pred: list[dict[str, Any]], itens_gold: list[dict[str, Any]]) -> dict[str, float]:
     """Calcula Precision, Recall e F1 para conjuntos de itens considerando (código, quantidade)."""
-    set_pred = {(it["codigo"], float(it["quantidade"])) for it in itens_pred}
-    set_gold = {(it["codigo"], float(it["quantidade"])) for it in itens_gold}
+    set_pred = {(str(it.get("codigo", "")).strip().upper(), float(it.get("quantidade", 0))) for it in itens_pred if it.get("codigo")}
+    set_gold = {(str(it.get("codigo", "")).strip().upper(), float(it.get("quantidade", 0))) for it in itens_gold if it.get("codigo")}
 
     if not set_gold and not set_pred:
         return {"precision": 1.0, "recall": 1.0, "f1": 1.0}

@@ -76,15 +76,28 @@ def rotear_pedido(
     catalogo_produtos: list[dict[str, Any]] | None = None,
     clientes_cadastrados: list[dict[str, Any]] | None = None,
     ignorar_data_retroativa: bool = False,
+    texto_bruto_documento: str | None = None,
 ) -> ResultadoRoteamento:
     """Analisa o PedidoExtraido através da malha de regras e define o roteamento determinístico."""
     motivos_rejeicao: list[str] = []
     motivos_revisao: list[str] = []
 
-    # 1. Checagem Anti-Injeção e Fraude
+    # 1. Checagem Anti-Injeção e Fraude em todas as superfícies de entrada
+    if texto_bruto_documento and detectar_conteudo_adversarial(texto_bruto_documento):
+        motivos_rejeicao.append("Conteúdo adversarial ou instrução não autorizada detectada no documento de entrada")
+
     obs = pedido.observacoes or ""
     if detectar_conteudo_adversarial(obs):
         motivos_rejeicao.append("Conteúdo adversarial ou instrução não autorizada detectada nas observações")
+
+    if pedido.ref_id and detectar_conteudo_adversarial(pedido.ref_id):
+        motivos_rejeicao.append("Conteúdo malicioso detectado na referência do pedido")
+
+    if pedido.cliente:
+        if detectar_conteudo_adversarial(pedido.cliente.nome):
+            motivos_rejeicao.append(f"Conteúdo malicioso detectado no nome do cliente: '{pedido.cliente.nome}'")
+        if detectar_conteudo_adversarial(pedido.cliente.email):
+            motivos_rejeicao.append(f"Conteúdo malicioso detectado no email do cliente: '{pedido.cliente.email}'")
 
     for item in pedido.itens or []:
         if detectar_conteudo_adversarial(item.codigo):

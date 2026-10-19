@@ -72,9 +72,9 @@ def main() -> None:
             status = res.get("status")
             idempotente = (status == "duplicado")
             writer.writerow([2, p["ref_id"], status, dt, int(idempotente), res.get("mensagem", "")])
-            print(f"• {p['ref_id']}: Status={status} ({dt:.3f}s) -> {'🛡️ Idempotência Confirmada' if idempotente else 'Falha'}")
+            print(f"• {p['ref_id']}: Status={status} ({dt:.3f}s) -> {'[SEGURO] Idempotência Confirmada' if idempotente else 'Falha'}")
 
-    print(f"\n✅ Resultados salvos em: {csv_path.resolve()}\n")
+    print(f"\n[OK] Resultados salvos em: {csv_path.resolve()}\n")
 
 
 if __name__ == "__main__":

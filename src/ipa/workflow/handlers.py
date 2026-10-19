@@ -31,6 +31,7 @@ def handler_regras_triagem(
     pedido: PedidoExtraido,
     catalogo_produtos: list[dict[str, Any]] | None = None,
     clientes_cadastrados: list[dict[str, Any]] | None = None,
+    texto_bruto_documento: str | None = None,
 ) -> tuple[ResultadoRoteamento, EventoEtapa]:
     """Estágio 2: Normalização, validação fiscal, RapidFuzz e triagem determinística."""
     with CronometroEtapa("REGRAS_TRIAGEM") as crono:
@@ -38,6 +39,7 @@ def handler_regras_triagem(
             pedido,
             catalogo_produtos=catalogo_produtos,
             clientes_cadastrados=clientes_cadastrados,
+            texto_bruto_documento=texto_bruto_documento,
         )
         crono.detalhes["decisao"] = resultado.decisao.value
         crono.detalhes["confianca"] = resultado.confianca_geral

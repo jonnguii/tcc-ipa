@@ -108,7 +108,7 @@ def main() -> None:
     print(f"• Latência da IA (Mediana):    {estat_ia['mediana']:.3f}s | P90: {estat_ia['p90']:.3f}s")
     print(f"• Latência das Regras:         {estat_regras['mediana']:.3f}s | P90: {estat_regras['p90']:.3f}s")
     print(f"• Latência Ponta a Ponta:      {estat_total['mediana']:.3f}s | P90: {estat_total['p90']:.3f}s")
-    print(f"\n✅ Resultados salvos em: {csv_path.resolve()}\n")
+    print(f"\n[OK] Resultados salvos em: {csv_path.resolve()}\n")
 
 
 if __name__ == "__main__":
