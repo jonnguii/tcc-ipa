@@ -39,8 +39,10 @@ def main() -> None:
         caminho_doc = raiz_projeto / "data" / "inbox" / f"{doc_id}.{tipo}"
 
         pedido_pred = processar_documento(str(caminho_doc))
-        res_roteamento = rotear_pedido(pedido_pred)
-        avaliacao = avaliar_campos_criticos(pedido_pred, gold)
+        texto_bruto = caminho_doc.read_text(encoding="utf-8", errors="ignore") if tipo == "txt" else None
+        res_roteamento = rotear_pedido(pedido_pred, texto_bruto_documento=texto_bruto)
+        pedido_despachado = res_roteamento.pedido_pronto if (res_roteamento.decisao.value == "AUTOMATICO" and res_roteamento.pedido_pronto) else pedido_pred
+        avaliacao = avaliar_campos_criticos(pedido_despachado, gold)
 
         dados_docs.append({
             "doc_id": doc_id,
@@ -94,7 +96,7 @@ def main() -> None:
         print(f"• Ponto Ótimo Selecionado (H3): Limiar = {ponto_otimo['limiar']:.2f}")
         print(f"• Cobertura de Automação:      {ponto_otimo['cobertura']:.1f}%")
         print(f"• Erro Residual nos Pedidos:   {ponto_otimo['erro']:.1f}% (Meta <= 2.0% atingida!)")
-    print(f"\n✅ Resultados salvos em: {csv_path.resolve()}\n")
+    print(f"\n[OK] Resultados salvos em: {csv_path.resolve()}\n")
 
 
 if __name__ == "__main__":

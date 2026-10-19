@@ -16,45 +16,45 @@ from erp_sim.db import supabase
 
 
 def limpar_pedidos_banco():
-    print("🧹 Limpando pedidos e itens no Supabase...")
+    print("[LIMPEZA] Limpando pedidos e itens no Supabase...")
     try:
         res = supabase.table("erp_pedidos").delete().neq("id", 0).execute()
-        print(f"   ✓ {len(res.data)} pedidos apagados (itens removidos em cascata).")
+        print(f"   [OK] {len(res.data)} pedidos apagados (itens removidos em cascata).")
     except Exception as e:
-        print(f"   ❌ Erro ao limpar erp_pedidos: {e}")
+        print(f"   [FALHA] Erro ao limpar erp_pedidos: {e}")
 
 
 def limpar_revisoes():
-    print("🧹 Limpando fila de revisões...")
+    print("[LIMPEZA] Limpando fila de revisões...")
     # Remoto
     try:
         res = supabase.table("ipa_revisoes").delete().neq("id", 0).execute()
-        print(f"   ✓ {len(res.data)} revisões remotas apagadas.")
+        print(f"   [OK] {len(res.data)} revisões remotas apagadas.")
     except Exception:
         pass
     # Local
     caminho_local = raiz_projeto / "data" / "revisoes_local.json"
     if caminho_local.exists():
         caminho_local.write_text("[]\n", encoding="utf-8")
-        print("   ✓ data/revisoes_local.json zerado.")
+        print("   [OK] data/revisoes_local.json zerado.")
 
 
 def limpar_evidencias():
-    print("🧹 Limpando evidências visuais do robô...")
+    print("[LIMPEZA] Limpando evidências visuais do robô...")
     pasta_evidencias = raiz_projeto / "rpa" / "evidencias"
     if pasta_evidencias.exists():
         removidos = 0
         for img in pasta_evidencias.glob("*.png"):
             img.unlink()
             removidos += 1
-        print(f"   ✓ {removidos} screenshots removidos em rpa/evidencias/.")
+        print(f"   [OK] {removidos} screenshots removidos em rpa/evidencias/.")
 
 
 def limpar_cache_ia():
-    print("🧹 Limpando cache do Gemini (.ai_cache.json)...")
+    print("[LIMPEZA] Limpando cache do Gemini (.ai_cache.json)...")
     cache_file = raiz_projeto / ".ai_cache.json"
     cache_file.write_text("{}\n", encoding="utf-8")
-    print("   ✓ .ai_cache.json zerado.")
+    print("   [OK] .ai_cache.json zerado.")
 
 
 def main():
@@ -99,7 +99,7 @@ def main():
     if modo == "2":
         limpar_cache_ia()
 
-    print("\n✅ Ambiente pronto para novos testes!\n")
+    print("\n[OK] Ambiente pronto para novos testes!\n")
 
 
 if __name__ == "__main__":

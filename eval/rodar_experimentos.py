@@ -33,15 +33,15 @@ def main() -> None:
     inicio_geral = time.perf_counter()
 
     for nome, cmd in PASSOS_EXPERIMENTAIS:
-        print(f"\n🚀 Executando: {nome}...")
+        print(f"\n[INICIANDO] Executando: {nome}...")
         res = subprocess.run(cmd, cwd=str(raiz_projeto))
         if res.returncode != 0:
-            print(f"❌ Erro na execução de {nome} (Código de saída: {res.returncode})")
+            print(f"[FALHA] Erro na execução de {nome} (Código de saída: {res.returncode})")
             sys.exit(res.returncode)
 
     duracao_total = time.perf_counter() - inicio_geral
     print("\n" + "=" * 70)
-    print(f"✅ BATERIA DE EXPERIMENTOS CONCLUÍDA EM {duracao_total:.2f}s!")
+    print(f"[OK] BATERIA DE EXPERIMENTOS CONCLUÍDA EM {duracao_total:.2f}s!")
     print(f"• Dados brutos: results/raw/*.csv")
     print(f"• Tabelas T1-T6: results/tables/*.md")
     print(f"• Relatório analítico: results/RESULTADOS.md")

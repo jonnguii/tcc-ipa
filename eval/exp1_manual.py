@@ -60,7 +60,7 @@ def main() -> None:
 
     if args.reset and csv_path.exists():
         csv_path.unlink()
-        print(f"🗑️ Arquivo {csv_path.name} resetado com sucesso para nova coleta!")
+        print(f"[REMOVIDO]️ Arquivo {csv_path.name} resetado com sucesso para nova coleta!")
 
     # Se o arquivo atual contiver dados da simulação prévia ("Participante 1") e um operador real
     # estiver iniciando a coleta, salva backup do simulado e inicia o CSV limpo para a pessoa.
@@ -111,7 +111,7 @@ def main() -> None:
                 erros = 1 if (cat != "limpo" and random.random() < 0.20) else 0
 
                 writer.writerow([args.participante, doc_id, cat, tipo, tempo_s, erros])
-        print(f"✅ Baseline manual salvo em {csv_path.resolve()}\n")
+        print(f"[OK] Baseline manual salvo em {csv_path.resolve()}\n")
         return
 
     print("\n" + "=" * 65)
@@ -136,7 +136,7 @@ def main() -> None:
 
         for idx, doc_id in enumerate(docs_lote, start=1):
             if doc_id in docs_ja_registrados:
-                print(f"[{idx}/10] ⏩ Documento {doc_id} já registrado anteriormente. Pulando...")
+                print(f"[{idx}/10] [AVANCAR] Documento {doc_id} já registrado anteriormente. Pulando...")
                 continue
 
             gold_path = raiz_projeto / "data" / "gold" / f"{doc_id}.json"
@@ -162,7 +162,7 @@ def main() -> None:
             input("-> Digitando no ERP... Pressione [ENTER] assim que clicar em 'Salvar'...")
             duracao_s = round(time.perf_counter() - t_inicio, 3)
 
-            print(f"✓ Concluído em {duracao_s:.2f} segundos!")
+            print(f"[OK] Concluído em {duracao_s:.2f} segundos!")
             erros_str = input("Houve algum erro/dúvida de digitação? (0 = Não, 1 = Sim) [default: 0]: ").strip()
             erros = 1 if erros_str == "1" else 0
 
@@ -171,7 +171,7 @@ def main() -> None:
             docs_ja_registrados.add(doc_id)
 
     print("\n" + "=" * 65)
-    print(f"✅ Coleta do lote {args.lote} finalizada!")
+    print(f"[OK] Coleta do lote {args.lote} finalizada!")
     print(f"Dados registrados em: {csv_path.resolve()}")
     print("=" * 65 + "\n")
 

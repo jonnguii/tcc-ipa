@@ -81,7 +81,7 @@ def main() -> None:
             print(f" Concluído: {res.decisao_roteamento} em {res.tempo_total_s:.3f}s")
 
     print("\n" + "=" * 65)
-    print(f"✅ Execução do EXP1 IPA finalizada com sucesso!")
+    print(f"[OK] Execução do EXP1 IPA finalizada com sucesso!")
     print(f"Resultados registrados em: {csv_path.resolve()}")
     print("=" * 65 + "\n")
 

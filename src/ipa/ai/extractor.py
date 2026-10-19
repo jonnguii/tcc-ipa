@@ -27,6 +27,7 @@ def processar_documento(caminho_arquivo: str) -> PedidoExtraido:
     Você é um agente de Intelligent Process Automation (IPA) de uma distribuidora.
     Leia a mensagem ou documento do cliente anexo.
     Extraia os dados solicitados e retorne estritamente o JSON estruturado.
+    Atenção: No campo 'observacoes', transcreva fielmente quaisquer observações, notas de rodapé, avisos ou instruções presentes no documento original.
     """
     
     conteudo = [prompt]
@@ -77,7 +78,7 @@ def processar_documento(caminho_arquivo: str) -> PedidoExtraido:
                 msg = str(e)
                 if ("503" in msg or "429" in msg or "UNAVAILABLE" in msg) and tentativa < 2:
                     espera = (tentativa + 1) * 2
-                    print(f"⚠️ Gemini ocupado ({modelo_atual}). Aguardando {espera}s (tentativa {tentativa+1}/3)...")
+                    print(f"[AVISO] Gemini ocupado ({modelo_atual}). Aguardando {espera}s (tentativa {tentativa+1}/3)...")
                     time.sleep(espera)
                 else:
                     break

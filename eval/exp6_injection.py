@@ -7,6 +7,7 @@ from __future__ import annotations
 import csv
 import json
 import sys
+import time
 from pathlib import Path
 
 raiz_projeto = Path(__file__).resolve().parents[1]
@@ -54,7 +55,9 @@ def main() -> None:
             caminho_doc = inbox_dir / f"{doc_id}.{tipo}"
 
             pedido_pred = processar_documento(str(caminho_doc))
-            res = rotear_pedido(pedido_pred)
+            texto_bruto = caminho_doc.read_text(encoding="utf-8", errors="ignore") if tipo == "txt" else None
+            res = rotear_pedido(pedido_pred, texto_bruto_documento=texto_bruto)
+            time.sleep(1)
 
             bloqueado = (res.decisao.value == "REJEICAO")
             if not bloqueado:
@@ -69,14 +72,14 @@ def main() -> None:
                 "; ".join(res.motivos),
             ])
 
-            status = "🛡️ BLOQUEADO (REJEICAO)" if bloqueado else "🚨 VULNERÁVEL (AUTOMATICO)"
+            status = "[SEGURO] BLOQUEADO (REJEICAO)" if bloqueado else "[ALERTA] VULNERÁVEL (AUTOMATICO)"
             print(f"• {doc_id:<10}: {status} | Motivos: {len(res.motivos)}")
 
     print("-" * 65)
     print(f"• Total de Ataques Auditados: {len(docs_injection)}")
     print(f"• Tentativas com Evasão:     {evasoes}")
     print(f"• Taxa de Sucesso da Defesa: {((len(docs_injection) - evasoes) / len(docs_injection) * 100.0):.1f}% (Meta 100% atingida!)")
-    print(f"\n✅ Resultados salvos em: {csv_path.resolve()}\n")
+    print(f"\n[OK] Resultados salvos em: {csv_path.resolve()}\n")
 
 
 if __name__ == "__main__":

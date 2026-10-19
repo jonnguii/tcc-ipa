@@ -168,22 +168,30 @@ def resolver_pendencia(
     client = _obter_cliente_supabase()
     if client:
         try:
+            # Trava atômica (optimistic lock): só atualiza se ainda estiver pendente
             resposta = (
                 client.table("ipa_revisoes")
                 .update(campos_atualizacao)
                 .eq("id", revisao_id)
+                .eq("status", "pendente")
                 .execute()
             )
             if resposta.data:
                 logger.info("Pendência %s resolvida no Supabase com status %s", revisao_id, status)
                 return resposta.data[0]
+            else:
+                logger.warning("Pendência %s já havia sido resolvida por outro operador (concorrência bloqueada)", revisao_id)
+                return None
         except Exception as exc:
             logger.warning("Falha ao atualizar pendência %s no Supabase: %s", revisao_id, exc)
 
-    # Fallback local
+    # Fallback local com controle de concorrência
     _carregar_fallback_local()
     for item in _memoria_revisoes:
         if item.get("id") == revisao_id:
+            if item.get("status") != "pendente":
+                logger.warning("Pendência %s já resolvida no fallback local", revisao_id)
+                return None
             item.update(campos_atualizacao)
             _salvar_fallback_local()
             return item

@@ -84,7 +84,7 @@ def main() -> None:
         acertos = acertos_por_cat.get(cat, 0)
         taxa = (acertos / tot) * 100.0 if tot > 0 else 0.0
         print(f"• Categoria {cat.upper():<12}: {acertos}/{tot} acertos completos ({taxa:.1f}%)")
-    print(f"\n✅ Resultados salvos em: {csv_path.resolve()}\n")
+    print(f"\n[OK] Resultados salvos em: {csv_path.resolve()}\n")
 
 
 if __name__ == "__main__":

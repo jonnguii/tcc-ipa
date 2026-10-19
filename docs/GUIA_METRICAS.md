@@ -55,7 +55,7 @@ Abra o seu navegador de internet no endereço: **<http://localhost:8000/pedidos/
 
 Abra um **segundo terminal** na pasta do projeto e execute os 3 lotes de 10 pedidos cada.
 
-> 💡 **Dica:** O script possui **retomada automática**. Se você precisar pausar ou der `Ctrl+C` no meio, ao rodar de novo ele pula os pedidos que você já terminou e continua exatamente de onde parou!
+> [DICA] **Dica:** O script possui **retomada automática**. Se você precisar pausar ou der `Ctrl+C` no meio, ao rodar de novo ele pula os pedidos que você já terminou e continua exatamente de onde parou!
 
 #### Lote 1 (Pedidos 1 a 10):
 ```bash
@@ -84,21 +84,86 @@ uv run python eval/exp1_manual.py --participante "Seu Nome" --lote 3
 
 ---
 
-## 4. Gerando as Tabelas Finais do TCC
+## 4. Executando os Experimentos Automatizados (EXP2 a EXP7)
 
-Assim que você terminar os 3 lotes, execute este comando no terminal:
+Após registrar os tempos manuais do EXP1, você pode rodar os experimentos científicos da esteira automatizada para gerar todos os dados brutos de acurácia, segurança, resiliência e custos.
+
+Você pode rodar cada experimento individualmente ou executar todos de uma vez pelo script mestre.
+
+### Opção 1: Rodar os Experimentos Individualmente
+
+Execute os comandos abaixo no seu terminal (com o ambiente `uv` ativo):
+
+#### EXP1 (Automação IPA - Linha de Base do "Depois"):
+Mede o tempo gasto pela esteira automatizada nos mesmos 30 pedidos para calcular o Speed-Up comparado ao seu tempo manual:
+```bash
+uv run python eval/exp1_auto.py
+```
+
+#### EXP2 (Linha de Base com Expressões Regulares / Regex):
+Executa um parser determinístico tradicional baseado em Regex nos 50 documentos de teste, demonstrando cientificamente sua fragilidade diante de gírias e ruídos informais:
+```bash
+uv run python eval/exp2_regex.py
+```
+
+#### EXP3 (Acurácia de Extração Inteligente com IA):
+Avalia a precisão, revocação e F1-score campo a campo (cliente, data e produtos/quantidades) em todos os documentos do conjunto de teste:
+```bash
+uv run python eval/exp3_extracao.py
+```
+
+#### EXP4 (Curva de Risco vs Cobertura de Automação):
+Realiza a varredura de limiares de confiança (0.50 a 0.99) para comprovar a Hipótese H3 (erro residual no ERP controlado em <= 2%):
+```bash
+uv run python eval/exp4_limiares.py
+```
+
+#### EXP5 (Resiliência e Idempotência do Robô RPA):
+Executa o robô Playwright contra o ERP para demonstrar a criação correta de pedidos e a prevenção total contra duplicidade (zero faturamentos duplicados em reenvios):
+*(Certifique-se de que o ERP esteja rodando no Terminal 1).*
+```bash
+uv run python eval/exp5_rpa.py
+```
+
+#### EXP6 (Auditoria de Segurança contra Prompt Injection):
+Audita a barreira determinística de segurança contra tentativas de evasão, injeção de scripts e manipulação de pedidos (meta: 100% dos ataques bloqueados):
+```bash
+uv run python eval/exp6_injection.py
+```
+
+#### EXP7 (Custos Financeiros e Latência por Estágio):
+Decompõe o tempo de resposta por etapa (extração de IA, regras e execução) e calcula o custo em Reais (R$) por pedido:
+```bash
+uv run python eval/exp7_custos.py
+```
+
+---
+
+### Opção 2: Rodar a Bateria Completa com o Script Mestre (Recomendado)
+
+Se quiser rodar todos os passos automatizados de uma única vez em sequência:
+```bash
+uv run python eval/rodar_experimentos.py
+```
+O script mestre executará todos os testes da esteira e finalizará gerando automaticamente as tabelas consolidadas.
+
+---
+
+## 5. Gerando as Tabelas Finais do TCC
+
+Se você executou os experimentos individualmente ou acabou de terminar a coleta manual do EXP1, gere as tabelas consolidadas com:
 ```bash
 uv run python eval/charts.py
 ```
 
-Pronto! Todas as tabelas estatísticas do TCC serão recalculadas instantaneamente com os seus tempos reais.
+Pronto! Todas as tabelas estatísticas do TCC (T1 a T6) serão recalculadas instantaneamente com os seus dados empíricos reais.
 
 ---
 
-## 5. Onde encontrar o material para escrever a Monografia?
+## 6. Onde encontrar o material para escrever a Monografia?
 
 Abra o arquivo consolidado em:
-👉 **`results/RESULTADOS.md`**
+-> **`results/RESULTADOS.md`**
 
 Lá você encontrará todas as tabelas prontas em formato Markdown para copiar e colar no seu documento:
 - **Tabela T1 (Produtividade):** Compara o seu tempo médio e mediano contra os 9 segundos do robô IPA (demonstrando um speed-up de 7x a 9x mais rápido).
@@ -108,4 +173,3 @@ Lá você encontrará todas as tabelas prontas em formato Markdown para copiar e
 - **Tabela T5 (Resiliência RPA):** Demonstra como o robô tolera lentidão de servidor sem quebrar.
 - **Tabela T6 (Custos):** Demonstra que cada pedido custa frações de centavos de real via IA.
 
-Qualquer dúvida durante a operação, o João (Líder Técnico) e a equipe de desenvolvimento estão à disposição! Bom trabalho! 🚀

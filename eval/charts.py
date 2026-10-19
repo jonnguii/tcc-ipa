@@ -167,7 +167,7 @@ def gerar_tabela_t5_resiliencia_rpa_exp5() -> str:
         "| Rodada Experimental | Operação Executada | Pedidos Submetidos | Taxa de Sucesso | Taxa de Idempotência | Status Predominante |\n"
         "| :---: | :--- | :---: | :---: | :---: | :--- |\n"
         f"| **1 (Primeiro Lançamento)** | Inserção inicial no ERP | {len(r1)} | {taxa_sucesso_r1:.1f}% | - | Sucesso (#ID criado) |\n"
-        f"| **2 (Re-tentativa Idêntica)** | Re-processamento do mesmo lote | {len(r2)} | 100.0% | **{taxa_idemp_r2:.1f}%** | 🛡️ Duplicado (0 duplicações) |\n\n"
+        f"| **2 (Re-tentativa Idêntica)** | Re-processamento do mesmo lote | {len(r2)} | 100.0% | **{taxa_idemp_r2:.1f}%** | [SEGURO] Duplicado (0 duplicações) |\n\n"
     )
 
     (tables_dir / "T5_resiliencia_rpa_exp5.md").write_text(tabela, encoding="utf-8")
@@ -221,7 +221,7 @@ def consolidar_resultados_completos() -> None:
     )
 
     (raiz_projeto / "results" / "RESULTADOS.md").write_text(conteudo_resultados, encoding="utf-8")
-    print(f"\n✅ Relatório analítico consolidado gerado em: {(raiz_projeto / 'results' / 'RESULTADOS.md').resolve()}\n")
+    print(f"\n[OK] Relatório analítico consolidado gerado em: {(raiz_projeto / 'results' / 'RESULTADOS.md').resolve()}\n")
 
 
 if __name__ == "__main__":
