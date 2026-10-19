@@ -5,70 +5,71 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![BPMN 2.0](https://img.shields.io/badge/BPMN-2.0%20Standard-orange.svg)](docs/diagramas/bpmn_to_be.bpmn)
 
-Repositório oficial do Trabalho de Conclusão de Curso (TCC) em Sistemas de Informação:  
-**"Automação Inteligente de Processos (IPA) no Processamento de Pedidos em Micro, Pequenas e Médias Empresas (MPMEs)"**.
+Pipeline de Automação Inteligente de Processos (IPA) para ingestão, validação e lançamento de pedidos recebidos em formatos não estruturados (PDF, PNG e TXT) em sistema ERP legado.
 
-O projeto propõe e avalia experimentalmente uma arquitetura de alta confiabilidade integrando **Inteligência Artificial Multimodal (Google Gemini)**, **Motor de Regras Determinístico**, **BPMN 2.0** e **Automação Robótica de Processos (Playwright RPA)** com supervisão humana (*Human-in-the-Loop*).
-
----
-
-## 🏛️ Arquitetura do Sistema
-
-```
-                        ┌─────────────────────────────────────────────────────────────┐
-                        │                 FLUXO ORQUESTRADO (BPMN 2.0)                 │
-                        └─────────────────────────────────────────────────────────────┘
-                                                       │
-1. Entrada Multimodal   [ data/inbox/ (TXT, PDF, PNG) ]
-                                                       │
-2. Extração Inteligente [ src/ipa/ai/ (Gemini Flash Multimodal + Cache Persistente) ]
-                                                       │
-3. Filtro e Segurança   [ src/ipa/rules/ (Validação Fiscal, RapidFuzz, Anti-Injeção) ]
-                                                       │
-                                  ┌────────────────────┴────────────────────┐
-                                  ▼                                         ▼
-4. Gateway BPMN            [ VIA VERDE: AUTOMÁTICO ]              [ VIA AMARELA: REVISÃO ]
-                                  │                                         │
-5. Execução / Supervisão   [ rpa/ (Playwright RPA) ]              [ erp_sim/ (Split View) ]
-                                  │                                         │
-6. Sistema Legado          [ erp_sim/ (ERP Simulado) ]            [ Operador Humano ]
-                                  │                                         │
-                                  └────────────────────┬────────────────────┘
-                                                       ▼
-7. Métricas & Auditoria    [ eval/ & results/ (Precision, Recall, F1, Latência, Custos) ]
-```
+Desenvolvido como projeto de Trabalho de Conclusão de Curso (TCC) em Sistemas de Informação, o sistema combina:
+- **Extração multimodal**: LLM (Google Gemini Flash) com cache local de requisições.
+- **Validação determinística**: correspondência difusa de entidades (RapidFuzz), validações fiscais e filtro de *prompt injection*.
+- **Orquestração de processos**: máquina de estados inspirada na modelagem BPMN 2.0, roteando pedidos para execução direta ou para fila de revisão humana (*human-in-the-loop*).
+- **Execução RPA**: robô em Playwright Chromium para digitação e lançamento de pedidos no ERP web.
 
 ---
 
-## 📂 Estrutura do Repositório
+## Fluxo da Esteira
 
+```text
+[ Documento de Entrada ] (TXT, PDF, PNG em data/inbox/)
+          │
+          ▼
+[ Extração Multimodal ] (Gemini Flash + .ai_cache.json)
+          │
+          ▼
+[ Validação e Regras ] (RapidFuzz, cálculo fiscal, detecção de injeção)
+          │
+   ┌──────┴──────┐
+   ▼             ▼
+[ Via Verde ]   [ Via Amarela ]
+Confiança >= 0.85   Confiança < 0.85 ou
+Sem violações       Inconsistência cadastral / fiscal
+   │             │
+   ▼             ▼
+[ Robô RPA ]    [ Fila de Revisão Humana ]
+(Playwright)    (Interface web split-view)
+   │             │
+   └──────┬──────┘
+          ▼
+[ ERP Simulado ] (FastAPI + Supabase)
 ```
+
+---
+
+## Estrutura do Repositório
+
+```text
 tcc-ipa/
-├── data/               # Camada de dados sintéticos (gold standard, inbox, splits e gerador)
-├── docs/               # Documentação técnica, dicionário do sistema, comandos e BPMN
-│   ├── DICIONARIO_SISTEMA.md  # Dicionário conceitual completo e arquitetural
-│   ├── GUIA_COMANDOS.md       # Manual operacional com todos os comandos da CLI
-│   ├── PROGRESSO.md           # Rastreamento de marcos e fases (0 a 12)
-│   └── diagramas/             # Modelo visual de processos (bpmn_to_be.bpmn)
-├── erp_sim/            # ERP Corporativo simulado (FastAPI + Jinja2 + Supabase)
-├── eval/               # Bateria experimental (EXP1 a EXP7), métricas F1 e relatórios
-├── results/            # Resultados brutos (results/raw/) e tabelas científicas (results/tables/)
-├── rpa/                # Robô de automação de tela em Playwright Chromium
-├── scripts/            # Utilitários de manutenção e reset de ambiente
-├── src/ipa/            # Núcleo da esteira IPA (AI, regras, workflow e contratos)
-└── tests/              # Suíte de testes unitários e de integração (Pytest)
+├── config/       # Regras de negócio em YAML (limiares, catálogo, validações)
+├── data/         # Ingestão (inbox/), gabarito (gold/), geradores e splits
+├── docs/         # Dicionário do sistema, guia de comandos, diário e BPMN
+├── erp_sim/      # ERP web simulado (FastAPI + Jinja2 + Supabase)
+├── eval/         # Bateria de experimentos científicos (EXP1 a EXP7) e métricas
+├── results/      # Resultados brutos (raw/) e tabelas consolidadas (tables/)
+├── rpa/          # Automação de tela com Playwright Chromium
+├── scripts/      # Scripts utilitários (reset de banco e filas)
+├── src/ipa/      # Motor da esteira IPA (AI, regras, workflow e contratos)
+└── tests/        # Testes automatizados (pytest)
 ```
 
 ---
 
-## ⚡ Guia Rápido de Instalação e Execução
+## Instalação e Configuração
 
-### 1. Pré-requisitos
+### Pré-requisitos
 - Python 3.12+
-- Gerenciador [`uv`](https://docs.astral.sh/uv/) instalado
-- Projeto no [Supabase](https://supabase.com) configurado com as credenciais no arquivo `.env`
+- [`uv`](https://docs.astral.sh/uv/) (gerenciador de dependências e ambiente)
+- Projeto configurado no [Supabase](https://supabase.com)
+- Chave de API do Google Gemini ([Google AI Studio](https://aistudio.google.com/))
 
-### 2. Clonar e Instalar Dependências
+### 1. Clonar e instalar dependências
 ```bash
 git clone https://github.com/jonnguii/tcc-ipa.git
 cd tcc-ipa
@@ -76,60 +77,98 @@ uv sync
 uv run playwright install chromium
 ```
 
-### 3. Configuração de Variáveis de Ambiente (`.env`)
-Copie o exemplo e insira suas credenciais:
+### 2. Variáveis de ambiente
+Crie o arquivo `.env` a partir do modelo:
 ```bash
 cp .env.example .env
 ```
-Campos requeridos:
-- `SUPABASE_URL` e `SUPABASE_SERVICE_KEY`: Conexão do banco de dados do ERP.
-- `GEMINI_API_KEY`: Chave da API do Google AI Studio para a camada de visão/extração.
 
-### 4. Iniciar o ERP Simulado
-Em um terminal dedicado:
-```bash
-uv run uvicorn erp_sim.main:app --port 8000
-```
-Acesse no navegador:
-- ERP: <http://localhost:8000>
-- Fila de Revisão Humana: <http://localhost:8000/revisoes>
-
-### 5. Executar o Orquestrador IPA
-Em outro terminal:
-```bash
-# Execução de lote no modo simulado (Stub):
-uv run python src/ipa/run.py --limite 5 --executor stub
-
-# Execução com o Robô Real (Playwright):
-uv run python src/ipa/run.py --limite 5 --executor rpa
+Edite o `.env` com suas credenciais:
+```dotenv
+SUPABASE_URL=https://seu-projeto.supabase.co
+SUPABASE_SERVICE_KEY=sua-chave-service-role
+GEMINI_API_KEY=sua-chave-gemini
+GEMINI_MODEL=gemini-2.5-flash
+AI_MODE=record
+EXECUTOR=stub
+ERP_BASE_URL=http://localhost:8000
+ERP_SABOTAGE=none
+RPA_HEADLESS=true
 ```
 
 ---
 
-## 🔬 Bateria Experimental (Fase 11)
+## Execução
 
-Para reproduzir todos os experimentos científicos de uma só vez (EXP1 a EXP7):
+### 1. Iniciar o ERP Simulado
+O ERP precisa estar rodando para a interface de revisão e para as execuções com RPA:
+```bash
+uv run uvicorn erp_sim.main:app --port 8000
+```
+- Acesso ao ERP: `http://localhost:8000`
+- Fila de Revisão Humana: `http://localhost:8000/revisoes`
+
+### 2. Rodar a Esteira IPA (`src/ipa/run.py`)
+
+**Modo Simulado (Stub)** — executa a esteira completa sem abrir o navegador (ideal para validação rápida):
+```bash
+uv run python src/ipa/run.py --limite 5 --executor stub
+```
+
+**Modo Robô Real (RPA)** — executa o lançamento real no ERP via Playwright:
+```bash
+uv run python src/ipa/run.py --limite 5 --executor rpa
+```
+
+**Filtros de execução:**
+```bash
+# Executar apenas documentos de teste (docs 31 a 80)
+uv run python src/ipa/run.py --split teste --limite 10
+
+# Executar documentos específicos
+uv run python src/ipa/run.py --docs DOC-0001,DOC-0012,DOC-0039
+
+# Filtrar por categoria do dataset
+uv run python src/ipa/run.py --categoria ruidoso --limite 5
+```
+
+---
+
+## Testes e Avaliação Experimental
+
+### Executar suíte de testes
+```bash
+uv run pytest
+```
+
+### Reproduzir experimentos do TCC (EXP1 a EXP7)
+Para executar a bateria de experimentos e gerar as tabelas comparativas:
 ```bash
 uv run python eval/rodar_experimentos.py
 ```
 
-Os resultados detalhados e tabelas comparativas são consolidados em:
-- **Tabelas Científicas (T1 a T6):** [`results/tables/`](results/tables/)
-- **Relatório Analítico:** [`results/RESULTADOS.md`](results/RESULTADOS.md)
+Os resultados são consolidados em:
+- [Relatório analítico de resultados](results/RESULTADOS.md)
+- [Tabelas comparativas em Markdown](results/tables/)
 
 ---
 
-## 📚 Documentação Complementar
+## Documentação
 
-- 📖 [Dicionário do Sistema e Glossário Arquitetural](docs/DICIONARIO_SISTEMA.md)
-- ⌨️ [Manual Operacional de Comandos da CLI](docs/GUIA_COMANDOS.md)
-- 📊 [Diário de Bordo e Decisões Técnicas](docs/diario.md)
-- 🔄 [Controle de Progresso por Fase](docs/PROGRESSO.md)
-- 🤖 [Manual do Robô RPA](rpa/README.md)
-- 📦 [Camada de Dados e Splits](data/README.md)
+- [Dicionário do Sistema e Decisões Técnicas](docs/DICIONARIO_SISTEMA.md)
+- [Manual Operacional de Comandos (CLI)](docs/GUIA_COMANDOS.md)
+- [Diagrama de Processo BPMN 2.0](docs/diagramas/bpmn_to_be.bpmn)
+- [Diário de Bordo](docs/diario.md)
+- [Rastreamento de Progresso](docs/PROGRESSO.md)
 
 ---
 
-## 🛡️ Licença e Ética
-- **Licença:** MIT License.
-- **Privacidade:** Todos os dados contidos neste repositório são 100% sintéticos e foram gerados por algoritmos pseudoaleatórios determinísticos. Nenhum dado de clientes ou empresas reais foi utilizado.
+## Dados e Privacidade
+
+Todos os 80 documentos da pasta `data/inbox/`, bem como os registros de clientes, produtos e pedidos cadastrados no ERP, são 100% sintéticos e gerados por scripts deterministicos. Nenhum dado pessoal real foi utilizado.
+
+---
+
+## Licença
+
+Este projeto é distribuído sob a licença [MIT](LICENSE).
