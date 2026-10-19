@@ -2,9 +2,7 @@
 {% block content %}
 <div class="form-container">
   <div class="form-intro">
-    <span class="form-eyebrow">Produtos / Novo cadastro</span>
     <h2>Novo produto</h2>
-    <p>Cadastre um item para disponibilizá-lo na criação de pedidos.</p>
   </div>
 
   {% if error %}
@@ -56,7 +54,7 @@
       </div>
 
       <div class="form-group">
-        <label for="preco" class="required">Preço</label>
+        <label for="preco" class="required">Preço (R$)</label>
         <input
           type="number"
           id="preco"

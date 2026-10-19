@@ -27,7 +27,7 @@ def check_cache(caminho_arquivo: str) -> PedidoExtraido | None:
     
     cache_data = _load_cache()
     if file_hash in cache_data:
-        print(f"⚡ [CACHE HIT] Arquivo {path.name} já extraído antes! Lendo do cache... (0 custo)")
+        print(f"[CACHE HIT] Arquivo {path.name} já extraído antes! Lendo do cache... (0 custo)")
         return PedidoExtraido.model_validate(cache_data[file_hash])
     
     return None

@@ -4,17 +4,15 @@
   "tipo_arquivo": "png",
   "pedido_verdade": {
     "cliente": {
-      "id": 15
+      "id": 14,
+      "nome": "Cafe Aroma",
+      "cnpj_cpf": "19834441000117"
     },
-    "data_entrega": "2026-11-18",
+    "data_entrega": "2026-11-07",
     "itens": [
       {
-        "codigo": "P-017",
-        "quantidade": 32
-      },
-      {
-        "codigo": "P-009",
-        "quantidade": 96
+        "codigo": "P-002",
+        "quantidade": 6
       }
     ],
     "observacoes": ""

@@ -1,20 +1,30 @@
 {
   "id": "DOC-0029",
-  "categoria": "ruidoso",
-  "tipo_arquivo": "txt",
+  "categoria": "limpo",
+  "tipo_arquivo": "pdf",
   "pedido_verdade": {
     "cliente": {
-      "id": 9
+      "id": 20,
+      "nome": "Hortifruti Verde",
+      "cnpj_cpf": "24159206000127"
     },
-    "data_entrega": "2026-11-18",
+    "data_entrega": "2026-11-15",
     "itens": [
       {
-        "codigo": "P-029",
-        "quantidade": 91
+        "codigo": "P-014",
+        "quantidade": 26
       },
       {
-        "codigo": "P-036",
-        "quantidade": 55
+        "codigo": "P-035",
+        "quantidade": 43
+      },
+      {
+        "codigo": "P-013",
+        "quantidade": 42
+      },
+      {
+        "codigo": "P-020",
+        "quantidade": 24
       }
     ],
     "observacoes": ""

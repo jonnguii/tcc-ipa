@@ -1,44 +1,61 @@
-# Dicionário de Dados do TCC
+# Camada de Dados Sintéticos e Gabaritos (`data/`)
 
-Este arquivo explica o que cada parte da pasta `data/` faz. Ele foi escrito para ser didático, então se você não é da área de programação, conseguirá entender tudo.
+Este diretório contém os conjuntos de dados utilizados para treinamento, calibração e avaliação científica da arquitetura IPA.
 
-## 1. O que é a pasta `gold`?
-A pasta `gold` guarda o nosso **Gold Standard** (Padrão Ouro, ou seja, o gabarito inquestionável e perfeito). Dentro dela, temos 80 arquivos **JSON** (um formato de texto que organiza as informações em pares como se fosse uma ficha de cadastro, facilitando a leitura pelo computador). 
+---
 
-Cada JSON aqui representa a verdade absoluta de um pedido. Por exemplo, se o JSON diz que o pedido tem 10 copos, a Inteligência Artificial (IA) será obrigada a encontrar "10 copos" no texto bagunçado mais tarde. Se ela encontrar 9, nós marcaremos como um erro.
+## Estrutura de Pastas e Arquivos
 
-## 2. Como esse gabarito foi criado? (O script `verdade.py`)
-Nós não usamos IA para criar o gabarito, para evitar que ela seja tendenciosa e acerte sempre de propósito. O gabarito foi criado pelo arquivo de código `verdade.py`. Esse código cruzou os nossos clientes e produtos e fez 80 sorteios.
+```
+data/
+├── generator/          # Scripts determinísticos de geração de dados
+│   ├── verdade.py      # Gera o gabarito ouro (data/gold/) e data/splits.json
+│   ├── gerar_inbox.py  # Fabrica os 80 arquivos físicos (data/inbox/)
+│   ├── templates.py    # Templates de mensagens com flags de negócio
+│   └── ruido.py        # Algoritmos de ruído tipográfico e fonético
+├── gold/               # Gold Standard (gabaritos oficiais DOC-0001 a DOC-0080 em JSON)
+├── inbox/              # Documentos físicos de entrada (.txt, .pdf, .png)
+├── splits.json         # Divisão estratificada fixa: 30 DEV / 50 TESTE
+└── revisoes_local.json # Fallback local de persistência da fila de revisão humana
+```
 
-Para garantir que o sorteio seja sempre o mesmo, nós usamos uma **seed** (semente, que é um número inicial em uma fórmula matemática que obriga o computador a gerar exatamente os mesmos resultados toda vez que alguém rodar o código, em vez de ser puramente aleatório). Usamos a seed 42. Assim, qualquer avaliador da banca do TCC pode rodar o nosso projeto e gerar os exatos mesmos 80 documentos.
+---
 
-## 3. O que são as Categorias do JSON?
-Cada JSON no gabarito tem uma "categoria" que define o nível de dificuldade para a IA interpretar:
+## 1. Padrão Ouro (`data/gold/`)
+Contém 80 arquivos `.json` com a verdade absoluta de cada transação esperada.
+Cada gabarito especifica:
+- `id`: Identificador canônico (`DOC-0001` a `DOC-0080`).
+- `categoria`: `limpo`, `ruidoso` ou `adversarial`.
+- `tipo_arquivo`: `txt`, `pdf` ou `png`.
+- `pedido_verdade`: Dados estruturados perfeitos (cliente, data de entrega, itens e quantidades).
+- `rota_esperada`: `AUTOMATICO`, `REVISAO` ou `REJEICAO`.
+- `flags`: Ocorrências de negócio específicas (`data_retroativa`, `item_fora_catalogo`, `cliente_incompleto`, `prompt_injection`, `nao_pedido`, `ruido_marketing`).
 
-- **Limpo:** Um texto com português perfeito, sem abreviações ou gírias. Serve para provar que a IA funciona perfeitamente no cenário ideal.
-- **Ruidoso:** Um texto que simula o mundo real de uma pequena empresa, com erros de digitação, falta de pontuação e abreviações (como "cx" para caixa). Isso serve para provar que a IA é melhor que um **RPA** tradicional (Automação Robótica de Processos, que é um robô "cego" que apenas clica na tela e preenche formulários rapidamente, mas que trava e dá erro se o texto não for escrito de forma exata).
-- **Adversarial:** Textos feitos para enganar o sistema, como e-mails de propaganda ou clientes fazendo exigências absurdas. Serve para testar se o sistema sabe recusar problemas e passar para um humano avaliar.
+---
 
-## 4. O que são os Tipos de Arquivo?
-O atributo `tipo_arquivo` diz por qual canal aquele pedido falso supostamente chegou:
-- **txt:** Um e-mail comum ou uma mensagem de WhatsApp copiada (texto puro).
-- **pdf:** Uma ordem de compra formal enviada em anexo. A IA precisará conseguir ler esse PDF.
-- **png:** Uma foto do papel do pedido ou print de tela. Aqui a IA precisará usar Visão Computacional (capacidade de ler informações visuais e converter imagens em texto) para extrair os dados.
+## 2. Caixa de Entrada (`data/inbox/`)
+Armazena os 80 documentos físicos que alimentam a esteira do orquestrador.
+- **Multimodalidade:** Distribuídos equilibradamente entre texto puro (.txt), documentos em PDF (.pdf) e imagens (.png).
+- **Sem Gabarito Embutido:** Simulam o que chega por e-mail ou WhatsApp da empresa. O orquestrador precisa extrair, validar e rotear sem acesso prévio ao JSON de gabarito.
 
-## 5. Como rodar a geração de dados localmente?
-Para que os JSONs sejam gerados na sua máquina, abra o terminal na pasta raiz do projeto (`tcc-ipa`) e execute o seguinte comando:
+---
+
+## 3. Divisão Experimental (`data/splits.json`)
+O dataset foi estratificado deterministicamente para assegurar rigor acadêmico:
+- **DEV (`DOC-0001` a `DOC-0030` - 30 docs):** Utilizado para desenvolvimento, calibração de prompts e testes unitários.
+  - Distribuição: 24 Automático, 4 Revisão, 2 Rejeição (12 limpos, 12 ruidosos, 6 adversariais).
+- **TESTE (`DOC-0031` a `DOC-0080` - 50 docs):** Congelado sob a tag `freeze-v1`, utilizado para os experimentos da Fase 11 (EXP1 a EXP7).
+  - Distribuição: 38 Automático, 6 Revisão, 6 Rejeição (20 limpos, 20 ruidosos, 10 adversariais).
+
+---
+
+## 4. Reprodutibilidade e Regeneração
+Para regenerar todo o dataset do zero mantendo perfeita fidelidade (Seed 42):
 
 ```bash
+# 1. Gerar gabaritos e splits
 uv run python data/generator/verdade.py
+
+# 2. Fabricar os arquivos físicos da inbox
+uv run python data/generator/gerar_inbox.py
 ```
-Isso fará o código Python ler as informações e cuspir os 80 arquivos `.json` de gabarito dentro da pasta `data/gold/`.
-
-## 6. Como testar a extração da IA? (O script `avaliador.py`)
-Agora que criamos a nossa IA (Fase 6), construímos o arquivo `avaliador.py` na raiz do projeto. Ele roda um teste comparando o que a IA extraiu dos arquivos de imagem/pdf/txt (da pasta `inbox`) contra o gabarito absoluto da pasta `gold`.
-
-Para rodar a prova real:
-```bash
-uv run python avaliador.py
-```
-
-**Módulo de Cache:** A API do Gemini bloqueia requisições em massa no plano gratuito. Por isso, construímos o arquivo `src/ipa/ai/cache.py` (salvo no disco como `.ai_cache.json`). Ele salva a resposta de um PDF já analisado. Se o avaliador tentar analisar o mesmo arquivo duas vezes, ele puxa instantaneamente do cache em vez de gastar sua cota do Google.

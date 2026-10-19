@@ -4,25 +4,27 @@
   "tipo_arquivo": "txt",
   "pedido_verdade": {
     "cliente": {
-      "id": 4
+      "id": 19,
+      "nome": "Peixaria Mare",
+      "cnpj_cpf": "08183658000198"
     },
-    "data_entrega": "2026-11-08",
+    "data_entrega": "2026-11-12",
     "itens": [
       {
-        "codigo": "P-003",
-        "quantidade": 59
+        "codigo": "P-016",
+        "quantidade": 7
       },
       {
         "codigo": "P-031",
-        "quantidade": 45
+        "quantidade": 7
       },
       {
-        "codigo": "P-015",
-        "quantidade": 40
+        "codigo": "P-027",
+        "quantidade": 43
       },
       {
         "codigo": "P-013",
-        "quantidade": 30
+        "quantidade": 28
       }
     ],
     "observacoes": ""

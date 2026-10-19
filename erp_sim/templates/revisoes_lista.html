@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Fila de Revisão Humana{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Fila de Revisão Humana (Human-in-the-Loop)</h1>
+    <p class="page-subtitle">Pedidos retidos na triagem para homologação, ajuste ou descarte por um operador.</p>
+  </div>
+  <div class="actions">
+    <a href="/revisoes" class="btn btn-secondary">Atualizar Fila</a>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <span class="filter-label">Filtrar por status:</span>
+  <a href="/revisoes" class="btn-filter {% if not status_filtro %}active{% endif %}">Todos ({{ total_todos }})</a>
+  <a href="/revisoes?status=pendente" class="btn-filter {% if status_filtro == 'pendente' %}active{% endif %}">Pendentes ({{ total_pendentes }})</a>
+  <a href="/revisoes?status=resolvida" class="btn-filter {% if status_filtro == 'resolvida' %}active{% endif %}">Resolvidas ({{ total_resolvidas }})</a>
+  <a href="/revisoes?status=rejeitada" class="btn-filter {% if status_filtro == 'rejeitada' %}active{% endif %}">Rejeitadas ({{ total_rejeitadas }})</a>
+</div>
+
+<div class="card">
+  {% if not revisoes %}
+    <div class="empty-state">
+      <p class="empty-title">Nenhuma pendência encontrada nesta fila.</p>
+      <p class="empty-desc">Todos os pedidos automáticos foram processados diretamente ou nenhuma pendência corresponde ao filtro selecionado.</p>
+    </div>
+  {% else %}
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Referência</th>
+          <th>Cliente Detectado</th>
+          <th>Motivos de Retenção</th>
+          <th>Status</th>
+          <th>Tempo Humano</th>
+          <th>Data de Entrada</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in revisoes %}
+        <tr>
+          <td><span class="font-mono">#{{ r.id }}</span></td>
+          <td>
+            <strong>{{ r.ref_id_view }}</strong>
+          </td>
+          <td>
+            {{ r.cliente_nome_view }}
+          </td>
+          <td>
+            <div class="tags-container">
+              {% for motivo in r.motivos_lista %}
+                <span class="tag tag-motivo">{{ motivo }}</span>
+              {% endfor %}
+            </div>
+          </td>
+          <td>
+            {% if r.status == 'pendente' %}
+              <span class="status-badge status-pendente">Aguardando Operador</span>
+            {% elif r.status == 'resolvida' %}
+              <span class="status-badge status-resolvida">Aprovado e Despachado</span>
+            {% elif r.status == 'rejeitada' %}
+              <span class="status-badge status-rejeitada">Rejeitado</span>
+            {% else %}
+              <span class="status-badge">{{ r.status }}</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if r.tempo_revisao_s %}
+              <span class="font-mono">{{ r.tempo_revisao_s }}s</span>
+            {% else %}
+              <span class="text-muted">-</span>
+            {% endif %}
+          </td>
+          <td>
+            <small class="text-muted">{{ r.criado_em[:19].replace('T', ' ') if r.criado_em else '-' }}</small>
+          </td>
+          <td>
+            <a href="/revisoes/{{ r.id }}" class="btn btn-sm {% if r.status == 'pendente' %}btn-primary{% else %}btn-secondary{% endif %}">
+              {% if r.status == 'pendente' %}Revisar{% else %}Ver Detalhes{% endif %}
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+</div>
+{% endblock %}

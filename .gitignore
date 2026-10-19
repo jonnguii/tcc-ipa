@@ -16,3 +16,6 @@ rpa/evidencias/
 # IA
 .agents/
 cache/
+
+# Onboarding PM Local
+ONBOARDING_PM_APRENDIZADO.md

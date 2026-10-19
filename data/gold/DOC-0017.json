@@ -1,16 +1,30 @@
 {
   "id": "DOC-0017",
   "categoria": "limpo",
-  "tipo_arquivo": "txt",
+  "tipo_arquivo": "pdf",
   "pedido_verdade": {
     "cliente": {
-      "id": 4
+      "id": 7,
+      "nome": "Mercearia Delta",
+      "cnpj_cpf": "52601815000120"
     },
-    "data_entrega": "2026-11-03",
+    "data_entrega": "2026-11-18",
     "itens": [
       {
-        "codigo": "P-035",
-        "quantidade": 2
+        "codigo": "P-026",
+        "quantidade": 9
+      },
+      {
+        "codigo": "P-030",
+        "quantidade": 16
+      },
+      {
+        "codigo": "P-010",
+        "quantidade": 48
+      },
+      {
+        "codigo": "P-017",
+        "quantidade": 36
       }
     ],
     "observacoes": ""

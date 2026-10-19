@@ -1,8 +1,0 @@
-Olá, gostaria de solicitar um pedido.
-Cliente: Acougue Boi Gordo
-CNPJ: 21753377000191
-Itens:
-- 29x Produto 23 (P-023)
-
-Data de Entrega: 2026-11-21
-Referência: DOC-0057

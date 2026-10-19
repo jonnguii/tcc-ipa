@@ -1,32 +1,26 @@
 {
   "id": "DOC-0007",
   "categoria": "limpo",
-  "tipo_arquivo": "png",
+  "tipo_arquivo": "txt",
   "pedido_verdade": {
     "cliente": {
-      "id": 9
+      "id": 4,
+      "nome": "Padaria Central",
+      "cnpj_cpf": "34167211000135"
     },
-    "data_entrega": "2026-11-18",
+    "data_entrega": "2026-11-15",
     "itens": [
       {
-        "codigo": "P-012",
-        "quantidade": 26
-      },
-      {
-        "codigo": "P-033",
-        "quantidade": 20
-      },
-      {
-        "codigo": "P-007",
-        "quantidade": 48
-      },
-      {
-        "codigo": "P-020",
-        "quantidade": 98
+        "codigo": "P-023",
+        "quantidade": 52
       },
       {
         "codigo": "P-039",
-        "quantidade": 21
+        "quantidade": 3
+      },
+      {
+        "codigo": "P-017",
+        "quantidade": 47
       }
     ],
     "observacoes": ""

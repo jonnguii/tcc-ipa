@@ -1,0 +1,310 @@
+{% extends "base.html" %}
+
+{% block title %}Revisão do Pedido #{{ revisao.id }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <div class="breadcrumb">
+      <a href="/revisoes">Fila de Revisão</a> &gt; <span>Pendência #{{ revisao.id }}</span>
+    </div>
+    <h1 class="page-title">
+      Homologação do Pedido #{{ revisao.id }}
+      {% if revisao.status == 'pendente' %}
+        <span class="status-badge status-pendente">Aguardando Decisão</span>
+      {% elif revisao.status == 'resolvida' %}
+        <span class="status-badge status-resolvida">Aprovado e Despachado</span>
+      {% elif revisao.status == 'rejeitada' %}
+        <span class="status-badge status-rejeitada">Rejeitado</span>
+      {% endif %}
+    </h1>
+    <p class="page-subtitle">
+      Referência: <strong>{{ payload.ref_id or pedido_original.ref_id or '-' }}</strong> | 
+      Entrada no sistema: <span class="font-mono">{{ revisao.criado_em[:19].replace('T', ' ') if revisao.criado_em else '-' }}</span>
+    </p>
+  </div>
+
+  <div class="timer-box" id="timer-box">
+    <div class="timer-label">TEMPO OPERACIONAL</div>
+    <div class="timer-display" id="timer-display">
+      {% if revisao.tempo_revisao_s %}
+        {{ revisao.tempo_revisao_s }}s (Finalizado)
+      {% else %}
+        00:00.0
+      {% endif %}
+    </div>
+    <small class="timer-sub">
+      {% if revisao.status == 'pendente' %}
+        Cronômetro em execução contínua
+      {% else %}
+        Tempo gravado na auditoria
+      {% endif %}
+    </small>
+  </div>
+</div>
+
+{% if revisao.motivo %}
+<div class="alert-box alert-warning">
+  <div>
+    <strong>Motivos da Retenção na Triagem:</strong>
+    <ul class="alert-list">
+      {% for m in revisao.motivo.split(';') %}
+        {% if m.strip() %}
+          <li>{{ m.strip() }}</li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endif %}
+
+{% if revisao.status != 'pendente' %}
+<div class="alert-box {% if revisao.status == 'resolvida' %}alert-success{% else %}alert-danger{% endif %}">
+  <div>
+    <strong>Status do Pedido:</strong> 
+    {% if revisao.status == 'resolvida' %}
+      Este pedido já foi homologado e despachado para a esteira em {{ revisao.tempo_revisao_s }} segundos.
+      {% if revisao.correcao and revisao.correcao.numero_pedido %}
+        <span style="margin-left: 10px;">
+          Pedido gerado no ERP: <strong>#{{ revisao.correcao.numero_pedido }}</strong>
+          <a href="/pedidos" class="btn btn-sm btn-secondary" style="margin-left: 8px;">Acessar Tela de Pedidos</a>
+        </span>
+      {% else %}
+        <span style="margin-left: 10px;">
+          <a href="/pedidos" class="btn btn-sm btn-secondary" style="margin-left: 8px;">Acessar Tela de Pedidos</a>
+        </span>
+      {% endif %}
+    {% else %}
+      Este pedido foi rejeitado e arquivado para auditoria em {{ revisao.tempo_revisao_s }} segundos.
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+
+<!-- Split View: Esquerda Documento Original | Direita Dados Extraídos -->
+<div class="split-view">
+  
+  <!-- Painel Esquerdo: Documento Original -->
+  <div class="split-panel">
+    <div class="panel-header">
+      <h2 class="panel-title">Documento Original Recebido</h2>
+      <div class="panel-header-actions">
+        <span class="badge-tag">{{ doc_nome or 'Arquivo de Origem' }}</span>
+        {% if doc_existe %}
+          <a href="/revisoes/{{ revisao.id }}/arquivo" target="_blank" class="btn btn-sm btn-secondary" title="Abrir arquivo em nova aba">
+            Abrir em Nova Aba
+          </a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="panel-body">
+      {% if doc_tipo == 'pdf' and doc_existe %}
+        <div class="media-container pdf-container">
+          <iframe src="/revisoes/{{ revisao.id }}/arquivo" class="media-frame" title="Visualizador de PDF Original">
+            Seu navegador não suporta visualização direta de PDF.
+            <a href="/revisoes/{{ revisao.id }}/arquivo" target="_blank">Clique aqui para baixar o PDF</a>.
+          </iframe>
+        </div>
+      {% elif doc_tipo == 'imagem' and doc_existe %}
+        <div class="media-container img-container">
+          <img src="/revisoes/{{ revisao.id }}/arquivo" alt="Documento Original {{ doc_nome }}" class="media-image" />
+        </div>
+      {% elif doc_conteudo %}
+        <pre class="doc-viewer">{{ doc_conteudo }}</pre>
+      {% elif doc_existe %}
+        <div class="empty-state">
+          <p>Arquivo: <code>{{ doc_nome }}</code></p>
+          <a href="/revisoes/{{ revisao.id }}/arquivo" target="_blank" class="btn btn-secondary">Baixar/Visualizar Arquivo</a>
+        </div>
+      {% elif doc_path %}
+        <p class="text-muted">Caminho original do lote: <code>{{ doc_path }}</code></p>
+        <p class="text-muted">O arquivo físico não está acessível no disco local.</p>
+      {% else %}
+        <p class="text-muted">Conteúdo original não anexado diretamente a este lote.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Painel Direito: Formulário Interativo -->
+  <div class="split-panel">
+    <div class="panel-header">
+      <h2 class="panel-title">Dados Extraídos e Correção</h2>
+      <span class="badge-tag">Human-in-the-Loop</span>
+    </div>
+    <div class="panel-body">
+      <form id="form-revisao" method="post" action="/revisoes/{{ revisao.id }}/decisao">
+        <input type="hidden" name="tempo_revisao_s" id="tempo_revisao_s" value="0">
+        <input type="hidden" name="ref_id" value="{{ pedido_original.ref_id or payload.ref_id }}">
+
+        <!-- Dados do Cliente -->
+        <fieldset class="form-section" {% if revisao.status != 'pendente' %}disabled{% endif %}>
+          <legend class="section-legend">Dados do Cliente</legend>
+
+          <div class="form-group">
+            <label for="cliente_nome">Razão Social / Nome:</label>
+            <input type="text" id="cliente_nome" name="cliente_nome" class="form-control" 
+                   value="{{ cliente_nome }}" placeholder="Nome ou Razão Social do Cliente" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-half">
+              <label for="cliente_documento">CPF / CNPJ:</label>
+              <input type="text" id="cliente_documento" name="cliente_documento" class="form-control font-mono" 
+                     value="{{ cliente_doc }}" placeholder="00.000.000/0001-00">
+            </div>
+
+            <div class="form-group col-half">
+              <label for="data_entrega">Data de Entrega:</label>
+              <input type="date" id="data_entrega" name="data_entrega" class="form-control font-mono" 
+                     value="{{ pedido_original.data_entrega or '' }}" required>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Itens do Pedido -->
+        <fieldset class="form-section" {% if revisao.status != 'pendente' %}disabled{% endif %}>
+          <legend class="section-legend">Itens do Pedido (Casamento com Catálogo)</legend>
+
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th>Texto Extraído</th>
+                <th>Produto no ERP</th>
+                <th>Qtd</th>
+                <th>Preço Unit.</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in itens %}
+              <tr class="item-row {% if item.score_fuzzy and item.score_fuzzy < 85 %}row-alerta{% endif %}">
+                <td>
+                  <div class="item-raw-desc">"{{ item.descricao_original }}"</div>
+                  {% if item.score_fuzzy %}
+                    {% if item.score_fuzzy < 85 %}
+                      <span class="score-badge score-baixo" title="Similaridade com o catálogo é duvidosa">
+                        Ambíguo: {{ "%.1f"|format(item.score_fuzzy) }}%
+                      </span>
+                    {% else %}
+                      <span class="score-badge score-alto" title="Correspondência alta com o catálogo">
+                        Confiável: {{ "%.1f"|format(item.score_fuzzy) }}%
+                      </span>
+                    {% endif %}
+                  {% endif %}
+                </td>
+                <td>
+                  <select name="item_codigo_{{ loop.index0 }}" class="form-control item-select" onchange="atualizarPrecoCatalogo(this, {{ loop.index0 }})">
+                    {% for p in catalogo %}
+                      <option value="{{ p.codigo }}" data-preco="{{ p.preco }}" {% if p.codigo == item.codigo_resolvido %}selected{% endif %}>
+                        {{ p.codigo }} - {{ p.descricao }} ({{ p.preco|moeda }})
+                      </option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td style="width: 70px;">
+                  <input type="number" name="item_qtd_{{ loop.index0 }}" class="form-control font-mono" 
+                         value="{{ item.quantidade|int if item.quantidade == item.quantidade|int else item.quantidade }}" min="1" step="1" required>
+                </td>
+                <td style="width: 110px;">
+                  <input type="number" step="0.01" name="item_preco_{{ loop.index0 }}" id="item_preco_{{ loop.index0 }}" class="form-control font-mono" 
+                         value="{{ "%.2f"|format(item.preco_unitario) }}" min="0.01" required>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="3" style="text-align: right; padding-right: 12px; font-weight: 600;">Total Previsto do Pedido:</th>
+                <th style="text-align: left; font-size: 14px; color: var(--primary); font-family: var(--font-mono); font-weight: 700;">
+                  <span id="valor-total-pedido">R$ 0,00</span>
+                </th>
+              </tr>
+            </tfoot>
+          </table>
+        </fieldset>
+
+        <!-- Ações do Operador -->
+        <div class="panel-actions">
+          {% if revisao.status == 'pendente' %}
+            <button type="submit" name="acao" value="aprovar" class="btn btn-primary btn-lg" id="btn-aprovar">
+              Aprovar e Despachar ao Robô
+            </button>
+            <button type="submit" name="acao" value="rejeitar" class="btn btn-danger btn-lg" id="btn-rejeitar"
+                    onclick="return confirm('Tem certeza que deseja rejeitar este pedido? O descarte será auditado.');">
+              Rejeitar Pedido
+            </button>
+          {% endif %}
+          <a href="/revisoes" class="btn btn-secondary">Voltar para a Fila</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function calcularTotalPedido() {
+    var total = 0;
+    var rows = document.querySelectorAll('.items-table tbody tr');
+    rows.forEach(function(row, idx) {
+      var inputQtd = row.querySelector('input[name="item_qtd_' + idx + '"]');
+      var inputPreco = row.querySelector('input[name="item_preco_' + idx + '"]');
+      if (inputQtd && inputPreco) {
+        var qtd = parseFloat(inputQtd.value) || 0;
+        var preco = parseFloat(inputPreco.value) || 0;
+        total += qtd * preco;
+      }
+    });
+    var el = document.getElementById('valor-total-pedido');
+    if (el) {
+      el.textContent = 'R$ ' + total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+  }
+
+  function atualizarPrecoCatalogo(selectEl, idx) {
+    var opt = selectEl.options[selectEl.selectedIndex];
+    var preco = opt.getAttribute('data-preco');
+    var inputPreco = document.getElementById('item_preco_' + idx);
+    if (inputPreco && preco) {
+      inputPreco.value = parseFloat(preco).toFixed(2);
+      calcularTotalPedido();
+    }
+  }
+
+  (function() {
+    var inicio = performance.now();
+    var display = document.getElementById('timer-display');
+    var inputTempo = document.getElementById('tempo_revisao_s');
+    var form = document.getElementById('form-revisao');
+
+    // Inicializa o cálculo do total do pedido
+    calcularTotalPedido();
+    document.querySelectorAll('.items-table input').forEach(function(inp) {
+      inp.addEventListener('input', calcularTotalPedido);
+    });
+
+    function formatarTempo(segundos) {
+      var min = Math.floor(segundos / 60);
+      var sec = (segundos % 60).toFixed(1);
+      var minStr = min < 10 ? '0' + min : min;
+      var secStr = sec < 10 ? '0' + sec : sec;
+      return minStr + ':' + secStr;
+    }
+
+    var intervalo = setInterval(function() {
+      var decorrido = (performance.now() - inicio) / 1000;
+      if (display && display.textContent.indexOf('Finalizado') === -1) {
+        display.textContent = formatarTempo(decorrido);
+      }
+    }, 100);
+
+    if (form) {
+      form.addEventListener('submit', function() {
+        clearInterval(intervalo);
+        var totalSegundos = ((performance.now() - inicio) / 1000).toFixed(3);
+        if (inputTempo) {
+          inputTempo.value = totalSegundos;
+        }
+      });
+    }
+  })();
+</script>
+{% endblock %}

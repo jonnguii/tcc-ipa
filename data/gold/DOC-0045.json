@@ -4,25 +4,27 @@
   "tipo_arquivo": "png",
   "pedido_verdade": {
     "cliente": {
-      "id": 16
+      "id": 8,
+      "nome": "Bar do Joao",
+      "cnpj_cpf": "35623012000157"
     },
-    "data_entrega": "2026-11-26",
+    "data_entrega": "2026-11-14",
     "itens": [
       {
+        "codigo": "P-008",
+        "quantidade": 39
+      },
+      {
+        "codigo": "P-037",
+        "quantidade": 3
+      },
+      {
         "codigo": "P-016",
-        "quantidade": 100
+        "quantidade": 40
       },
       {
-        "codigo": "P-010",
-        "quantidade": 55
-      },
-      {
-        "codigo": "P-001",
-        "quantidade": 29
-      },
-      {
-        "codigo": "P-007",
-        "quantidade": 23
+        "codigo": "P-038",
+        "quantidade": 6
       }
     ],
     "observacoes": ""

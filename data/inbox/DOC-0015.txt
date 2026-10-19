@@ -1,6 +1,0 @@
-ae, me ve ai esses itens:
-- 94x Produto 30 (P-030)
-- 44x Produto 4 (P-004)
-- 14x Produto 7 (P-007)
-- 32x Produto 26 (P-026)
-pra 2026-11-07 ref DOC-0015 cpnj 19834441000117 cliete Cafe Aroma

@@ -1,8 +1,4 @@
-ae, me ve ai esses itens:
-- 18x Produto 38 (P-038)
-- 66x Produto 28 (P-028)
-- 64x Produto 40 (P-040)
-- 12x Produto 26 (P-026)
-- 97x Produto 24 (P-024)
-- 7x Produto 15 (P-015)
-pra 2026-11-28 ref DOC-0004 cpnj 79542205000159 cliete Restaurante Sabor
+manda pra cá urgente:
+cliente: Mercado Popular do Bairro
+- 43x Produto 33 (P-033)
+data entrega 2026-11-18 ref DOC-0004 obs: nao tenho cnpj em maos

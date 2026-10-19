@@ -1,27 +1,21 @@
 {
   "id": "DOC-0033",
-  "categoria": "adversarial",
+  "categoria": "ruidoso",
   "tipo_arquivo": "png",
   "pedido_verdade": {
     "cliente": {
-      "id": 6
+      "id": 3,
+      "nome": "Lanchonete Omega",
+      "cnpj_cpf": "39825979000172"
     },
-    "data_entrega": "2026-11-06",
+    "data_entrega": "2026-11-05",
     "itens": [
       {
-        "codigo": "P-002",
-        "quantidade": 86
+        "codigo": "P-018",
+        "quantidade": 14
       },
       {
-        "codigo": "P-012",
-        "quantidade": 95
-      },
-      {
-        "codigo": "P-022",
-        "quantidade": 32
-      },
-      {
-        "codigo": "P-027",
+        "codigo": "P-032",
         "quantidade": 35
       }
     ],

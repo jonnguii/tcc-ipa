@@ -1,9 +1,0 @@
-Bom dia. Segue nosso pedido de compra.
-Referência do Pedido: DOC-0017
-Empresa: Padaria Central (34167211000135)
-
-Itens solicitados:
-- 2x Produto 35 (P-035)
-
-
-Favor entregar até a data de 2026-11-03.

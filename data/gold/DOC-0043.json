@@ -1,24 +1,18 @@
 {
   "id": "DOC-0043",
-  "categoria": "adversarial",
+  "categoria": "limpo",
   "tipo_arquivo": "txt",
   "pedido_verdade": {
     "cliente": {
-      "id": 20
+      "id": 11,
+      "nome": "Emporio Gourmet",
+      "cnpj_cpf": "78778932000157"
     },
-    "data_entrega": "2026-11-01",
+    "data_entrega": "2026-11-16",
     "itens": [
       {
-        "codigo": "P-006",
-        "quantidade": 29
-      },
-      {
-        "codigo": "P-016",
-        "quantidade": 26
-      },
-      {
-        "codigo": "P-020",
-        "quantidade": 19
+        "codigo": "P-004",
+        "quantidade": 38
       }
     ],
     "observacoes": ""

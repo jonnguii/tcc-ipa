@@ -1,24 +1,30 @@
 {
   "id": "DOC-0047",
-  "categoria": "adversarial",
-  "tipo_arquivo": "txt",
+  "categoria": "limpo",
+  "tipo_arquivo": "pdf",
   "pedido_verdade": {
     "cliente": {
-      "id": 20
+      "id": 10,
+      "nome": "Pizzaria Napoli",
+      "cnpj_cpf": "90679037000180"
     },
-    "data_entrega": "2026-11-29",
+    "data_entrega": "2026-11-18",
     "itens": [
       {
-        "codigo": "P-029",
-        "quantidade": 55
+        "codigo": "P-021",
+        "quantidade": 40
       },
       {
-        "codigo": "P-040",
-        "quantidade": 71
+        "codigo": "P-005",
+        "quantidade": 37
       },
       {
-        "codigo": "P-033",
-        "quantidade": 58
+        "codigo": "P-001",
+        "quantidade": 7
+      },
+      {
+        "codigo": "P-030",
+        "quantidade": 5
       }
     ],
     "observacoes": ""

@@ -4,33 +4,15 @@
   "tipo_arquivo": "txt",
   "pedido_verdade": {
     "cliente": {
-      "id": 18
+      "id": 4,
+      "nome": "Padaria Central",
+      "cnpj_cpf": "34167211000135"
     },
-    "data_entrega": "2026-11-27",
+    "data_entrega": "2026-11-08",
     "itens": [
       {
-        "codigo": "P-016",
-        "quantidade": 88
-      },
-      {
-        "codigo": "P-011",
-        "quantidade": 42
-      },
-      {
-        "codigo": "P-030",
-        "quantidade": 99
-      },
-      {
-        "codigo": "P-025",
-        "quantidade": 100
-      },
-      {
         "codigo": "P-018",
-        "quantidade": 8
-      },
-      {
-        "codigo": "P-015",
-        "quantidade": 30
+        "quantidade": 16
       }
     ],
     "observacoes": ""

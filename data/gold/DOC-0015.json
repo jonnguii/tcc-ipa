@@ -1,28 +1,22 @@
 {
   "id": "DOC-0015",
   "categoria": "ruidoso",
-  "tipo_arquivo": "txt",
+  "tipo_arquivo": "png",
   "pedido_verdade": {
     "cliente": {
-      "id": 14
+      "id": 18,
+      "nome": "Acougue Boi Gordo",
+      "cnpj_cpf": "21753377000191"
     },
-    "data_entrega": "2026-11-07",
+    "data_entrega": "2026-11-02",
     "itens": [
       {
-        "codigo": "P-030",
-        "quantidade": 94
+        "codigo": "P-021",
+        "quantidade": 15
       },
       {
         "codigo": "P-004",
-        "quantidade": 44
-      },
-      {
-        "codigo": "P-007",
-        "quantidade": 14
-      },
-      {
-        "codigo": "P-026",
-        "quantidade": 32
+        "quantidade": 53
       }
     ],
     "observacoes": ""

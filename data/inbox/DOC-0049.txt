@@ -1,9 +1,12 @@
-Olá, gostaria de solicitar um pedido.
-Cliente: Pizzaria Napoli
-CNPJ: 90679037000180
-Itens:
-- 41x Produto 18 (P-018)
-- 70x Produto 22 (P-022)
+Prezados, favor faturar o seguinte pedido:
+Cliente: Atacado Sigma
+CNPJ: 91740029000165
+Previsão de Entrega: 2026-11-10
+Código Ref: DOC-0049
 
-Data de Entrega: 2026-11-03
-Referência: DOC-0049
+- 1x Produto 35 (P-035)
+- 43x Produto 20 (P-020)
+- 53x Produto 40 (P-040)
+- 36x Produto 34 (P-034)
+
+Atenciosamente, Compras.

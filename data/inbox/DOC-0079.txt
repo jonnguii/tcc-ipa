@@ -1,10 +1,5 @@
-Olá, gostaria de solicitar um pedido.
-Cliente: Cafe Aroma
-CNPJ: 19834441000117
-Itens:
-- 79x Produto 37 (P-037)
-- 95x Produto 40 (P-040)
-- 13x Produto 4 (P-004)
-
-Data de Entrega: 2026-11-25
-Referência: DOC-0079
+ae, me ve ai esses itens:
+- 28x produto 29 (p-029)
+- 54x produto 40 (p-040)
+- 59x produto 33 (p-033)
+pva 2026-11-18 ref doc-0079 cpnj 30802300000155 cliete bistro paris

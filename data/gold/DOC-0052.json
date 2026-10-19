@@ -1,32 +1,30 @@
 {
   "id": "DOC-0052",
-  "categoria": "ruidoso",
-  "tipo_arquivo": "png",
+  "categoria": "limpo",
+  "tipo_arquivo": "txt",
   "pedido_verdade": {
     "cliente": {
-      "id": 1
+      "id": 9,
+      "nome": "Restaurante Sabor",
+      "cnpj_cpf": "79542205000159"
     },
-    "data_entrega": "2026-11-24",
+    "data_entrega": "2026-11-11",
     "itens": [
       {
-        "codigo": "P-025",
-        "quantidade": 97
-      },
-      {
-        "codigo": "P-031",
-        "quantidade": 50
-      },
-      {
-        "codigo": "P-001",
+        "codigo": "P-017",
         "quantidade": 54
       },
       {
-        "codigo": "P-023",
-        "quantidade": 69
+        "codigo": "P-004",
+        "quantidade": 18
       },
       {
-        "codigo": "P-020",
-        "quantidade": 96
+        "codigo": "P-006",
+        "quantidade": 3
+      },
+      {
+        "codigo": "P-028",
+        "quantidade": 1
       }
     ],
     "observacoes": ""

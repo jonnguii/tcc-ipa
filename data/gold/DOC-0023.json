@@ -1,16 +1,22 @@
 {
   "id": "DOC-0023",
   "categoria": "limpo",
-  "tipo_arquivo": "png",
+  "tipo_arquivo": "pdf",
   "pedido_verdade": {
     "cliente": {
-      "id": 11
+      "id": 9,
+      "nome": "Restaurante Sabor",
+      "cnpj_cpf": "79542205000159"
     },
-    "data_entrega": "2026-11-20",
+    "data_entrega": "2026-11-10",
     "itens": [
       {
-        "codigo": "P-001",
-        "quantidade": 59
+        "codigo": "P-033",
+        "quantidade": 56
+      },
+      {
+        "codigo": "P-007",
+        "quantidade": 41
       }
     ],
     "observacoes": ""

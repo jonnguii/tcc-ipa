@@ -17,4 +17,4 @@ class PedidoExtraido(BaseModel):
     cliente: ClienteInfo
     data_entrega: str = Field(..., description="Data limite de entrega no formato YYYY-MM-DD")
     observacoes: str = Field("", description="Observações adicionais ou notas de entrega")
-    itens: List[ItemPedido] = Field(..., description="Lista de produtos do pedido", min_length=1)
+    itens: List[ItemPedido] = Field(default_factory=list, description="Lista de produtos do pedido")

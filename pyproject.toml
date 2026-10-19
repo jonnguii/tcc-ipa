@@ -12,16 +12,19 @@ dependencies = [
     "google-genai>=2.29.0",
     "jinja2>=3.1.6",
     "pillow>=12.3.0",
+    "playwright>=1.63.0",
     "pydantic-settings>=2.15.0",
+    "pytest>=9.1.1",
     "python-dotenv>=1.2.4",
     "python-multipart>=0.0.32",
+    "rapidfuzz>=3.14.6",
     "supabase>=2.31.0",
     "uvicorn[standard]>=0.54.0",
 ]
 
-[project.scripts]
-tcc-ipa = "tcc_ipa:main"
+[tool.uv]
+package = false
 
-[build-system]
-requires = ["uv_build>=0.12.21,<0.13.0"]
-build-backend = "uv_build"
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

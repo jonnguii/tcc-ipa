@@ -1,6 +1,6 @@
 import time
-from fastapi import FastAPI, Request, Form
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi import FastAPI, Request, Form, HTTPException
+from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from erp_sim import repo
@@ -9,6 +9,18 @@ from src.ipa.config import settings
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="erp_sim/static"), name="static")
 templates = Jinja2Templates(directory="erp_sim/templates")
+
+
+def formato_moeda(valor):
+    try:
+        num = float(valor)
+        # Formata com separador de milhar e decimal no padrão pt-BR
+        return f"R$ {num:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    except (ValueError, TypeError):
+        return "R$ 0,00"
+
+
+templates.env.filters["moeda"] = formato_moeda
 
 
 @app.get("/", include_in_schema=False)
@@ -32,13 +44,18 @@ def form_produto_novo(request: Request):
     return templates.TemplateResponse(request=request, name="produtos_novo.html")
 
 @app.post("/produtos/novo")
-def criar_produto(codigo: str = Form(...), descricao: str = Form(...), unidade: str = Form(...), preco: str = Form(...)):
+def criar_produto(request: Request, codigo: str = Form(...), descricao: str = Form(...), unidade: str = Form(...), preco: str = Form(...)):
     try:
         preco_float = float(preco)
         repo.criar_produto(codigo, descricao, unidade, preco_float)
         return RedirectResponse(url="/produtos?msg=Produto+criado", status_code=303)
     except Exception as e:
-        return templates.TemplateResponse(request=request, name="produtos_novo.html", context={"error": str(e)})
+        err = str(e)
+        if "erp_produtos_codigo_key" in err or "duplicate key" in err:
+            msg_erro = f"Já existe um produto cadastrado com o código '{codigo}'. Escolha outro código."
+        else:
+            msg_erro = f"Erro ao salvar produto: {err}"
+        return templates.TemplateResponse(request=request, name="produtos_novo.html", context={"error": msg_erro})
 
 @app.get("/produtos/{produto_id}/editar", response_class=HTMLResponse)
 def form_produto_editar(request: Request, produto_id: int):
@@ -54,8 +71,13 @@ def atualizar_produto(request: Request, produto_id: int, codigo: str = Form(...)
         repo.atualizar_produto(produto_id, codigo, descricao, unidade, preco_float)
         return RedirectResponse(url="/produtos?msg=Produto+atualizado", status_code=303)
     except Exception as e:
+        err = str(e)
+        if "erp_produtos_codigo_key" in err or "duplicate key" in err:
+            msg_erro = f"Já existe outro produto cadastrado com o código '{codigo}'."
+        else:
+            msg_erro = f"Erro ao atualizar produto: {err}"
         produto = repo.get_produto_by_id(produto_id)
-        return templates.TemplateResponse(request=request, name="produtos_editar.html", context={"produto": produto, "error": str(e)})
+        return templates.TemplateResponse(request=request, name="produtos_editar.html", context={"produto": produto, "error": msg_erro})
 
 @app.post("/produtos/{produto_id}/excluir")
 def excluir_produto(produto_id: int):
@@ -71,9 +93,17 @@ def form_cliente(request: Request):
     return templates.TemplateResponse(request=request, name="clientes_novo.html")
 
 @app.post("/clientes/novo")
-def criar_cliente(nome: str = Form(...), cnpj_cpf: str = Form(...), email: str = Form(...)):
-    repo.criar_cliente(nome, cnpj_cpf, email)
-    return RedirectResponse(url="/clientes?msg=Cliente+criado", status_code=303)
+def criar_cliente(request: Request, nome: str = Form(...), cnpj_cpf: str = Form(...), email: str = Form(...)):
+    try:
+        repo.criar_cliente(nome, cnpj_cpf, email)
+        return RedirectResponse(url="/clientes?msg=Cliente+criado", status_code=303)
+    except Exception as e:
+        err = str(e)
+        if "duplicate key" in err:
+            msg_erro = f"Já existe um cliente cadastrado com este documento ({cnpj_cpf}) ou e-mail ({email})."
+        else:
+            msg_erro = f"Erro ao salvar cliente: {err}"
+        return templates.TemplateResponse(request=request, name="clientes_novo.html", context={"error": msg_erro})
 
 @app.get("/clientes/{cliente_id}/editar", response_class=HTMLResponse)
 def form_cliente_editar(request: Request, cliente_id: int):
@@ -137,3 +167,289 @@ async def post_pedido(request: Request):
         if "erp_pedidos_ref_externa_key" in err or "duplicate key" in err:
             return RedirectResponse(url=f"/pedidos/novo?msg_duplicado=Pedido+duplicado:+{ref_externa}", status_code=303)
         return templates.TemplateResponse(request=request, name="pedidos_novo.html", context={"error": str(e), "clientes": repo.get_clientes(), "produtos": repo.get_produtos()})
+
+
+# ===== Endpoints da Fila de Revisão Humana (Fase 9) =====
+from pathlib import Path
+from src.ipa.review import fila as fila_review
+from src.ipa.rules.resolver import obter_catalogo_produtos
+from src.ipa.workflow.engine import OrquestradorIPA
+from src.ipa.executor import StubExecutor, RpaExecutor
+from src.ipa.schemas import PedidoExtraido, ItemPedido, ClienteInfo
+
+
+@app.get("/revisoes", response_class=HTMLResponse)
+def listar_revisoes(request: Request, status: str | None = None):
+    todas = fila_review.listar_pendencias(status=None)
+    total_todos = len(todas)
+    total_pendentes = sum(1 for r in todas if r.get("status") == "pendente")
+    total_resolvidas = sum(1 for r in todas if r.get("status") == "resolvida")
+    total_rejeitadas = sum(1 for r in todas if r.get("status") == "rejeitada")
+
+    revisoes_filtradas = [r for r in todas if r.get("status") == status] if status else todas
+
+    itens_formatados = []
+    for r in revisoes_filtradas:
+        p = r.get("payload") or {}
+        ped_orig = p.get("pedido_original") or p
+        cli = ped_orig.get("cliente") or p.get("cliente") or {}
+        nome_cliente = (
+            cli.get("nome")
+            if isinstance(cli, dict)
+            else getattr(cli, "nome", "Não identificado")
+        ) or "Não identificado"
+        ref_id = p.get("ref_id") or ped_orig.get("ref_id") or f"REV-{r.get('id')}"
+        motivos = [m.strip() for m in (r.get("motivo") or "").split(";") if m.strip()]
+
+        itens_formatados.append({
+            **r,
+            "ref_id_view": ref_id,
+            "cliente_nome_view": nome_cliente,
+            "motivos_lista": motivos,
+        })
+
+    return templates.TemplateResponse(
+        request=request,
+        name="revisoes_lista.html",
+        context={
+            "revisoes": itens_formatados,
+            "status_filtro": status,
+            "total_todos": total_todos,
+            "total_pendentes": total_pendentes,
+            "total_resolvidas": total_resolvidas,
+            "total_rejeitadas": total_rejeitadas,
+        },
+    )
+
+
+@app.get("/revisoes/{revisao_id}", response_class=HTMLResponse)
+def detalhe_revisao(request: Request, revisao_id: int):
+    revisao = fila_review.obter_pendencia(revisao_id)
+    if not revisao:
+        return RedirectResponse(url="/revisoes", status_code=303)
+
+    payload = revisao.get("payload") or {}
+    pedido_original = payload.get("pedido_original") or payload
+    itens_analisados = payload.get("itens_analisados") or []
+    doc_path = payload.get("_caminho_doc") or payload.get("documento")
+    doc_conteudo = payload.get("_conteudo_bruto")
+    doc_nome = Path(doc_path).name if doc_path else f"revisao_{revisao_id}"
+
+    # Detecção do tipo de mídia e existência do arquivo (com fallback para data/inbox)
+    doc_tipo = "outro"
+    doc_existe = False
+    if doc_path:
+        p = Path(doc_path)
+        ext = p.suffix.lower()
+        if ext == ".pdf":
+            doc_tipo = "pdf"
+        elif ext in (".png", ".jpg", ".jpeg", ".webp"):
+            doc_tipo = "imagem"
+        elif ext in (".txt", ".csv", ".json"):
+            doc_tipo = "texto"
+
+        if p.exists() or (Path("data/inbox") / p.name).exists():
+            doc_existe = True
+
+        if doc_tipo == "texto" and not doc_conteudo:
+            arquivo_leitura = p if p.exists() else (Path("data/inbox") / p.name)
+            if arquivo_leitura.exists():
+                try:
+                    doc_conteudo = arquivo_leitura.read_text(encoding="utf-8")
+                except Exception:
+                    pass
+
+    catalogo = obter_catalogo_produtos()
+    catalogo_map = {p["codigo"]: p for p in catalogo}
+
+    # Tratamento para não exibir literal "None" nos campos do cliente
+    cli = (
+        pedido_original.get("cliente")
+        if isinstance(pedido_original, dict)
+        else getattr(pedido_original, "cliente", None)
+    )
+    cliente_nome = ""
+    cliente_doc = ""
+    if isinstance(cli, dict):
+        cliente_nome = cli.get("nome") or ""
+        cliente_doc = cli.get("cnpj_cpf") or cli.get("documento") or ""
+    elif cli:
+        cliente_nome = getattr(cli, "nome", "") or ""
+        cliente_doc = getattr(cli, "cnpj_cpf", "") or getattr(cli, "documento", "") or ""
+
+    if str(cliente_nome).strip().lower() in ("none", "null"):
+        cliente_nome = ""
+    if str(cliente_doc).strip().lower() in ("none", "null"):
+        cliente_doc = ""
+
+    itens_view = []
+    if itens_analisados:
+        for it in itens_analisados:
+            cod = it.get("codigo_resolvido") or it.get("codigo_sugerido") or "P-001"
+            preco_cat = float(catalogo_map.get(cod, {}).get("preco", 1.0))
+            preco_raw = it.get("preco_unitario")
+            try:
+                preco = float(preco_raw) if preco_raw is not None and float(preco_raw) > 0 else preco_cat
+            except (ValueError, TypeError):
+                preco = preco_cat
+
+            qtd_raw = it.get("quantidade")
+            try:
+                qtd = float(qtd_raw) if qtd_raw is not None and float(qtd_raw) > 0 else 1.0
+            except (ValueError, TypeError):
+                qtd = 1.0
+
+            desc = it.get("descricao_original") or it.get("descricao_bruta", "")
+            if not desc or str(desc).strip().lower() in ("none", "null"):
+                desc = catalogo_map.get(cod, {}).get("descricao", cod)
+
+            itens_view.append({
+                "descricao_original": desc,
+                "codigo_resolvido": cod,
+                "score_fuzzy": it.get("score_similaridade") or it.get("confianca", 100.0),
+                "quantidade": qtd,
+                "preco_unitario": preco,
+            })
+    else:
+        for it in pedido_original.get("itens", []):
+            cod = it.get("codigo") or it.get("codigo_produto") or "P-001"
+            preco_cat = float(catalogo_map.get(cod, {}).get("preco", 1.0))
+            preco_raw = it.get("preco_unitario")
+            try:
+                preco = float(preco_raw) if preco_raw is not None and float(preco_raw) > 0 else preco_cat
+            except (ValueError, TypeError):
+                preco = preco_cat
+
+            qtd_raw = it.get("quantidade")
+            try:
+                qtd = float(qtd_raw) if qtd_raw is not None and float(qtd_raw) > 0 else 1.0
+            except (ValueError, TypeError):
+                qtd = 1.0
+
+            desc = it.get("descricao_bruta") or it.get("descricao", "")
+            if not desc or str(desc).strip().lower() in ("none", "null"):
+                desc = catalogo_map.get(cod, {}).get("descricao", cod)
+
+            itens_view.append({
+                "descricao_original": desc,
+                "codigo_resolvido": cod,
+                "score_fuzzy": 100.0,
+                "quantidade": qtd,
+                "preco_unitario": preco,
+            })
+
+    return templates.TemplateResponse(
+        request=request,
+        name="revisoes_detalhe.html",
+        context={
+            "revisao": revisao,
+            "payload": payload,
+            "pedido_original": pedido_original,
+            "cliente_nome": cliente_nome,
+            "cliente_doc": cliente_doc,
+            "itens": itens_view,
+            "catalogo": catalogo,
+            "doc_nome": doc_nome,
+            "doc_path": doc_path,
+            "doc_conteudo": doc_conteudo,
+            "doc_tipo": doc_tipo,
+            "doc_existe": doc_existe,
+        },
+    )
+
+
+@app.get("/revisoes/{revisao_id}/arquivo")
+def obter_arquivo_revisao(revisao_id: int):
+    """Serve o arquivo original anexado ao pedido para visualização na UI (PDF, imagem, texto)."""
+    revisao = fila_review.obter_pendencia(revisao_id)
+    if not revisao:
+        raise HTTPException(status_code=404, detail="Revisão não encontrada")
+
+    payload = revisao.get("payload") or {}
+    doc_path = payload.get("_caminho_doc") or payload.get("documento")
+    if not doc_path:
+        raise HTTPException(status_code=404, detail="Nenhum arquivo associado a esta revisão")
+
+    p = Path(doc_path)
+    if not p.exists():
+        # Fallback para o repositório em data/inbox caso tenha rodado em pasta temporária
+        fallback = Path("data/inbox") / p.name
+        if fallback.exists():
+            p = fallback
+        else:
+            raise HTTPException(status_code=404, detail=f"Arquivo '{p.name}' não encontrado no disco")
+
+    suffix = p.suffix.lower()
+    media_map = {
+        ".pdf": "application/pdf",
+        ".png": "image/png",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".webp": "image/webp",
+        ".txt": "text/plain; charset=utf-8",
+        ".json": "application/json",
+    }
+    media_type = media_map.get(suffix, "application/octet-stream")
+    return FileResponse(path=p, media_type=media_type, filename=p.name)
+
+
+@app.post("/revisoes/{revisao_id}/decisao")
+async def decisao_revisao(request: Request, revisao_id: int):
+    form_data = await request.form()
+    acao = str(form_data.get("acao", "aprovar")).lower()
+    tempo_s_raw = form_data.get("tempo_revisao_s", "0")
+    try:
+        tempo_revisao_s = float(tempo_s_raw)
+    except (ValueError, TypeError):
+        tempo_revisao_s = 0.0
+
+    if acao == "rejeitar":
+        orquestrador = OrquestradorIPA(executor=StubExecutor())
+        orquestrador.retomar_apos_revisao(
+            revisao_id=revisao_id,
+            acao="rejeitar",
+            tempo_revisao_s=tempo_revisao_s,
+        )
+        return RedirectResponse(url=f"/revisoes/{revisao_id}", status_code=303)
+
+    ref_id = str(form_data.get("ref_id", f"REV-{revisao_id}"))
+    cliente_nome = str(form_data.get("cliente_nome", ""))
+    cliente_doc = str(form_data.get("cliente_documento", ""))
+    data_entrega = str(form_data.get("data_entrega", ""))
+
+    itens_corrigidos = []
+    idx = 0
+    while f"item_codigo_{idx}" in form_data:
+        cod = str(form_data.get(f"item_codigo_{idx}"))
+        try:
+            qtd = float(form_data.get(f"item_qtd_{idx}", 1))
+            if qtd <= 0:
+                qtd = 1.0
+        except (ValueError, TypeError):
+            qtd = 1.0
+        itens_corrigidos.append(
+            ItemPedido(
+                codigo=cod,
+                quantidade=qtd,
+            )
+        )
+        idx += 1
+
+    pedido_corrigido = PedidoExtraido(
+        ref_id=ref_id,
+        cliente=ClienteInfo(nome=cliente_nome, cnpj_cpf=cliente_doc),
+        data_entrega=data_entrega,
+        itens=itens_corrigidos,
+    )
+
+    executor = RpaExecutor() if settings.executor == "rpa" else StubExecutor()
+    orquestrador = OrquestradorIPA(executor=executor)
+    orquestrador.retomar_apos_revisao(
+        revisao_id=revisao_id,
+        acao="aprovar",
+        pedido_corrigido=pedido_corrigido,
+        tempo_revisao_s=tempo_revisao_s,
+    )
+
+    return RedirectResponse(url=f"/revisoes/{revisao_id}", status_code=303)
+

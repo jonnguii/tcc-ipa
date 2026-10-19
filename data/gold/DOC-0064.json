@@ -1,28 +1,26 @@
 {
   "id": "DOC-0064",
-  "categoria": "adversarial",
-  "tipo_arquivo": "png",
+  "categoria": "ruidoso",
+  "tipo_arquivo": "txt",
   "pedido_verdade": {
     "cliente": {
-      "id": 14
+      "id": 19,
+      "nome": "Peixaria Mare",
+      "cnpj_cpf": "08183658000198"
     },
-    "data_entrega": "2026-11-24",
+    "data_entrega": "2026-11-26",
     "itens": [
       {
+        "codigo": "P-003",
+        "quantidade": 28
+      },
+      {
         "codigo": "P-007",
-        "quantidade": 91
-      },
-      {
-        "codigo": "P-028",
-        "quantidade": 20
-      },
-      {
-        "codigo": "P-024",
-        "quantidade": 56
-      },
-      {
-        "codigo": "P-030",
         "quantidade": 23
+      },
+      {
+        "codigo": "P-039",
+        "quantidade": 47
       }
     ],
     "observacoes": ""

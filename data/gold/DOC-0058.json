@@ -1,16 +1,18 @@
 {
   "id": "DOC-0058",
-  "categoria": "ruidoso",
+  "categoria": "limpo",
   "tipo_arquivo": "txt",
   "pedido_verdade": {
     "cliente": {
-      "id": 2
+      "id": 14,
+      "nome": "Cafe Aroma",
+      "cnpj_cpf": "19834441000117"
     },
-    "data_entrega": "2026-11-27",
+    "data_entrega": "2026-11-11",
     "itens": [
       {
-        "codigo": "P-016",
-        "quantidade": 26
+        "codigo": "P-012",
+        "quantidade": 48
       }
     ],
     "observacoes": ""

@@ -1,6 +1,4 @@
-pedido:DOC-0013
-cli:Mercado Beta
-doc:01152449000138
-- 43x Produto 5 (P-005)
-- 10x Produto 3 (P-003)
-entrega logo ai blz ate 2026-11-17
+Prezados,
+Gostaria de obter informações sobre o horário de atendimento e se vocês realizam entregas na região da Zona Leste aos sábados.
+Agradeço desde já.
+Ref: DOC-0013

@@ -1,24 +1,18 @@
 {
   "id": "DOC-0025",
   "categoria": "limpo",
-  "tipo_arquivo": "png",
+  "tipo_arquivo": "txt",
   "pedido_verdade": {
     "cliente": {
-      "id": 5
+      "id": 17,
+      "nome": "Cantina da Mama",
+      "cnpj_cpf": "86454284000101"
     },
-    "data_entrega": "2026-11-27",
+    "data_entrega": "2026-11-16",
     "itens": [
       {
-        "codigo": "P-005",
-        "quantidade": 37
-      },
-      {
-        "codigo": "P-016",
+        "codigo": "P-039",
         "quantidade": 21
-      },
-      {
-        "codigo": "P-024",
-        "quantidade": 57
       }
     ],
     "observacoes": ""

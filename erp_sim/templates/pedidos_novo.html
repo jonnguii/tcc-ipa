@@ -2,9 +2,7 @@
 {% block content %}
 <div class="form-container">
   <div class="form-intro">
-    <span class="form-eyebrow">Pedidos / Nova operação</span>
     <h2>Novo pedido</h2>
-    <p>Informe o cliente, a entrega e os produtos que fazem parte do pedido.</p>
   </div>
 
   {% if request.query_params.get("msg_sucesso") %}
@@ -88,7 +86,7 @@
               >
                 <option value="">Selecione...</option>
                 {% for p in produtos %}
-                <option value="{{ p.id }}" data-preco="{{ p.preco }}">{{ p.codigo }} - {{ p.descricao }}</option>
+                <option value="{{ p.id }}" data-preco="{{ p.preco }}">{{ p.codigo }} - {{ p.descricao }} ({{ p.preco|moeda }})</option>
                 {% endfor %}
               </select>
             </td>

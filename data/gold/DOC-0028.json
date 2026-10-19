@@ -1,28 +1,30 @@
 {
   "id": "DOC-0028",
-  "categoria": "ruidoso",
+  "categoria": "limpo",
   "tipo_arquivo": "txt",
   "pedido_verdade": {
     "cliente": {
-      "id": 17
+      "id": 3,
+      "nome": "Lanchonete Omega",
+      "cnpj_cpf": "39825979000172"
     },
-    "data_entrega": "2026-11-25",
+    "data_entrega": "2026-11-28",
     "itens": [
       {
-        "codigo": "P-017",
+        "codigo": "P-005",
         "quantidade": 36
       },
       {
-        "codigo": "P-004",
-        "quantidade": 6
+        "codigo": "P-035",
+        "quantidade": 11
       },
       {
-        "codigo": "P-006",
-        "quantidade": 1
+        "codigo": "P-009",
+        "quantidade": 17
       },
       {
-        "codigo": "P-028",
-        "quantidade": 43
+        "codigo": "P-031",
+        "quantidade": 34
       }
     ],
     "observacoes": ""

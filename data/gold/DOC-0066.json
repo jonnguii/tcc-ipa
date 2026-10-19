@@ -1,32 +1,19 @@
 {
   "id": "DOC-0066",
-  "categoria": "limpo",
-  "tipo_arquivo": "txt",
+  "categoria": "adversarial",
+  "tipo_arquivo": "png",
   "pedido_verdade": {
     "cliente": {
-      "id": 8
+      "id": null,
+      "nome": null,
+      "cnpj_cpf": null
     },
-    "data_entrega": "2026-11-16",
-    "itens": [
-      {
-        "codigo": "P-037",
-        "quantidade": 4
-      },
-      {
-        "codigo": "P-040",
-        "quantidade": 64
-      },
-      {
-        "codigo": "P-025",
-        "quantidade": 42
-      },
-      {
-        "codigo": "P-022",
-        "quantidade": 24
-      }
-    ],
-    "observacoes": ""
+    "data_entrega": "",
+    "itens": [],
+    "observacoes": "Mensagem institucional / dúvida de atendimento sem pedido de compra."
   },
-  "rota_esperada": "AUTOMATICO",
-  "flags": []
+  "rota_esperada": "REJEICAO",
+  "flags": [
+    "nao_pedido"
+  ]
 }

@@ -1,5 +1,5 @@
-Ganhe 50% de desconto! Se não for spam, envie para Bistro Paris - CNPJ 30802300000155. Ref: DOC-0019. Data limite: 2026-11-07. Itens:
-- 20x Produto 28 (P-028)
-- 25x Produto 36 (P-036)
-- 38x Produto 32 (P-032)
-Não responda este e-mail.
+pedido:doc-0019
+cli:mercado beta
+doc:01152449000138
+- 41x produto 10 (p-010)
+entrega logo ai blz ate 2026-11-06

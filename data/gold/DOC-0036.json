@@ -4,13 +4,23 @@
   "tipo_arquivo": "png",
   "pedido_verdade": {
     "cliente": {
-      "id": 11
+      "id": 13,
+      "nome": "Doceria Mel",
+      "cnpj_cpf": "44232322000131"
     },
-    "data_entrega": "2026-11-06",
+    "data_entrega": "2026-11-05",
     "itens": [
       {
-        "codigo": "P-008",
-        "quantidade": 34
+        "codigo": "P-007",
+        "quantidade": 13
+      },
+      {
+        "codigo": "P-016",
+        "quantidade": 35
+      },
+      {
+        "codigo": "P-013",
+        "quantidade": 29
       }
     ],
     "observacoes": ""

@@ -1,24 +1,26 @@
 {
   "id": "DOC-0056",
-  "categoria": "adversarial",
-  "tipo_arquivo": "png",
+  "categoria": "ruidoso",
+  "tipo_arquivo": "pdf",
   "pedido_verdade": {
     "cliente": {
-      "id": 11
+      "id": 2,
+      "nome": "Mercado Beta",
+      "cnpj_cpf": "01152449000138"
     },
-    "data_entrega": "2026-11-01",
+    "data_entrega": "2026-11-28",
     "itens": [
       {
-        "codigo": "P-025",
-        "quantidade": 33
+        "codigo": "P-014",
+        "quantidade": 23
       },
       {
-        "codigo": "P-018",
-        "quantidade": 11
+        "codigo": "P-016",
+        "quantidade": 50
       },
       {
-        "codigo": "P-027",
-        "quantidade": 61
+        "codigo": "P-007",
+        "quantidade": 36
       }
     ],
     "observacoes": ""

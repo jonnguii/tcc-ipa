@@ -1,24 +1,18 @@
 {
   "id": "DOC-0019",
-  "categoria": "adversarial",
+  "categoria": "ruidoso",
   "tipo_arquivo": "txt",
   "pedido_verdade": {
     "cliente": {
-      "id": 15
+      "id": 2,
+      "nome": "Mercado Beta",
+      "cnpj_cpf": "01152449000138"
     },
-    "data_entrega": "2026-11-07",
+    "data_entrega": "2026-11-06",
     "itens": [
       {
-        "codigo": "P-028",
-        "quantidade": 20
-      },
-      {
-        "codigo": "P-036",
-        "quantidade": 25
-      },
-      {
-        "codigo": "P-032",
-        "quantidade": 38
+        "codigo": "P-010",
+        "quantidade": 41
       }
     ],
     "observacoes": ""
