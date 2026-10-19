@@ -1,21 +1,54 @@
 # Python
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+dist/
+*.egg-info/
+
+# Ambientes Virtuais
 .venv/
+venv/
+env/
+
+# Testes e Linters
 .pytest_cache/
 .ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+test-results/
+playwright-report/
 
-# Env
+# Variáveis de Ambiente e Credenciais
 .env
+.env.*
+!.env.example
 
-# RPA
+# RPA e Execuções
 rpa/evidencias/
+*.log
 
-# OS
-.DS_Store
-
-# IA
+# Caches e Agentes de IA
 .agents/
+.agents
 cache/
+.ai_cache.json
+*.ai_cache.json
+.gemini/
 
-# Onboarding PM Local
+# IDEs e Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Sistema Operacional
+.DS_Store
+Thumbs.db
+
+# Documentos Locais / Scratch
 ONBOARDING_PM_APRENDIZADO.md
+scratch/
