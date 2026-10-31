@@ -476,10 +476,10 @@ def gerar_svg_g4() -> str:
         <text x="50" y="58" font-size="12.5" font-weight="400" fill="#64748b">Comparativo empírico entre digitação manual no ERP e orquestração automatizada (N=30 pedidos pareados)</text>
 
         <!-- Selo de Speed-Up Centralizado com ampla folga de ambos os lados -->
-        <g transform="translate(425, 175)">
-            <rect x="0" y="0" width="150" height="70" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5" rx="8" />
-            <text x="75" y="27" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">GANHO DE VELOCIDADE</text>
-            <text x="75" y="53" text-anchor="middle" font-size="20" font-weight="800" fill="#065f46">{speedup:.1f}x MAIS RÁPIDO</text>
+        <g transform="translate(385, 172)">
+            <rect x="0" y="0" width="230" height="76" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5" rx="8" />
+            <text x="115" y="29" text-anchor="middle" font-size="11.5" font-weight="700" fill="#047857">GANHO DE VELOCIDADE</text>
+            <text x="115" y="56" text-anchor="middle" font-size="20" font-weight="800" fill="#065f46">{speedup:.1f}x MAIS RÁPIDO</text>
         </g>
 
         <!-- Linhas de Grade e Eixo Y -->
