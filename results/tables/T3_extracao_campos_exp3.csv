@@ -1,0 +1,5 @@
+campo_critico,precision,recall,f1_score,acertos_exatos,total_docs,acuracia_pct
+Cliente (CNPJ / Razao Social),1.0,1.0,1.0,50,50,100.0
+Data de Entrega (ISO 8601),1.0,1.0,1.0,50,50,100.0
+Produtos e Quantidades (Itens),0.9883,0.9883,0.9883,48,50,96.0
+Todos os Campos Simultaneos,-,-,0.9883,48,50,96.0

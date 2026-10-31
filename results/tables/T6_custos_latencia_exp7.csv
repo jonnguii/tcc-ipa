@@ -1,0 +1,4 @@
+componente,latencia_mediana_s,latencia_p90_s,custo_medio_brl,participacao_custo_pct
+Extracao Inteligente (Gemini Flash),0.0004,0.0005,0.000437,100.0
+Triagem e Regras Deterministicas,0.1396,0.1969,0.0,0.0
+Pipeline Completo Integrado,0.2028,0.2546,0.000437,100.0
