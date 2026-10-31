@@ -1,1 +1,1378 @@
-[]
+[
+  {
+    "id": 1,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Item com similaridade ambígua: 78%",
+    "payload": {
+      "ref_id": "TESTE-REV-001",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "resolvida",
+    "correcao": {
+      "pedido": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": true,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": "contato@oficinamecnicasojosltda.com.br"
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      },
+      "numero_pedido": 1001,
+      "status_executor": "sucesso"
+    },
+    "simulada": true,
+    "tempo_revisao_s": 7.911,
+    "criado_em": "2026-10-31T01:00:02.440187+00:00"
+  },
+  {
+    "id": 2,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Data de entrega retroativa",
+    "payload": {
+      "ref_id": "TESTE-OBTER-002",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "resolvida",
+    "correcao": {
+      "pedido": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": true,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": "contato@oficinamecnicasojosltda.com.br"
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      },
+      "numero_pedido": 1001,
+      "status_executor": "sucesso"
+    },
+    "simulada": true,
+    "tempo_revisao_s": 7.291,
+    "criado_em": "2026-10-31T01:00:02.507559+00:00"
+  },
+  {
+    "id": 3,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Score baixo",
+    "payload": {
+      "ref_id": "TESTE-RESOLVER-003",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "resolvida",
+    "correcao": {
+      "cliente": "Nome Corrigido",
+      "itens": []
+    },
+    "simulada": true,
+    "tempo_revisao_s": 12.45,
+    "criado_em": "2026-10-31T01:00:02.559528+00:00"
+  },
+  {
+    "id": 4,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Tentativa de fraude cadastral",
+    "payload": {
+      "ref_id": "TESTE-REJEITAR-004",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "rejeitada",
+    "correcao": null,
+    "simulada": true,
+    "tempo_revisao_s": 4.12,
+    "criado_em": "2026-10-31T01:00:02.657254+00:00"
+  },
+  {
+    "id": 5,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Score fuzzy ambíguo",
+    "payload": {
+      "ref_id": "TESTE-REV-001",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "resolvida",
+    "correcao": {
+      "pedido": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": true,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": "contato@oficinamecnicasojosltda.com.br"
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      },
+      "numero_pedido": 1001,
+      "status_executor": "sucesso"
+    },
+    "simulada": true,
+    "tempo_revisao_s": 8.5,
+    "criado_em": "2026-10-31T01:00:02.716383+00:00"
+  },
+  {
+    "id": 6,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Dados inconsistentes",
+    "payload": {
+      "ref_id": "TESTE-REV-REJ",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "rejeitada",
+    "correcao": null,
+    "simulada": true,
+    "tempo_revisao_s": 3.2,
+    "criado_em": "2026-10-31T01:00:02.897735+00:00"
+  },
+  {
+    "id": 7,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Data de entrega '2026-10-28' é anterior à data de processamento",
+    "payload": {
+      "ref_id": "DOC-STUB-REV",
+      "pedido_original": {
+        "ref_id": "DOC-STUB-REV",
+        "cliente": {
+          "id": 1,
+          "novo": false,
+          "nome": null,
+          "cnpj_cpf": null,
+          "email": null
+        },
+        "data_entrega": "2026-10-28",
+        "observacoes": "Data retroativa",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 1.0
+          }
+        ]
+      },
+      "itens_analisados": [
+        {
+          "termo_original": "P-001",
+          "codigo_resolvido": "P-001",
+          "descricao_resolvida": "Produto 1",
+          "quantidade": 1.0,
+          "score_fuzzy": 100.0,
+          "status_resolucao": "EXATO"
+        }
+      ],
+      "documento": "C:\\Users\\diogo\\AppData\\Local\\Temp\\pytest-of-diogo\\pytest-0\\test_orquestrador_fluxo_revisa0\\DOC-0002.pdf",
+      "_caminho_doc": "C:\\Users\\diogo\\AppData\\Local\\Temp\\pytest-of-diogo\\pytest-0\\test_orquestrador_fluxo_revisa0\\DOC-0002.pdf"
+    },
+    "status": "pendente",
+    "correcao": null,
+    "simulada": false,
+    "tempo_revisao_s": null,
+    "criado_em": "2026-10-31T01:00:03.060201+00:00"
+  },
+  {
+    "id": 8,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Item com similaridade ambígua: 78%",
+    "payload": {
+      "ref_id": "TESTE-REV-001",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "pendente",
+    "correcao": null,
+    "simulada": true,
+    "tempo_revisao_s": null,
+    "criado_em": "2026-10-31T01:09:10.722032+00:00"
+  },
+  {
+    "id": 9,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Data de entrega retroativa",
+    "payload": {
+      "ref_id": "TESTE-OBTER-002",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "pendente",
+    "correcao": null,
+    "simulada": true,
+    "tempo_revisao_s": null,
+    "criado_em": "2026-10-31T01:09:10.781081+00:00"
+  },
+  {
+    "id": 10,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Score baixo",
+    "payload": {
+      "ref_id": "TESTE-RESOLVER-003",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "resolvida",
+    "correcao": {
+      "cliente": "Nome Corrigido",
+      "itens": []
+    },
+    "simulada": true,
+    "tempo_revisao_s": 12.45,
+    "criado_em": "2026-10-31T01:09:10.834727+00:00"
+  },
+  {
+    "id": 11,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Tentativa de fraude cadastral",
+    "payload": {
+      "ref_id": "TESTE-REJEITAR-004",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "rejeitada",
+    "correcao": null,
+    "simulada": true,
+    "tempo_revisao_s": 4.12,
+    "criado_em": "2026-10-31T01:09:10.935883+00:00"
+  },
+  {
+    "id": 12,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Score fuzzy ambíguo",
+    "payload": {
+      "ref_id": "TESTE-REV-001",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "resolvida",
+    "correcao": {
+      "pedido": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": true,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": "contato@oficinamecnicasojosltda.com.br"
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      },
+      "numero_pedido": 1001,
+      "status_executor": "sucesso"
+    },
+    "simulada": true,
+    "tempo_revisao_s": 8.5,
+    "criado_em": "2026-10-31T01:09:10.994499+00:00"
+  },
+  {
+    "id": 13,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Dados inconsistentes",
+    "payload": {
+      "ref_id": "TESTE-REV-REJ",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "rejeitada",
+    "correcao": null,
+    "simulada": true,
+    "tempo_revisao_s": 3.2,
+    "criado_em": "2026-10-31T01:09:11.176271+00:00"
+  },
+  {
+    "id": 14,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Data de entrega '2026-10-28' é anterior à data de processamento",
+    "payload": {
+      "ref_id": "DOC-STUB-REV",
+      "pedido_original": {
+        "ref_id": "DOC-STUB-REV",
+        "cliente": {
+          "id": 1,
+          "novo": false,
+          "nome": null,
+          "cnpj_cpf": null,
+          "email": null
+        },
+        "data_entrega": "2026-10-28",
+        "observacoes": "Data retroativa",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 1.0
+          }
+        ]
+      },
+      "itens_analisados": [
+        {
+          "termo_original": "P-001",
+          "codigo_resolvido": "P-001",
+          "descricao_resolvida": "Produto 1",
+          "quantidade": 1.0,
+          "score_fuzzy": 100.0,
+          "status_resolucao": "EXATO"
+        }
+      ],
+      "documento": "C:\\Users\\diogo\\AppData\\Local\\Temp\\pytest-of-diogo\\pytest-1\\test_orquestrador_fluxo_revisa0\\DOC-0002.pdf",
+      "_caminho_doc": "C:\\Users\\diogo\\AppData\\Local\\Temp\\pytest-of-diogo\\pytest-1\\test_orquestrador_fluxo_revisa0\\DOC-0002.pdf"
+    },
+    "status": "pendente",
+    "correcao": null,
+    "simulada": false,
+    "tempo_revisao_s": null,
+    "criado_em": "2026-10-31T01:09:11.328841+00:00"
+  },
+  {
+    "id": 15,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Item com similaridade duvidosa na triagem automática",
+    "payload": {
+      "ref_id": "TESTE-REV-RPA-1793411180411",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-RPA-1793411180411",
+        "cliente": {
+          "nome": "Cliente Teste RPA",
+          "cnpj_cpf": "12345678000195"
+        },
+        "data_entrega": "2026-12-01",
+        "itens": [
+          {
+            "codigo": "P-005",
+            "quantidade": 10
+          }
+        ]
+      }
+    },
+    "status": "resolvida",
+    "correcao": {
+      "pedido": {
+        "ref_id": "TESTE-REV-RPA-1793411180411",
+        "cliente": {
+          "id": 1,
+          "novo": false,
+          "nome": "Metalúrgica Silva",
+          "cnpj_cpf": "12345678000195",
+          "email": null
+        },
+        "data_entrega": "2026-12-01",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-005",
+            "quantidade": 10.0
+          }
+        ]
+      },
+      "numero_pedido": 105,
+      "status_executor": "sucesso"
+    },
+    "simulada": false,
+    "tempo_revisao_s": 3.45,
+    "criado_em": "2026-10-31T01:46:20.745893+00:00"
+  },
+  {
+    "id": 16,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Item com similaridade ambígua: 78%",
+    "payload": {
+      "ref_id": "TESTE-REV-001",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "pendente",
+    "correcao": null,
+    "simulada": true,
+    "tempo_revisao_s": null,
+    "criado_em": "2026-10-31T01:46:21.821623+00:00"
+  },
+  {
+    "id": 17,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Data de entrega retroativa",
+    "payload": {
+      "ref_id": "TESTE-OBTER-002",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "pendente",
+    "correcao": null,
+    "simulada": true,
+    "tempo_revisao_s": null,
+    "criado_em": "2026-10-31T01:46:21.877021+00:00"
+  },
+  {
+    "id": 18,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Score baixo",
+    "payload": {
+      "ref_id": "TESTE-RESOLVER-003",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "resolvida",
+    "correcao": {
+      "cliente": "Nome Corrigido",
+      "itens": []
+    },
+    "simulada": true,
+    "tempo_revisao_s": 12.45,
+    "criado_em": "2026-10-31T01:46:21.931050+00:00"
+  },
+  {
+    "id": 19,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Tentativa de fraude cadastral",
+    "payload": {
+      "ref_id": "TESTE-REJEITAR-004",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "rejeitada",
+    "correcao": null,
+    "simulada": true,
+    "tempo_revisao_s": 4.12,
+    "criado_em": "2026-10-31T01:46:21.996134+00:00"
+  },
+  {
+    "id": 20,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Score fuzzy ambíguo",
+    "payload": {
+      "ref_id": "TESTE-REV-001",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "resolvida",
+    "correcao": {
+      "pedido": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": true,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": "contato@oficinamecnicasojosltda.com.br"
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      },
+      "numero_pedido": 1001,
+      "status_executor": "sucesso"
+    },
+    "simulada": true,
+    "tempo_revisao_s": 8.5,
+    "criado_em": "2026-10-31T01:46:22.061324+00:00"
+  },
+  {
+    "id": 21,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Dados inconsistentes",
+    "payload": {
+      "ref_id": "TESTE-REV-REJ",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "rejeitada",
+    "correcao": null,
+    "simulada": true,
+    "tempo_revisao_s": 3.2,
+    "criado_em": "2026-10-31T01:46:22.243845+00:00"
+  },
+  {
+    "id": 22,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Data de entrega '2026-10-28' é anterior à data de processamento",
+    "payload": {
+      "ref_id": "DOC-STUB-REV",
+      "pedido_original": {
+        "ref_id": "DOC-STUB-REV",
+        "cliente": {
+          "id": 1,
+          "novo": false,
+          "nome": null,
+          "cnpj_cpf": null,
+          "email": null
+        },
+        "data_entrega": "2026-10-28",
+        "observacoes": "Data retroativa",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 1.0
+          }
+        ]
+      },
+      "itens_analisados": [
+        {
+          "termo_original": "P-001",
+          "codigo_resolvido": "P-001",
+          "descricao_resolvida": "Produto 1",
+          "quantidade": 1.0,
+          "score_fuzzy": 100.0,
+          "status_resolucao": "EXATO"
+        }
+      ],
+      "documento": "C:\\Users\\diogo\\AppData\\Local\\Temp\\pytest-of-diogo\\pytest-2\\test_orquestrador_fluxo_revisa0\\DOC-0002.pdf",
+      "_caminho_doc": "C:\\Users\\diogo\\AppData\\Local\\Temp\\pytest-of-diogo\\pytest-2\\test_orquestrador_fluxo_revisa0\\DOC-0002.pdf"
+    },
+    "status": "pendente",
+    "correcao": null,
+    "simulada": false,
+    "tempo_revisao_s": null,
+    "criado_em": "2026-10-31T01:46:22.397733+00:00"
+  },
+  {
+    "id": 23,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Item com similaridade duvidosa na triagem automática",
+    "payload": {
+      "ref_id": "TESTE-REV-RPA-1793411198920",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-RPA-1793411198920",
+        "cliente": {
+          "nome": "Cliente Teste RPA",
+          "cnpj_cpf": "12345678000195"
+        },
+        "data_entrega": "2026-12-01",
+        "itens": [
+          {
+            "codigo": "P-005",
+            "quantidade": 10
+          }
+        ]
+      }
+    },
+    "status": "resolvida",
+    "correcao": {
+      "pedido": {
+        "ref_id": "TESTE-REV-RPA-1793411198920",
+        "cliente": {
+          "id": 1,
+          "novo": false,
+          "nome": "Metalúrgica Silva",
+          "cnpj_cpf": "12345678000195",
+          "email": null
+        },
+        "data_entrega": "2026-12-01",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-005",
+            "quantidade": 10.0
+          }
+        ]
+      },
+      "numero_pedido": 107,
+      "status_executor": "sucesso"
+    },
+    "simulada": false,
+    "tempo_revisao_s": 3.45,
+    "criado_em": "2026-10-31T01:46:39.263528+00:00"
+  },
+  {
+    "id": 24,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Item com similaridade duvidosa na triagem automática",
+    "payload": {
+      "ref_id": "TESTE-REV-RPA-1793411257488",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-RPA-1793411257488",
+        "cliente": {
+          "nome": "Cliente Teste RPA",
+          "cnpj_cpf": "12345678000195"
+        },
+        "data_entrega": "2026-12-01",
+        "itens": [
+          {
+            "codigo": "P-005",
+            "quantidade": 10
+          }
+        ]
+      }
+    },
+    "status": "resolvida",
+    "correcao": {
+      "pedido": {
+        "ref_id": "TESTE-REV-RPA-1793411257488",
+        "cliente": {
+          "id": 1,
+          "novo": false,
+          "nome": "Metalúrgica Silva",
+          "cnpj_cpf": "12345678000195",
+          "email": null
+        },
+        "data_entrega": "2026-12-01",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-005",
+            "quantidade": 10.0
+          }
+        ]
+      },
+      "numero_pedido": 109,
+      "status_executor": "sucesso"
+    },
+    "simulada": false,
+    "tempo_revisao_s": 3.45,
+    "criado_em": "2026-10-31T01:47:37.769260+00:00"
+  },
+  {
+    "id": 25,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Item com similaridade duvidosa na triagem automática",
+    "payload": {
+      "ref_id": "TESTE-REV-RPA-1793411337239",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-RPA-1793411337239",
+        "cliente": {
+          "nome": "Cliente Teste RPA",
+          "cnpj_cpf": "12345678000195"
+        },
+        "data_entrega": "2026-12-01",
+        "itens": [
+          {
+            "codigo": "P-005",
+            "quantidade": 10
+          }
+        ]
+      }
+    },
+    "status": "resolvida",
+    "correcao": {
+      "pedido": {
+        "ref_id": "TESTE-REV-RPA-1793411337239",
+        "cliente": {
+          "id": 1,
+          "novo": false,
+          "nome": "Metalúrgica Silva",
+          "cnpj_cpf": "12345678000195",
+          "email": null
+        },
+        "data_entrega": "2026-12-01",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-005",
+            "quantidade": 10.0
+          }
+        ]
+      },
+      "numero_pedido": 111,
+      "status_executor": "sucesso"
+    },
+    "simulada": false,
+    "tempo_revisao_s": 3.45,
+    "criado_em": "2026-10-31T01:48:57.590621+00:00"
+  },
+  {
+    "id": 26,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Item com similaridade duvidosa na triagem automática",
+    "payload": {
+      "ref_id": "TESTE-REV-RPA-1793411394831",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-RPA-1793411394831",
+        "cliente": {
+          "nome": "Cliente Teste RPA",
+          "cnpj_cpf": "12345678000195"
+        },
+        "data_entrega": "2026-12-01",
+        "itens": [
+          {
+            "codigo": "P-005",
+            "quantidade": 10
+          }
+        ]
+      }
+    },
+    "status": "resolvida",
+    "correcao": {
+      "pedido": {
+        "ref_id": "TESTE-REV-RPA-1793411394831",
+        "cliente": {
+          "id": 1,
+          "novo": false,
+          "nome": "Metalúrgica Silva",
+          "cnpj_cpf": "12345678000195",
+          "email": null
+        },
+        "data_entrega": "2026-12-01",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-005",
+            "quantidade": 10.0
+          }
+        ]
+      },
+      "numero_pedido": 113,
+      "status_executor": "sucesso"
+    },
+    "simulada": false,
+    "tempo_revisao_s": 3.45,
+    "criado_em": "2026-10-31T01:49:54.856134+00:00"
+  },
+  {
+    "id": 27,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Item com similaridade duvidosa na triagem automática",
+    "payload": {
+      "ref_id": "TESTE-REV-RPA-1793411465924",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-RPA-1793411465924",
+        "cliente": {
+          "nome": "Cliente Teste RPA",
+          "cnpj_cpf": "12345678000195"
+        },
+        "data_entrega": "2026-12-01",
+        "itens": [
+          {
+            "codigo": "P-005",
+            "quantidade": 10
+          }
+        ]
+      }
+    },
+    "status": "resolvida",
+    "correcao": {
+      "pedido": {
+        "ref_id": "TESTE-REV-RPA-1793411465924",
+        "cliente": {
+          "id": 1,
+          "novo": false,
+          "nome": "Metalúrgica Silva",
+          "cnpj_cpf": "12345678000195",
+          "email": null
+        },
+        "data_entrega": "2026-12-01",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-005",
+            "quantidade": 10.0
+          }
+        ]
+      },
+      "numero_pedido": 115,
+      "status_executor": "sucesso"
+    },
+    "simulada": false,
+    "tempo_revisao_s": 3.45,
+    "criado_em": "2026-10-31T01:51:05.948197+00:00"
+  },
+  {
+    "id": 28,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Item com similaridade ambígua: 78%",
+    "payload": {
+      "ref_id": "TESTE-REV-001",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "pendente",
+    "correcao": null,
+    "simulada": true,
+    "tempo_revisao_s": null,
+    "criado_em": "2026-10-31T01:51:06.916917+00:00"
+  },
+  {
+    "id": 29,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Data de entrega retroativa",
+    "payload": {
+      "ref_id": "TESTE-OBTER-002",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "pendente",
+    "correcao": null,
+    "simulada": true,
+    "tempo_revisao_s": null,
+    "criado_em": "2026-10-31T01:51:06.969446+00:00"
+  },
+  {
+    "id": 30,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Score baixo",
+    "payload": {
+      "ref_id": "TESTE-RESOLVER-003",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "resolvida",
+    "correcao": {
+      "cliente": "Nome Corrigido",
+      "itens": []
+    },
+    "simulada": true,
+    "tempo_revisao_s": 12.45,
+    "criado_em": "2026-10-31T01:51:07.020468+00:00"
+  },
+  {
+    "id": 31,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Tentativa de fraude cadastral",
+    "payload": {
+      "ref_id": "TESTE-REJEITAR-004",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "rejeitada",
+    "correcao": null,
+    "simulada": true,
+    "tempo_revisao_s": 4.12,
+    "criado_em": "2026-10-31T01:51:07.087163+00:00"
+  },
+  {
+    "id": 32,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Score fuzzy ambíguo",
+    "payload": {
+      "ref_id": "TESTE-REV-001",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "resolvida",
+    "correcao": {
+      "pedido": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": true,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": "contato@oficinamecnicasojosltda.com.br"
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      },
+      "numero_pedido": 1001,
+      "status_executor": "sucesso"
+    },
+    "simulada": true,
+    "tempo_revisao_s": 8.5,
+    "criado_em": "2026-10-31T01:51:07.146679+00:00"
+  },
+  {
+    "id": 33,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Dados inconsistentes",
+    "payload": {
+      "ref_id": "TESTE-REV-REJ",
+      "pedido_original": {
+        "ref_id": "TESTE-REV-001",
+        "cliente": {
+          "id": null,
+          "novo": false,
+          "nome": "Oficina Mecânica São José Ltda",
+          "cnpj_cpf": "12.345.679/0001-90",
+          "email": null
+        },
+        "data_entrega": "2026-10-30",
+        "observacoes": "",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 10.0
+          }
+        ]
+      }
+    },
+    "status": "rejeitada",
+    "correcao": null,
+    "simulada": true,
+    "tempo_revisao_s": 3.2,
+    "criado_em": "2026-10-31T01:51:07.299038+00:00"
+  },
+  {
+    "id": 34,
+    "execucao_id": null,
+    "tipo": "REVISAO",
+    "motivo": "Data de entrega '2026-10-28' é anterior à data de processamento",
+    "payload": {
+      "ref_id": "DOC-STUB-REV",
+      "pedido_original": {
+        "ref_id": "DOC-STUB-REV",
+        "cliente": {
+          "id": 1,
+          "novo": false,
+          "nome": null,
+          "cnpj_cpf": null,
+          "email": null
+        },
+        "data_entrega": "2026-10-28",
+        "observacoes": "Data retroativa",
+        "itens": [
+          {
+            "codigo": "P-001",
+            "quantidade": 1.0
+          }
+        ]
+      },
+      "itens_analisados": [
+        {
+          "termo_original": "P-001",
+          "codigo_resolvido": "P-001",
+          "descricao_resolvida": "Produto 1",
+          "quantidade": 1.0,
+          "score_fuzzy": 100.0,
+          "status_resolucao": "EXATO"
+        }
+      ],
+      "documento": "C:\\Users\\diogo\\AppData\\Local\\Temp\\pytest-of-diogo\\pytest-5\\test_orquestrador_fluxo_revisa0\\DOC-0002.pdf",
+      "_caminho_doc": "C:\\Users\\diogo\\AppData\\Local\\Temp\\pytest-of-diogo\\pytest-5\\test_orquestrador_fluxo_revisa0\\DOC-0002.pdf"
+    },
+    "status": "pendente",
+    "correcao": null,
+    "simulada": false,
+    "tempo_revisao_s": null,
+    "criado_em": "2026-10-31T01:51:07.476958+00:00"
+  }
+]

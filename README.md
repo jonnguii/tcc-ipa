@@ -4,14 +4,35 @@
 [![Package Manager: uv](https://img.shields.io/badge/uv-astral-purple.svg)](https://docs.astral.sh/uv/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![BPMN 2.0](https://img.shields.io/badge/BPMN-2.0%20Standard-orange.svg)](docs/diagramas/bpmn_to_be.bpmn)
+[![Citation: CFF](https://img.shields.io/badge/citation-cff-informational.svg)](CITATION.cff)
 
-Pipeline de Automação Inteligente de Processos (IPA) para ingestão, validação e lançamento de pedidos recebidos em formatos não estruturados (PDF, PNG e TXT) em sistema ERP legado.
+Pipeline de **Automação Inteligente de Processos (Intelligent Process Automation - IPA)** para ingestão, validação determinística, triagem inteligente e lançamento automatizado de pedidos de compra em formatos não estruturados (PDF, PNG e TXT) em sistema ERP.
 
 Desenvolvido como projeto de Trabalho de Conclusão de Curso (TCC) em Sistemas de Informação, o sistema combina:
-- **Extração multimodal**: LLM (Google Gemini Flash) com cache local de requisições.
-- **Validação determinística**: correspondência difusa de entidades (RapidFuzz), validações fiscais e filtro de *prompt injection*.
-- **Orquestração de processos**: máquina de estados inspirada na modelagem BPMN 2.0, roteando pedidos para execução direta ou para fila de revisão humana (*human-in-the-loop*).
-- **Execução RPA**: robô em Playwright Chromium para digitação e lançamento de pedidos no ERP web.
+- **Extração Multimodal com LLM**: Modelo `gemini-2.5-flash` estruturado sob schemas Pydantic tipados com cache criptográfico determinístico (100% de reproducibilidade).
+- **Validação e Normalização Determinística**: Motor de regras locais com cálculo oficial de dígitos verificadores de CPF/CNPJ (Receita Federal), casamento aproximado (*Fuzzy Matching* via RapidFuzz) contra catálogo oficial `P-001` a `P-040` e filtro ativo contra *Prompt Injection*.
+- **Orquestrador BPMN 2.0 e Triagem em 3 Vias**: Máquina de estados formal que despacha pedidos para **AUTOMÁTICO** (RPA direto), **REVISÃO** (Fila Humana com interface Split View) ou **REJEIÇÃO** (bloqueio preventivo de segurança).
+- **Execução RPA Idempotente**: Robô baseado em Playwright Chromium com garantia de duplicidade zero no lançamento relacional do ERP corporativo.
+
+---
+
+## Resultados Experimentais e Validação Científica
+
+A esteira foi submetida a uma bateria experimental com 50 documentos do conjunto de teste e 30 pedidos pareados no teste de produtividade humana:
+
+| Hipótese de Pesquisa | Meta Teórica Definida | Resultado Empírico Observado | Veredito Científico |
+| :--- | :--- | :--- | :---: |
+| **$H_1$: Produtividade e Latência** | Redução $\ge 50\%$ do tempo operacional | Redução de **87,9%** (Speed-up de 8,2x: 74,4s p/ 9,0s) | **CONFIRMADA** |
+| **$H_2$: Acurácia da Extração** | F1-Score $\ge 0,85$ nos campos críticos | F1 de **0,9883** e Acurácia exata de **96,0%** | **CONFIRMADA** |
+| **$H_3$: Controle de Erro Residual** | Erro residual no ERP $\le 2,0\%$ com $\tau \ge 0,85$ | **0,0% de erro residual** (Cobertura de 72,0%) | **CONFIRMADA** |
+| **$H_4$: Resiliência e Idempotência** | Taxa de duplicidade = 0% em reexecução | **0% de duplicidade** (100% idempotência no reenvio) | **CONFIRMADA** |
+
+Consulte o relatório completo com discussão factual e gráficos científicos:
+- 📊 **[Relatório Completo de Resultados (RESULTADOS.md)](results/RESULTADOS.md)**
+- 📈 **[Gráficos Científicos G1 a G6 (results/figures/)](results/figures/)**
+- 📋 **[Tabelas Estatísticas T1 a T6 em Markdown e CSV (results/tables/)](results/tables/)**
+- 📸 **[Prints Ilustrativos Oficiais P1 a P5 (docs/prints/)](docs/prints/)**
+- 🛡️ **[Ameaças à Validade Metodológica (docs/ameacas_validade.md)](docs/ameacas_validade.md)**
 
 ---
 
@@ -30,21 +51,20 @@ Desenvolvido como projeto de Trabalho de Conclusão de Curso (TCC) em Sistemas d
 [ Extração Multimodal ] (Gemini Flash + .ai_cache.json)
           │
           ▼
-[ Validação e Regras ] (RapidFuzz, cálculo fiscal, detecção de injeção)
+[ Validação e Regras ] (RapidFuzz, cálculo fiscal, barreira injection)
           │
-   ┌──────┴──────┐
-   ▼             ▼
-[ Via Verde ]   [ Via Amarela ]
-Confiança >= 0.85   Confiança < 0.85 ou
-Sem violações       Inconsistência cadastral / fiscal
-   │             │
-   ▼             ▼
-[ Robô RPA ]    [ Fila de Revisão Humana ]
-(Playwright)    (Interface web split-view)
-   │             │
-   └──────┬──────┘
-          ▼
-[ ERP Simulado ] (FastAPI + Supabase)
+    ┌─────┴─────────────────────────┐
+    ▼                               ▼                               ▼
+[ Via Verde - AUTOMATICO ]      [ Via Amarela - REVISAO ]       [ Via Vermelha - REJEICAO ]
+Confiança >= 0.85               Confiança < 0.85 ou             Ataque de Prompt Injection /
+Sem violações de regra          Divergência sutil de catálogo   Fraude estrutural
+    │                               │                               │
+    ▼                               ▼                               ▼
+[ Robô RPA (Playwright) ]       [ Fila Human-in-the-Loop ]       [ Bloqueio com Log ]
+    │                           (Interface Split View)
+    └───────────────┬───────────────┘
+                    ▼
+          [ ERP Corporativo ] (Idempotência garantida por chave ref_externa)
 ```
 
 ---
@@ -53,29 +73,33 @@ Sem violações       Inconsistência cadastral / fiscal
 
 ```text
 tcc-ipa/
-├── config/       # Regras de negócio em YAML (limiares, catálogo, validações)
-├── data/         # Ingestão (inbox/), gabarito (gold/), geradores e splits
-├── docs/         # Dicionário do sistema, guia de comandos, diário e BPMN
+├── config/       # Regras de negócio em YAML (limiares, catálogo P-001 a P-040, validações)
+├── data/         # Ingestão (inbox/), gabarito oficial (gold/), geradores e splits
+├── docs/         # Dicionário do sistema, guias operacionais, diário, BPMN e prints P1 a P5
+│   ├── diagramas/    # Diagrama de processo BPMN 2.0 (XML, PNG, SVG)
+│   └── prints/       # Prints ilustrativos oficiais de telas e terminal (P1 a P5)
 ├── erp_sim/      # ERP web simulado (FastAPI + Jinja2 + Supabase)
-├── eval/         # Bateria de experimentos científicos (EXP1 a EXP7) e métricas
-├── results/      # Resultados brutos (raw/) e tabelas consolidadas (tables/)
-├── rpa/          # Automação de tela com Playwright Chromium
-├── scripts/      # Scripts utilitários (reset de banco e filas)
-├── src/ipa/      # Motor da esteira IPA (AI, regras, workflow e contratos)
-└── tests/        # Testes automatizados (pytest)
+├── eval/         # Bateria experimental científica (EXP1 a EXP7), figuras e tabelas
+├── results/      # Resultados consolidados
+│   ├── figures/      # Gráficos vetoriais de alta resolução (G1 a G6 em PNG)
+│   ├── raw/          # CSVs brutos coletados nos experimentos
+│   ├── tables/       # Tabelas T1 a T6 em Markdown (.md) e CSV (.csv)
+│   └── RESULTADOS.md # Relatório factual e discussão dos resultados
+├── rpa/          # Robô de automação de interface com Playwright Chromium
+├── scripts/      # Utilitários operacionais e de manutenção
+├── src/ipa/      # Núcleo da esteira IPA (AI extractor, regras determinísticas, orquestrador)
+└── tests/        # Suíte de testes automatizados unitários e de integração (pytest)
 ```
 
 ---
 
-## Instalação e Configuração
+## Instalação e Execução
 
 ### Pré-requisitos
 - Python 3.12+
-- [`uv`](https://docs.astral.sh/uv/) (gerenciador de dependências e ambiente)
-- Projeto configurado no [Supabase](https://supabase.com)
-- Chave de API do Google Gemini ([Google AI Studio](https://aistudio.google.com/))
+- Gerenciador [`uv`](https://docs.astral.sh/uv/) (Astral)
 
-### 1. Clonar e instalar dependências
+### 1. Clonar e sincronizar ambiente
 ```bash
 git clone https://github.com/jonnguii/tcc-ipa.git
 cd tcc-ipa
@@ -83,98 +107,62 @@ uv sync
 uv run playwright install chromium
 ```
 
-### 2. Variáveis de ambiente
-Crie o arquivo `.env` a partir do modelo:
+### 2. Configuração do `.env`
+Copie o arquivo de exemplo:
 ```bash
 cp .env.example .env
 ```
 
-Edite o `.env` com suas credenciais:
+Para reprodução offline imediata pela banca avaliadora, o projeto vem pré-configurado em **Modo Replay**, permitindo rodar 100% dos experimentos sem custo de API e sem dependência de internet:
 ```dotenv
-SUPABASE_URL=https://seu-projeto.supabase.co
-SUPABASE_SERVICE_KEY=sua-chave-service-role
-GEMINI_API_KEY=sua-chave-gemini
+GEMINI_API_KEY=dummy_offline_key
 GEMINI_MODEL=gemini-2.5-flash
-AI_MODE=record
+AI_MODE=replay
 EXECUTOR=stub
 ERP_BASE_URL=http://localhost:8000
 ERP_SABOTAGE=none
 RPA_HEADLESS=true
 ```
 
----
-
-## Execução
-
-### 1. Iniciar o ERP Simulado
-O ERP precisa estar rodando para a interface de revisão e para as execuções com RPA:
-```bash
-uv run uvicorn erp_sim.main:app --port 8000
-```
-- Acesso ao ERP: `http://localhost:8000`
-- Fila de Revisão Humana: `http://localhost:8000/revisoes`
-
-### 2. Rodar a Esteira IPA (`src/ipa/run.py`)
-
-**Modo Simulado (Stub)** — executa a esteira completa sem abrir o navegador (ideal para validação rápida):
-```bash
-uv run python src/ipa/run.py --limite 5 --executor stub
-```
-
-**Modo Robô Real (RPA)** — executa o lançamento real no ERP via Playwright:
-```bash
-uv run python src/ipa/run.py --limite 5 --executor rpa
-```
-
-**Filtros de execução:**
-```bash
-# Executar apenas documentos de teste (docs 31 a 80)
-uv run python src/ipa/run.py --split teste --limite 10
-
-# Executar documentos específicos
-uv run python src/ipa/run.py --docs DOC-0001,DOC-0012,DOC-0039
-
-# Filtrar por categoria do dataset
-uv run python src/ipa/run.py --categoria ruidoso --limite 5
-```
+*(Opcional) Caso deseje executar chamadas ao vivo contra a API do Google Gemini, altere `AI_MODE=record` e preencha sua chave obtida no [Google AI Studio](https://aistudio.google.com/).*
 
 ---
 
-## Testes e Avaliação Experimental
+## Execução dos Experimentos Científicos
 
-### Executar suíte de testes
-```bash
-uv run pytest
-```
-
-### Reproduzir experimentos do TCC (EXP1 a EXP7)
-Para executar a bateria de experimentos e gerar as tabelas comparativas:
+### 1. Reproduzir a Bateria Completa de Experimentos (EXP1 a EXP7)
+Para reexecutar todos os experimentos da esteira e consolidar as tabelas estatísticas e gráficos:
 ```bash
 uv run python eval/rodar_experimentos.py
 ```
 
-Os resultados são consolidados em:
-- [Relatório analítico de resultados](results/RESULTADOS.md)
-- [Tabelas comparativas em Markdown](results/tables/)
+### 2. Gerar Gráficos Científicos e Tabelas
+```bash
+uv run python eval/charts.py
+```
+As tabelas serão atualizadas em `results/tables/` (versões `.md` e `.csv`) e as figuras em `results/figures/` (PNG a 300 DPI).
+
+### 3. Gerar Prints Ilustrativos Oficiais (P1 a P5)
+```bash
+uv run python eval/generate_prints.py
+```
+Os 5 prints de evidências de tela serão salvos em `docs/prints/`.
+
+### 4. Executar Testes Automatizados
+```bash
+uv run pytest
+```
 
 ---
 
-## Documentação
+## Como Citar este Trabalho
 
-- [Dicionário do Sistema e Decisões Técnicas](docs/DICIONARIO_SISTEMA.md)
-- [Manual Operacional de Comandos (CLI)](docs/GUIA_COMANDOS.md)
-- [Diagramas de Processo BPMN 2.0 (Imagem, SVG e BPMN)](docs/diagramas/README.md)
-- [Diário de Bordo](docs/diario.md)
-- [Rastreamento de Progresso](docs/PROGRESSO.md)
+Consulte o arquivo [`CITATION.cff`](CITATION.cff) para detalhes completos de citação. Exemplo em formato ABNT:
 
----
-
-## Dados e Privacidade
-
-Todos os 80 documentos da pasta `data/inbox/`, bem como os registros de clientes, produtos e pedidos cadastrados no ERP, são 100% sintéticos e gerados por scripts deterministicos. Nenhum dado pessoal real foi utilizado.
+> CRAVO, João Gabriel; ALVES, Diogo. **Arquitetura de Automação Inteligente de Processos (IPA) para Triagem e Lançamento de Pedidos em Micro, Pequenas e Médias Empresas (MPMEs)**. Trabalho de Conclusão de Curso (Graduação em Sistemas de Informação), 2026. Disponível em: <https://github.com/jonnguii/tcc-ipa>.
 
 ---
 
 ## Licença
 
-Este projeto é distribuído sob a licença [MIT](LICENSE).
+Este projeto é disponibilizado sob a licença [MIT](LICENSE).

@@ -33,4 +33,14 @@
 - [x] FASE 9 - REVISÃO HUMANA (A) SHOULD
 - [x] FASE 10 - INTEGRAÇÃO COM O ROBÔ (A, com B) MUST
 - [x] FASE 11 - EXPERIMENTOS (A; EXP5 é da B) MUST
-- [ ] FASE 12 - RESULTADOS, PRINTS E PUBLICAÇÃO (A, C) MUST
+- [x] FASE 12 - RESULTADOS, PRINTS E PUBLICAÇÃO (A, C) MUST
+  - [x] 12.1 Regeneração e consolidação de métricas experimentais
+  - [x] 12.2 Tabelas estatísticas T1 a T6 em Markdown (.md) e CSV (.csv) em results/tables/
+  - [x] 12.3 Figuras e gráficos científicos G1 a G6 em alta definição (300 DPI) em results/figures/
+  - [x] 12.4 Prints ilustrativos oficiais P1 a P5 em docs/prints/
+  - [x] 12.5 Enriquecimento analítico e factual de results/RESULTADOS.md
+  - [x] 12.6 Documento formal de limitações metodológicas docs/ameacas_validade.md
+  - [x] 12.7 Arquivo de citação formal CITATION.cff
+  - [x] 12.8 Atualização do README.md principal com instruções de replay offline
+  - [x] 12.9 Varredura de segurança contra credenciais expostas
+  - [x] 12.10 Atualização do diário de decisões docs/diario.md

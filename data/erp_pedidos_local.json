@@ -1,0 +1,488 @@
+[
+  {
+    "id": 115,
+    "cliente_id": 1,
+    "data_entrega": "2026-12-01",
+    "observacoes": "",
+    "ref_externa": "TESTE-REV-RPA-1793411465924",
+    "total": 75.0,
+    "criado_em": "2026-10-31 01:51:06",
+    "erp_clientes": {
+      "nome": "Distribuidora Alfa"
+    },
+    "itens": [
+      {
+        "quantidade": 10.0,
+        "preco_unit": 7.5,
+        "erp_produtos": {
+          "id": 5,
+          "codigo": "P-005",
+          "descricao": "Produto 5",
+          "unidade": "UN",
+          "preco": 7.5
+        }
+      }
+    ]
+  },
+  {
+    "id": 114,
+    "cliente_id": 1,
+    "data_entrega": "2026-11-15",
+    "observacoes": "Pedido de teste automatizado de integração RPA",
+    "ref_externa": "TESTE-RPA-IDEMPOTENCIA-1793411455274",
+    "total": 15.0,
+    "criado_em": "2026-10-31 01:50:56",
+    "erp_clientes": {
+      "nome": "Distribuidora Alfa"
+    },
+    "itens": [
+      {
+        "quantidade": 2.0,
+        "preco_unit": 1.5,
+        "erp_produtos": {
+          "id": 1,
+          "codigo": "P-001",
+          "descricao": "Produto 1",
+          "unidade": "UN",
+          "preco": 1.5
+        }
+      },
+      {
+        "quantidade": 4.0,
+        "preco_unit": 3.0,
+        "erp_produtos": {
+          "id": 2,
+          "codigo": "P-002",
+          "descricao": "Produto 2",
+          "unidade": "UN",
+          "preco": 3.0
+        }
+      }
+    ]
+  },
+  {
+    "id": 113,
+    "cliente_id": 1,
+    "data_entrega": "2026-12-01",
+    "observacoes": "",
+    "ref_externa": "TESTE-REV-RPA-1793411394831",
+    "total": 75.0,
+    "criado_em": "2026-10-31 01:49:55",
+    "erp_clientes": {
+      "nome": "Distribuidora Alfa"
+    },
+    "itens": [
+      {
+        "quantidade": 10.0,
+        "preco_unit": 7.5,
+        "erp_produtos": {
+          "id": 5,
+          "codigo": "P-005",
+          "descricao": "Produto 5",
+          "unidade": "UN",
+          "preco": 7.5
+        }
+      }
+    ]
+  },
+  {
+    "id": 112,
+    "cliente_id": 1,
+    "data_entrega": "2026-11-15",
+    "observacoes": "Pedido de teste automatizado de integração RPA",
+    "ref_externa": "TESTE-RPA-IDEMPOTENCIA-1793411384302",
+    "total": 15.0,
+    "criado_em": "2026-10-31 01:49:45",
+    "erp_clientes": {
+      "nome": "Distribuidora Alfa"
+    },
+    "itens": [
+      {
+        "quantidade": 2.0,
+        "preco_unit": 1.5,
+        "erp_produtos": {
+          "id": 1,
+          "codigo": "P-001",
+          "descricao": "Produto 1",
+          "unidade": "UN",
+          "preco": 1.5
+        }
+      },
+      {
+        "quantidade": 4.0,
+        "preco_unit": 3.0,
+        "erp_produtos": {
+          "id": 2,
+          "codigo": "P-002",
+          "descricao": "Produto 2",
+          "unidade": "UN",
+          "preco": 3.0
+        }
+      }
+    ]
+  },
+  {
+    "id": 111,
+    "cliente_id": 1,
+    "data_entrega": "2026-12-01",
+    "observacoes": "",
+    "ref_externa": "TESTE-REV-RPA-1793411337239",
+    "total": 75.0,
+    "criado_em": "2026-10-31 01:48:58",
+    "erp_clientes": {
+      "nome": "Distribuidora Alfa"
+    },
+    "itens": [
+      {
+        "quantidade": 10.0,
+        "preco_unit": 7.5,
+        "erp_produtos": {
+          "id": 5,
+          "codigo": "P-005",
+          "descricao": "Produto 5",
+          "unidade": "UN",
+          "preco": 7.5
+        }
+      }
+    ]
+  },
+  {
+    "id": 110,
+    "cliente_id": 1,
+    "data_entrega": "2026-11-15",
+    "observacoes": "Pedido de teste automatizado de integração RPA",
+    "ref_externa": "TESTE-RPA-IDEMPOTENCIA-1793411327435",
+    "total": 15.0,
+    "criado_em": "2026-10-31 01:48:48",
+    "erp_clientes": {
+      "nome": "Distribuidora Alfa"
+    },
+    "itens": [
+      {
+        "quantidade": 2.0,
+        "preco_unit": 1.5,
+        "erp_produtos": {
+          "id": 1,
+          "codigo": "P-001",
+          "descricao": "Produto 1",
+          "unidade": "UN",
+          "preco": 1.5
+        }
+      },
+      {
+        "quantidade": 4.0,
+        "preco_unit": 3.0,
+        "erp_produtos": {
+          "id": 2,
+          "codigo": "P-002",
+          "descricao": "Produto 2",
+          "unidade": "UN",
+          "preco": 3.0
+        }
+      }
+    ]
+  },
+  {
+    "id": 109,
+    "cliente_id": 1,
+    "data_entrega": "2026-12-01",
+    "observacoes": "",
+    "ref_externa": "TESTE-REV-RPA-1793411257488",
+    "total": 75.0,
+    "criado_em": "2026-10-31 01:47:38",
+    "erp_clientes": {
+      "nome": "Distribuidora Alfa"
+    },
+    "itens": [
+      {
+        "quantidade": 10.0,
+        "preco_unit": 7.5,
+        "erp_produtos": {
+          "id": 5,
+          "codigo": "P-005",
+          "descricao": "Produto 5",
+          "unidade": "UN",
+          "preco": 7.5
+        }
+      }
+    ]
+  },
+  {
+    "id": 108,
+    "cliente_id": 1,
+    "data_entrega": "2026-11-15",
+    "observacoes": "Pedido de teste automatizado de integração RPA",
+    "ref_externa": "TESTE-RPA-IDEMPOTENCIA-1793411246252",
+    "total": 15.0,
+    "criado_em": "2026-10-31 01:47:27",
+    "erp_clientes": {
+      "nome": "Distribuidora Alfa"
+    },
+    "itens": [
+      {
+        "quantidade": 2.0,
+        "preco_unit": 1.5,
+        "erp_produtos": {
+          "id": 1,
+          "codigo": "P-001",
+          "descricao": "Produto 1",
+          "unidade": "UN",
+          "preco": 1.5
+        }
+      },
+      {
+        "quantidade": 4.0,
+        "preco_unit": 3.0,
+        "erp_produtos": {
+          "id": 2,
+          "codigo": "P-002",
+          "descricao": "Produto 2",
+          "unidade": "UN",
+          "preco": 3.0
+        }
+      }
+    ]
+  },
+  {
+    "id": 107,
+    "cliente_id": 1,
+    "data_entrega": "2026-12-01",
+    "observacoes": "",
+    "ref_externa": "TESTE-REV-RPA-1793411198920",
+    "total": 75.0,
+    "criado_em": "2026-10-31 01:46:40",
+    "erp_clientes": {
+      "nome": "Distribuidora Alfa"
+    },
+    "itens": [
+      {
+        "quantidade": 10.0,
+        "preco_unit": 7.5,
+        "erp_produtos": {
+          "id": 5,
+          "codigo": "P-005",
+          "descricao": "Produto 5",
+          "unidade": "UN",
+          "preco": 7.5
+        }
+      }
+    ]
+  },
+  {
+    "id": 106,
+    "cliente_id": 1,
+    "data_entrega": "2026-11-15",
+    "observacoes": "Pedido de teste automatizado de integração RPA",
+    "ref_externa": "TESTE-RPA-IDEMPOTENCIA-1793411189023",
+    "total": 15.0,
+    "criado_em": "2026-10-31 01:46:29",
+    "erp_clientes": {
+      "nome": "Distribuidora Alfa"
+    },
+    "itens": [
+      {
+        "quantidade": 2.0,
+        "preco_unit": 1.5,
+        "erp_produtos": {
+          "id": 1,
+          "codigo": "P-001",
+          "descricao": "Produto 1",
+          "unidade": "UN",
+          "preco": 1.5
+        }
+      },
+      {
+        "quantidade": 4.0,
+        "preco_unit": 3.0,
+        "erp_produtos": {
+          "id": 2,
+          "codigo": "P-002",
+          "descricao": "Produto 2",
+          "unidade": "UN",
+          "preco": 3.0
+        }
+      }
+    ]
+  },
+  {
+    "id": 105,
+    "cliente_id": 1,
+    "data_entrega": "2026-12-01",
+    "observacoes": "",
+    "ref_externa": "TESTE-REV-RPA-1793411180411",
+    "total": 75.0,
+    "criado_em": "2026-10-31 01:46:21",
+    "erp_clientes": {
+      "nome": "Distribuidora Alfa"
+    },
+    "itens": [
+      {
+        "quantidade": 10.0,
+        "preco_unit": 7.5,
+        "erp_produtos": {
+          "id": 5,
+          "codigo": "P-005",
+          "descricao": "Produto 5",
+          "unidade": "UN",
+          "preco": 7.5
+        }
+      }
+    ]
+  },
+  {
+    "id": 104,
+    "cliente_id": 1,
+    "data_entrega": "2026-11-15",
+    "observacoes": "Pedido de teste automatizado de integração RPA",
+    "ref_externa": "TESTE-RPA-IDEMPOTENCIA-1793411168859",
+    "total": 15.0,
+    "criado_em": "2026-10-31 01:46:11",
+    "erp_clientes": {
+      "nome": "Distribuidora Alfa"
+    },
+    "itens": [
+      {
+        "quantidade": 2.0,
+        "preco_unit": 1.5,
+        "erp_produtos": {
+          "id": 1,
+          "codigo": "P-001",
+          "descricao": "Produto 1",
+          "unidade": "UN",
+          "preco": 1.5
+        }
+      },
+      {
+        "quantidade": 4.0,
+        "preco_unit": 3.0,
+        "erp_produtos": {
+          "id": 2,
+          "codigo": "P-002",
+          "descricao": "Produto 2",
+          "unidade": "UN",
+          "preco": 3.0
+        }
+      }
+    ]
+  },
+  {
+    "id": 101,
+    "cliente_id": 1,
+    "data_entrega": "2026-11-05",
+    "total": 1450.0,
+    "ref_externa": "DOC-0031",
+    "observacoes": "Entregar na Doca 2. Pedido faturado automaticamente via Esteira Orquestradora IPA.",
+    "criado_em": "2026-10-30 21:51:24",
+    "erp_clientes": {
+      "nome": "Distribuidora Alfa",
+      "cnpj_cpf": "29.141.777/0001-58",
+      "email": "contato1@empresa.com"
+    },
+    "itens": [
+      {
+        "quantidade": 20.0,
+        "preco_unit": 28.5,
+        "erp_produtos": {
+          "codigo": "P-001",
+          "descricao": "Arroz Tipo 1 - Saco 5kg",
+          "unidade": "UN"
+        }
+      },
+      {
+        "quantidade": 40.0,
+        "preco_unit": 8.5,
+        "erp_produtos": {
+          "codigo": "P-004",
+          "descricao": "Feijão Preto Carioca - 1kg",
+          "unidade": "UN"
+        }
+      },
+      {
+        "quantidade": 60.0,
+        "preco_unit": 6.8,
+        "erp_produtos": {
+          "codigo": "P-012",
+          "descricao": "Óleo de Soja Refinado 900ml",
+          "unidade": "UN"
+        }
+      },
+      {
+        "quantidade": 10.0,
+        "preco_unit": 13.2,
+        "erp_produtos": {
+          "codigo": "P-015",
+          "descricao": "Açúcar Cristal Pacote 5kg",
+          "unidade": "UN"
+        }
+      }
+    ]
+  },
+  {
+    "id": 102,
+    "cliente_id": 2,
+    "data_entrega": "2026-11-06",
+    "total": 890.5,
+    "ref_externa": "DOC-0032",
+    "observacoes": "Pedido cadastrado via Robô RPA Playwright com idempotência confirmada.",
+    "criado_em": "2026-10-30 21:51:35",
+    "erp_clientes": {
+      "nome": "Mercado Beta",
+      "cnpj_cpf": "01.152.449/0001-38",
+      "email": "contato2@empresa.com"
+    },
+    "itens": [
+      {
+        "quantidade": 15.0,
+        "preco_unit": 35.0,
+        "erp_produtos": {
+          "codigo": "P-002",
+          "descricao": "Farinha de Trigo Especial 1kg",
+          "unidade": "UN"
+        }
+      },
+      {
+        "quantidade": 25.0,
+        "preco_unit": 14.62,
+        "erp_produtos": {
+          "codigo": "P-008",
+          "descricao": "Leite Integral UHT 1L",
+          "unidade": "UN"
+        }
+      }
+    ]
+  },
+  {
+    "id": 103,
+    "cliente_id": 4,
+    "data_entrega": "2026-11-07",
+    "total": 3120.0,
+    "ref_externa": "DOC-0033",
+    "observacoes": "Processado pelo motor de regras determinísticas.",
+    "criado_em": "2026-10-30 21:51:48",
+    "erp_clientes": {
+      "nome": "Padaria Central",
+      "cnpj_cpf": "34.167.211/0001-35",
+      "email": "contato4@empresa.com"
+    },
+    "itens": [
+      {
+        "quantidade": 50.0,
+        "preco_unit": 45.0,
+        "erp_produtos": {
+          "codigo": "P-005",
+          "descricao": "Café Torrado e Moído 500g",
+          "unidade": "UN"
+        }
+      },
+      {
+        "quantidade": 100.0,
+        "preco_unit": 8.7,
+        "erp_produtos": {
+          "codigo": "P-010",
+          "descricao": "Biscoito Cream Cracker 400g",
+          "unidade": "UN"
+        }
+      }
+    ]
+  }
+]

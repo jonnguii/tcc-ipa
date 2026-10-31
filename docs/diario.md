@@ -55,3 +55,31 @@
   - **Artefatos Produzidos**: CSVs brutos em `results/raw/`, tabelas científicas T1 a T6 em `results/tables/` e relatório executivo em `results/RESULTADOS.md`.
   - **Organização Arquitetural**: Criação de `docs/DICIONARIO_SISTEMA.md`, `docs/GUIA_COMANDOS.md`, READMEs dedicados em todas as pastas e remoção de scripts obsoletos da raiz.
 
+
+## 2026-10-30
+- **Fase 12 concluída (Resultados, Prints e Publicação)**:
+  - **Decisão Metodológica (Caminho 1 - Regeneração Rigorosa)**: Executada a regeneração de métricas com o pipeline acoplado ao motor determinístico de regras (`res_roteamento.pedido_pronto`) respondido 100% via cache determinístico congelado (`.ai_cache.json`).
+  - **Resultados Finais Consolidados**:
+    - F1-Score geral de itens no EXP3 elevado para **0.9883** (48/50 acertos perfeitos simultâneos de todos os campos = 96.0%).
+    - Erro residual no ERP no EXP4 reduzido para **0.0%** no limiar operacional $\tau = 0.85$ (cobertura direta de 72.0% com 0 erros no automático), confirmando categoricamente a **Hipótese $H_3 \le 2.0\%$**.
+    - Todas as 4 hipóteses de pesquisa ($H_1, H_2, H_3, H_4$) rigorosamente confirmadas com evidências empíricas.
+  - **Tabelas Científicas (T1 a T6)**: Exportadas versões em Markdown (`.md`) e em CSV (`.csv`) em `results/tables/`.
+  - **Figuras Científicas (G1 a G6)**: Desenvolvido `eval/figures.py` gerando gráficos vetoriais de alta resolução (300 DPI) em PNG em `results/figures/`:
+    - `G1_f1_regex_vs_ia.png` (Barras agrupadas de F1 por categoria: Regex vs. IA).
+    - `G2_curva_risco_cobertura.png` (Curva Risco vs. Cobertura de Automação nos limiares 0.50 a 0.99).
+    - `G3_calibracao_confianca.png` (Diagrama de calibração de confiança predita vs. observada).
+    - `G4_boxplot_manual_vs_ipa.png` (Distribuição dos tempos operacionais: Speed-up de 8.2x).
+    - `G5_destino_por_categoria.png` (Barras empilhadas dos destinos da triagem em 3 vias).
+    - `G6_custo_latencia_etapas.png` (Decomposição de latência e projeção de custos em escala).
+  - **Prints Oficiais da Dissertação (P1 a P5)**: Desenvolvido `eval/generate_prints.py` e gerados prints em `docs/prints/`:
+    - `P1_diagrama_bpmn.png` (Diagrama BPMN 2.0 TO-BE).
+    - `P2_erp_lista_pedidos.png` (Tela de pedidos do ERP).
+    - `P3_split_view_revisao.png` (Interface Split View de homologação Human-in-the-Loop).
+    - `P4_terminal_experimentos.png` (Execução de ponta a ponta dos experimentos no terminal).
+    - `P5_auditoria_transacao.png` (Tela de detalhes e auditoria de transação com hash de idempotência).
+  - **Documento Metodológico**: Criado `docs/ameacas_validade.md` detalhando as 4 dimensões de validade de Wohlin et al. (2012) com transparência sobre os dados sintéticos e o acoplamento do motor determinístico.
+  - **Publicação e Reprodutibilidade**:
+    - Criado `CITATION.cff` para citação formal em ABNT/BibTeX.
+    - Atualizado `README.md` com instruções completas de execução em Modo Replay Offline para a banca.
+    - Varredura de segredos concluída com sucesso (zero credenciais expostas).
+    - Repositório 100% pronto para publicação e defesa do TCC.

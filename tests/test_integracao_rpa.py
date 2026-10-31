@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import time
 import urllib.request
+from pathlib import Path
 import pytest
 
 from src.ipa.executor import RpaExecutor
@@ -74,21 +75,9 @@ def test_rpa_executor_insercao_e_idempotencia():
     assert res2["modo"] == "RPA"
 
 
-def test_orquestrador_com_executor_rpa(tmp_path):
+def test_orquestrador_com_executor_rpa():
     """Valida o OrquestradorIPA executando o robô Playwright de ponta a ponta."""
-    timestamp = int(time.time() * 1000)
-    ref_unica = f"TESTE-ORQ-RPA-{timestamp}"
-
-    # Criamos um documento de texto simples simulando a entrada
-    doc_teste = tmp_path / f"{ref_unica}.txt"
-    doc_teste.write_text(
-        f"PEDIDO DE COMPRA: {ref_unica}\n"
-        "CLIENTE: Metalúrgica Silva & Filhos Ltda\n"
-        "CNPJ: 12.345.678/0001-95\n"
-        "DATA: 2026-11-20\n"
-        "ITENS:\n"
-        "- 5 un Parafuso Sextavado (P-001)\n"
-    )
+    doc_teste = Path("data/inbox/DOC-0031.txt")
 
     orquestrador = OrquestradorIPA(tipo_executor="rpa")
     resultado = orquestrador.processar_documento(doc_teste)

@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "Se você utilizar este software ou os dados dos experimentos em sua pesquisa acadêmica, por favor cite conforme abaixo:"
+authors:
+  - family-names: "Cravo"
+    given-names: "João Gabriel"
+    email: "jg.cravo@outlook.com"
+  - family-names: "Alves"
+    given-names: "Diogo"
+title: "Arquitetura de Automação Inteligente de Processos (IPA) para Triagem e Lançamento de Pedidos em Micro, Pequenas e Médias Empresas (MPMEs)"
+version: 1.0.0
+date-released: 2026-10-30
+url: "https://github.com/jonnguii/tcc-ipa"
+repository-code: "https://github.com/jonnguii/tcc-ipa"
+keywords:
+  - "Automação Inteligente de Processos (IPA)"
+  - "Robotic Process Automation (RPA)"
+  - "Inteligência Artificial Generativa"
+  - "Large Language Models (LLM)"
+  - "Human-in-the-Loop"
+  - "BPMN 2.0"
+  - "Engenharia de Software"
+  - "MPME"
+license: MIT
+

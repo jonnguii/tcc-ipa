@@ -1,0 +1,3 @@
+rodada,operacao,pedidos_submetidos,taxa_sucesso_pct,taxa_idempotencia_pct,status_predominante
+1,Insercao inicial no ERP,10,100.0,0.0,Sucesso (#ID criado)
+2,Re-processamento do mesmo lote,10,100.0,100.0,Duplicado (0 duplicacoes)
