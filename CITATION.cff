@@ -1,11 +1,14 @@
 cff-version: 1.2.0
 message: "Se você utilizar este software ou os dados dos experimentos em sua pesquisa acadêmica, por favor cite conforme abaixo:"
 authors:
+  - family-names: "Gomes"
+    given-names: "Diogo"
+    email: "diogogomes28@outlook.com.br"
+  - family-names: "Januario"
+    given-names: "Gabriel"
   - family-names: "Cravo"
     given-names: "João Guilherme"
     email: "jg.cravo@outlook.com"
-  - family-names: "Alves"
-    given-names: "Diogo"
 title: "Arquitetura de Automação Inteligente de Processos (IPA) para Triagem e Lançamento de Pedidos em Micro, Pequenas e Médias Empresas (MPMEs)"
 version: 1.0.0
 date-released: 2026-10-30
@@ -21,4 +24,3 @@ keywords:
   - "Engenharia de Software"
   - "MPME"
 license: MIT
-

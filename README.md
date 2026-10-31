@@ -159,7 +159,7 @@ uv run pytest
 
 Consulte o arquivo [`CITATION.cff`](CITATION.cff) para detalhes completos de citação. Exemplo em formato ABNT:
 
-> Dioog Gomes, Gabriel Januario e Joao Guilherme. **Arquitetura de Automação Inteligente de Processos (IPA) para Triagem e Lançamento de Pedidos em Micro, Pequenas e Médias Empresas (MPMEs)**. Trabalho de Conclusão de Curso (Graduação em Sistemas de Informação), 2026. Disponível em: <https://github.com/jonnguii/tcc-ipa>.
+> Diogo Gomes, Gabriel Januario e João Guilherme. **Arquitetura de Automação Inteligente de Processos (IPA) para Triagem e Lançamento de Pedidos em Micro, Pequenas e Médias Empresas (MPMEs)**. Trabalho de Conclusão de Curso (Graduação em Sistemas de Informação), 2026. Disponível em: <https://github.com/jonnguii/tcc-ipa>.
 
 ---
 
