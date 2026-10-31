@@ -192,7 +192,7 @@ def aplicar_mocks_para_prints():
 def render_terminal_svg() -> str:
     """Gera visual gráfico estilizado do terminal de execução (P4)."""
     return """
-    <div style="background:#0f172a; border-radius:10px; box-shadow:0 10px 25px -5px rgba(0,0,0,0.5); font-family:'Cascadia Code','Fira Code','Courier New',monospace; color:#f8fafc; padding:24px 30px; width:1100px; box-sizing:border-box;">
+    <div style="background:#0f172a; border-radius:10px; box-shadow:0 10px 25px -5px rgba(0,0,0,0.5); font-family:'Cascadia Code','Fira Code','Courier New',monospace; color:#f8fafc; padding:24px 30px; width:1160px; box-sizing:border-box;">
         <div style="display:flex; align-items:center; margin-bottom:18px; border-bottom:1px solid #334155; padding-bottom:12px;">
             <div style="display:flex; gap:8px;">
                 <span style="width:13px; height:13px; border-radius:50%; background:#ef4444; display:inline-block;"></span>
@@ -250,7 +250,7 @@ async def capturar_todos_os_prints():
     print("  [RENDER] Gerando P4_terminal_experimentos.png...")
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
-        page = await browser.new_page(viewport={"width": 1180, "height": 760}, device_scale_factor=2)
+        page = await browser.new_page(viewport={"width": 1240, "height": 780}, device_scale_factor=2)
         html_term = f"""<!DOCTYPE html>
         <html>
         <head><meta charset="utf-8"><style>body{{margin:0; padding:20px; background:#020617; display:flex; justify-content:center; align-items:center;}}</style></head>
@@ -278,7 +278,7 @@ async def capturar_todos_os_prints():
         time.sleep(1.5)  # aguarda o servidor iniciar
 
         base_url = f"http://127.0.0.1:{porta}"
-        erp_page = await browser.new_page(viewport={"width": 1280, "height": 850}, device_scale_factor=2)
+        erp_page = await browser.new_page(viewport={"width": 1360, "height": 880}, device_scale_factor=2)
 
         # P2: Tela de Pedidos
         print("  [CAPTURE] Acessando /pedidos para P2_erp_lista_pedidos.png...")
