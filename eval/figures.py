@@ -1,7 +1,7 @@
 """Módulo de renderização de figuras e gráficos científicos (G1 a G6).
-Gera gráficos vetoriais/SVG com design editorial refinado (espaçamento amplo,
-zero sobreposição de texto e tipografia nítida) e renderiza em PNG (300 DPI)
-utilizando Playwright headless para inclusão direta no TCC e em results/RESULTADOS.md.
+Gera gráficos vetoriais/SVG com arquitetura de faixas dedicadas
+(cabeçalho isolado, legenda dedicada e área de plotagem livre de colisões)
+e renderiza em PNG de alta resolução (300 DPI) com Playwright headless.
 """
 from __future__ import annotations
 
@@ -51,12 +51,11 @@ def gerar_svg_g1() -> str:
     met_reg = calc_metrics(dados_regex)
     met_ia = calc_metrics(dados_ia)
 
-    # Canvas: 960x540 com margens amplas
     chaves = ["limpo", "ruidoso", "adversarial", "geral"]
-    grupo_largura = 195
-    x_inicio = 125
-    y_base = 380
-    altura_grafico = 230  # 1.00 = 230px -> y_topo = 150
+    grupo_largura = 200
+    x_inicio = 135
+    y_base = 395
+    altura_grafico = 230  # 1.00 = 230px -> y_topo = 165
 
     svg_bars = ""
     for i, chave in enumerate(chaves):
@@ -72,64 +71,64 @@ def gerar_svg_g1() -> str:
 
         delta = (i_f1 - r_f1) * 100
 
-        # Barra Regex
         svg_bars += f"""
         <g class="bar-group">
             <!-- Barra Regex -->
             <rect x="{gx}" y="{y_reg:.1f}" width="44" height="{h_reg:.1f}" fill="#94a3b8" rx="4" />
-            <text x="{gx+22}" y="{y_reg-10:.1f}" text-anchor="middle" font-size="12" font-weight="600" fill="#475569">{r_f1:.3f}</text>
+            <text x="{gx+22}" y="{y_reg-9:.1f}" text-anchor="middle" font-size="12" font-weight="600" fill="#475569">{r_f1:.3f}</text>
             
             <!-- Barra IA -->
             <rect x="{gx+52}" y="{y_ia:.1f}" width="44" height="{h_ia:.1f}" fill="#2563eb" rx="4" />
-            <text x="{gx+74}" y="{y_ia-10:.1f}" text-anchor="middle" font-size="12" font-weight="700" fill="#1d4ed8">{i_f1:.3f}</text>
+            <text x="{gx+74}" y="{y_ia-9:.1f}" text-anchor="middle" font-size="12" font-weight="700" fill="#1d4ed8">{i_f1:.3f}</text>
             
             <!-- Rótulo Eixo X (Nome da Categoria) -->
-            <text x="{gx+48}" y="{y_base+25}" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">{cats_label[i]}</text>
+            <text x="{gx+48}" y="{y_base+25}" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e293b">{cats_label[i]}</text>
 
-            <!-- Delta Badge com respiro vertical -->
+            <!-- Delta Badge isolada abaixo do rótulo -->
             <rect x="{gx+18}" y="{y_base+38}" width="60" height="22" fill="#ecfdf5" stroke="#10b981" rx="11" />
             <text x="{gx+48}" y="{y_base+53}" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">+{delta:.1f} pp</text>
         </g>
         """
 
     svg = f"""
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="960" height="540" style="background:#ffffff; font-family:'Segoe UI',system-ui,sans-serif;">
-        <!-- Cabeçalho -->
-        <text x="50" y="42" font-size="20" font-weight="700" fill="#0f172a">Figura G1: Desempenho F1 por Categoria (Regex Baseline vs. IA Generativa)</text>
-        <text x="50" y="68" font-size="13" font-weight="400" fill="#64748b">F1-Score médio de extração de itens nos 50 documentos do conjunto de teste (EXP2 vs. EXP3)</text>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" width="1000" height="560" style="background:#ffffff; font-family:'Segoe UI',system-ui,sans-serif;">
+        <!-- Cabeçalho (Área 1) -->
+        <text x="50" y="36" font-size="19" font-weight="700" fill="#0f172a">Figura G1: Desempenho F1 por Categoria (Regex Baseline vs. IA Generativa)</text>
+        <text x="50" y="58" font-size="12.5" font-weight="400" fill="#64748b">F1-Score médio de extração de itens nos 50 documentos do conjunto de teste (EXP2 vs. EXP3)</text>
         
-        <!-- Legenda posicionada com folga -->
-        <g transform="translate(650, 42)">
+        <!-- Faixa de Legenda Dedicada (Área 2) -->
+        <g transform="translate(50, 85)">
             <rect x="0" y="0" width="14" height="14" fill="#94a3b8" rx="3" />
-            <text x="22" y="12" font-size="12" font-weight="500" fill="#475569">Regex Baseline</text>
-            <rect x="135" y="0" width="14" height="14" fill="#2563eb" rx="3" />
-            <text x="157" y="12" font-size="12" font-weight="600" fill="#1d4ed8">IA IPA (Gemini)</text>
+            <text x="22" y="12" font-size="12" font-weight="600" fill="#475569">Regex Baseline</text>
+            
+            <rect x="160" y="0" width="14" height="14" fill="#2563eb" rx="3" />
+            <text x="182" y="12" font-size="12" font-weight="700" fill="#1d4ed8">IA IPA (Gemini 2.5 Flash)</text>
         </g>
 
-        <!-- Linhas de Grade e Eixo Y -->
+        <!-- Linhas de Grade e Eixo Y (Área 3) -->
         <g stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4">
-            <line x1="85" y1="{y_base}" x2="905" y2="{y_base}" stroke="#94a3b8" stroke-dasharray="0" stroke-width="1.5" />
-            <line x1="85" y1="{y_base - altura_grafico*0.25:.1f}" x2="905" y2="{y_base - altura_grafico*0.25:.1f}" />
-            <line x1="85" y1="{y_base - altura_grafico*0.50:.1f}" x2="905" y2="{y_base - altura_grafico*0.50:.1f}" />
-            <line x1="85" y1="{y_base - altura_grafico*0.75:.1f}" x2="905" y2="{y_base - altura_grafico*0.75:.1f}" />
-            <line x1="85" y1="{y_base - altura_grafico:.1f}" x2="905" y2="{y_base - altura_grafico:.1f}" />
+            <line x1="90" y1="{y_base}" x2="940" y2="{y_base}" stroke="#94a3b8" stroke-dasharray="0" stroke-width="1.5" />
+            <line x1="90" y1="{y_base - altura_grafico*0.25:.1f}" x2="940" y2="{y_base - altura_grafico*0.25:.1f}" />
+            <line x1="90" y1="{y_base - altura_grafico*0.50:.1f}" x2="940" y2="{y_base - altura_grafico*0.50:.1f}" />
+            <line x1="90" y1="{y_base - altura_grafico*0.75:.1f}" x2="940" y2="{y_base - altura_grafico*0.75:.1f}" />
+            <line x1="90" y1="{y_base - altura_grafico:.1f}" x2="940" y2="{y_base - altura_grafico:.1f}" />
         </g>
 
         <!-- Rótulos Eixo Y -->
         <g font-size="12" fill="#64748b" text-anchor="end">
-            <text x="75" y="{y_base+4}">0.00</text>
-            <text x="75" y="{y_base - altura_grafico*0.25 + 4:.1f}">0.25</text>
-            <text x="75" y="{y_base - altura_grafico*0.50 + 4:.1f}">0.50</text>
-            <text x="75" y="{y_base - altura_grafico*0.75 + 4:.1f}">0.75</text>
-            <text x="75" y="{y_base - altura_grafico + 4:.1f}">1.00</text>
+            <text x="80" y="{y_base+4}">0.00</text>
+            <text x="80" y="{y_base - altura_grafico*0.25 + 4:.1f}">0.25</text>
+            <text x="80" y="{y_base - altura_grafico*0.50 + 4:.1f}">0.50</text>
+            <text x="80" y="{y_base - altura_grafico*0.75 + 4:.1f}">0.75</text>
+            <text x="80" y="{y_base - altura_grafico + 4:.1f}">1.00</text>
         </g>
-        <text x="32" y="{y_base - altura_grafico/2}" font-size="13" font-weight="600" fill="#475569" transform="rotate(-90 32 {y_base - altura_grafico/2})" text-anchor="middle">F1-Score Médio de Itens</text>
+        <text x="35" y="{y_base - altura_grafico/2}" font-size="13" font-weight="600" fill="#475569" transform="rotate(-90 35 {y_base - altura_grafico/2})" text-anchor="middle">F1-Score Médio de Itens</text>
 
         <!-- Barras -->
         {svg_bars}
 
         <!-- Rodapé explicativo -->
-        <text x="50" y="505" font-size="11" fill="#94a3b8">Nota: As amostras adversariais contêm ruído proposital e injeções de prompt; o parser por Regex falha na generalização.</text>
+        <text x="50" y="525" font-size="11" fill="#94a3b8">Nota: As amostras adversariais contêm ruído proposital e injeções de prompt; o parser determinístico Regex falha na generalização.</text>
     </svg>
     """
     return svg
@@ -142,10 +141,10 @@ def gerar_svg_g2() -> str:
         return ""
 
     x_min, x_max = 0.50, 1.00
-    y_base = 380
-    altura_grafico = 240
-    largura_grafico = 720
-    x_inicio = 120
+    y_base = 395
+    altura_grafico = 230
+    largura_grafico = 750
+    x_inicio = 125
 
     def calc_coords(limiar_val, pct_val):
         x = x_inicio + ((limiar_val - x_min) / (x_max - x_min)) * largura_grafico
@@ -167,12 +166,10 @@ def gerar_svg_g2() -> str:
     path_cob = "M " + " L ".join(pontos_cob)
     path_erro = "M " + " L ".join(pontos_erro)
 
-    # Ponto de corte escolhido tau = 0.85
     x_corte, y_corte = calc_coords(0.85, 72.0)
     x_meta, y_meta = calc_coords(0.85, 0.0)
     _, y_h3 = calc_coords(0.50, 2.0)
 
-    # Passos do eixo X bem espaçados
     passos_x = [0.50, 0.60, 0.70, 0.80, 0.85, 0.90, 0.95, 1.00]
     marcas_x_svg = ""
     for px in passos_x:
@@ -190,23 +187,23 @@ def gerar_svg_g2() -> str:
             """
 
     svg = f"""
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="960" height="540" style="background:#ffffff; font-family:'Segoe UI',system-ui,sans-serif;">
-        <!-- Cabeçalho -->
-        <text x="50" y="42" font-size="20" font-weight="700" fill="#0f172a">Figura G2: Curva Risco vs. Cobertura de Automação (EXP4)</text>
-        <text x="50" y="68" font-size="13" font-weight="400" fill="#64748b">Varredura de limiares de confiança tau in [0.50, 0.99] e comprovação da Hipótese H3 (Erro Residual no ERP &lt;= 2.0%)</text>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" width="1000" height="560" style="background:#ffffff; font-family:'Segoe UI',system-ui,sans-serif;">
+        <!-- Cabeçalho (Área 1) -->
+        <text x="50" y="36" font-size="19" font-weight="700" fill="#0f172a">Figura G2: Curva Risco vs. Cobertura de Automação (EXP4)</text>
+        <text x="50" y="58" font-size="12.5" font-weight="400" fill="#64748b">Varredura de limiares de confiança tau in [0.50, 0.99] e comprovação da Hipótese H3 (Erro Residual no ERP &lt;= 2.0%)</text>
 
-        <!-- Legenda compacta com margem segura -->
-        <g transform="translate(560, 42)">
+        <!-- Faixa de Legenda Dedicada (Área 2) -->
+        <g transform="translate(50, 85)">
             <line x1="0" y1="7" x2="20" y2="7" stroke="#2563eb" stroke-width="3" />
             <circle cx="10" cy="7" r="4" fill="#2563eb" />
-            <text x="28" y="11" font-size="12" font-weight="600" fill="#1e40af">Cobertura (%)</text>
+            <text x="28" y="11" font-size="12" font-weight="600" fill="#1e40af">Cobertura de Automação (%)</text>
             
-            <line x1="130" y1="7" x2="150" y2="7" stroke="#dc2626" stroke-width="3" />
-            <circle cx="140" cy="7" r="4" fill="#dc2626" />
-            <text x="158" y="11" font-size="12" font-weight="600" fill="#991b1b">Erro Residual (%)</text>
+            <line x1="230" y1="7" x2="250" y2="7" stroke="#dc2626" stroke-width="3" />
+            <circle cx="240" cy="7" r="4" fill="#dc2626" />
+            <text x="258" y="11" font-size="12" font-weight="600" fill="#991b1b">Erro Residual no ERP (%)</text>
 
-            <line x1="280" y1="7" x2="300" y2="7" stroke="#b91c1c" stroke-width="1.5" stroke-dasharray="3" />
-            <text x="308" y="11" font-size="11" font-weight="500" fill="#b91c1c">Meta H3 (2%)</text>
+            <line x1="450" y1="7" x2="470" y2="7" stroke="#b91c1c" stroke-width="1.5" stroke-dasharray="3" />
+            <text x="478" y="11" font-size="11" font-weight="600" fill="#b91c1c">Meta H3 (Tolerância &lt;= 2%)</text>
         </g>
 
         <!-- Linhas de Grade e Eixo Y -->
@@ -234,7 +231,7 @@ def gerar_svg_g2() -> str:
 
         <!-- Eixo X Marcadores -->
         {marcas_x_svg}
-        <text x="{x_inicio + largura_grafico/2}" y="{y_base+50}" font-size="13" font-weight="600" fill="#334155" text-anchor="middle">Limiar de Confiança Mínima do Modelo (tau)</text>
+        <text x="{x_inicio + largura_grafico/2}" y="{y_base+52}" font-size="13" font-weight="600" fill="#334155" text-anchor="middle">Limiar de Confiança Mínima do Modelo (tau)</text>
 
         <!-- Curvas -->
         <path d="{path_cob}" fill="none" stroke="#2563eb" stroke-width="3" />
@@ -246,7 +243,7 @@ def gerar_svg_g2() -> str:
         <circle cx="{x_meta:.1f}" cy="{y_meta:.1f}" r="6" fill="#10b981" stroke="#ffffff" stroke-width="2" />
 
         <!-- Caixa de Destaque reposicionada para evitar qualquer sobreposição -->
-        <g transform="translate(635, 120)">
+        <g transform="translate(660, 135)">
             <rect x="0" y="0" width="205" height="78" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2" rx="6" />
             <text x="12" y="20" font-size="12" font-weight="700" fill="#1e293b">Ponto Operacional (tau = 0.85):</text>
             <text x="12" y="38" font-size="12" font-weight="600" fill="#2563eb">&#x2022; Cobertura: 72.0% (36/50)</text>
@@ -255,7 +252,7 @@ def gerar_svg_g2() -> str:
         </g>
 
         <!-- Rodapé explicativo -->
-        <text x="50" y="505" font-size="11" fill="#94a3b8">Nota: O motor de regras determinístico desvia divergências de catálogo para a Fila de Revisão Humana, eliminando o erro residual no ERP.</text>
+        <text x="50" y="525" font-size="11" fill="#94a3b8">Nota: O motor de regras determinístico desvia divergências de catálogo para a Fila de Revisão Humana, eliminando o erro residual no ERP.</text>
     </svg>
     """
     return svg
@@ -287,17 +284,16 @@ def gerar_svg_g3() -> str:
         else:
             bins_data.append((label, (low + high) / 2, 0.0, 0, 0))
 
-    y_base = 380
-    altura_grafico = 240
+    y_base = 395
+    altura_grafico = 230
     largura_grafico = 520
-    x_inicio = 180
+    x_inicio = 160
 
     def calc_xy(conf, acc):
         x = x_inicio + conf * largura_grafico
         y = y_base - acc * altura_grafico
         return x, y
 
-    # Badges dos pontos com posicionamento anti-colisão
     pontos_svg = ""
     for label, conf, acc, n, acertos in bins_data:
         if n == 0:
@@ -305,16 +301,21 @@ def gerar_svg_g3() -> str:
         cx, cy = calc_xy(conf, acc)
         cor = "#2563eb" if acc > 0 else "#e11d48"
 
-        # Se o ponto estiver na base (acc == 0), coloca a badge acima para não sobrepor o eixo X
+        # Posição calculada das badges para zero colisão
         if acc == 0:
-            badge_y = cy - 42
-            badge_x = cx - 45
+            # Caso da faixa 0.94 (DOC-0040 e DOC-0056)
+            badge_y = cy - 40
+            badge_x = cx - 40
         elif conf >= 0.95:
-            # Ponto de 100% (canto superior direito): afasta para a esquerda para não encostar na margem
-            badge_y = cy - 36
-            badge_x = cx - 55
+            # Ponto de 100% (canto superior direito)
+            badge_y = cy - 35
+            badge_x = cx - 40
+        elif conf >= 0.75:
+            # Ponto de 80%
+            badge_y = cy - 35
+            badge_x = cx - 50
         else:
-            badge_y = cy - 36
+            badge_y = cy - 35
             badge_x = cx - 40
 
         pontos_svg += f"""
@@ -326,18 +327,18 @@ def gerar_svg_g3() -> str:
         """
 
     svg = f"""
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="960" height="540" style="background:#ffffff; font-family:'Segoe UI',system-ui,sans-serif;">
-        <!-- Cabeçalho -->
-        <text x="50" y="42" font-size="20" font-weight="700" fill="#0f172a">Figura G3: Diagrama de Calibração da Confiança da IA (EXP3)</text>
-        <text x="50" y="68" font-size="13" font-weight="400" fill="#64748b">Confiabilidade da probabilidade reportada pelo Gemini Flash vs. Acurácia observada de acerto exato</text>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" width="1000" height="560" style="background:#ffffff; font-family:'Segoe UI',system-ui,sans-serif;">
+        <!-- Cabeçalho (Área 1) -->
+        <text x="50" y="36" font-size="19" font-weight="700" fill="#0f172a">Figura G3: Diagrama de Calibração da Confiança da IA (EXP3)</text>
+        <text x="50" y="58" font-size="12.5" font-weight="400" fill="#64748b">Confiabilidade da probabilidade reportada pelo Gemini Flash vs. Acurácia observada de acerto exato</text>
 
-        <!-- Legenda -->
-        <g transform="translate(600, 42)">
+        <!-- Faixa de Legenda Dedicada (Área 2) -->
+        <g transform="translate(50, 85)">
             <line x1="0" y1="7" x2="24" y2="7" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4" />
-            <text x="32" y="11" font-size="12" font-weight="500" fill="#64748b">Calibração Perfeita (y = x)</text>
+            <text x="32" y="11" font-size="12" font-weight="600" fill="#64748b">Calibração Perfeita (y = x)</text>
             
-            <circle cx="210" cy="7" r="5" fill="#2563eb" />
-            <text x="222" y="11" font-size="12" font-weight="600" fill="#1e40af">Observado</text>
+            <circle cx="240" cy="7" r="5" fill="#2563eb" />
+            <text x="252" y="11" font-size="12" font-weight="700" fill="#1e40af">Observado nos Testes</text>
         </g>
 
         <!-- Linhas de Grade e Eixo Y -->
@@ -370,24 +371,24 @@ def gerar_svg_g3() -> str:
             <text x="{x_inicio + largura_grafico*0.75:.1f}" y="{y_base+22}">0.75</text>
             <text x="{x_inicio + largura_grafico}" y="{y_base+22}">1.00</text>
         </g>
-        <text x="{x_inicio + largura_grafico/2}" y="{y_base+48}" font-size="13" font-weight="600" fill="#334155" text-anchor="middle">Confiança Média Estimada pelo Modelo</text>
+        <text x="{x_inicio + largura_grafico/2}" y="{y_base+50}" font-size="13" font-weight="600" fill="#334155" text-anchor="middle">Confiança Média Estimada pelo Modelo</text>
 
         <!-- Pontos Observados -->
         {pontos_svg}
 
-        <!-- Card de Análise da Faixa 0.94 reposicionado na lateral direita com margem segura -->
-        <g transform="translate(730, 200)">
-            <rect x="0" y="0" width="180" height="125" fill="#fff1f2" stroke="#fecdd3" stroke-width="1.2" rx="6" />
-            <text x="12" y="22" font-size="11" font-weight="700" fill="#9f1239">Caso Crítico (Faixa 0.94):</text>
-            <text x="12" y="42" font-size="10" fill="#881337">&#x2022; DOC-0040 e DOC-0056</text>
-            <text x="12" y="58" font-size="10" fill="#881337">&#x2022; IA previu confianca alta</text>
-            <text x="12" y="74" font-size="10" fill="#881337">&#x2022; Erro sintético de código</text>
-            <text x="12" y="94" font-size="10" font-weight="700" fill="#047857">&#x2714; Motor barrou no Fuzzy!</text>
-            <text x="12" y="110" font-size="10" font-weight="600" fill="#047857">&#x2714; Roteado p/ REVISAO</text>
+        <!-- Card de Análise da Faixa 0.94 isolado na extrema direita -->
+        <g transform="translate(735, 185)">
+            <rect x="0" y="0" width="215" height="135" fill="#fff1f2" stroke="#fecdd3" stroke-width="1.2" rx="6" />
+            <text x="14" y="24" font-size="11.5" font-weight="700" fill="#9f1239">Caso Crítico (Faixa 0.94):</text>
+            <text x="14" y="46" font-size="10.5" fill="#881337">&#x2022; DOC-0040 e DOC-0056</text>
+            <text x="14" y="64" font-size="10.5" fill="#881337">&#x2022; IA previu confianca alta</text>
+            <text x="14" y="82" font-size="10.5" fill="#881337">&#x2022; Erro sintético de código</text>
+            <text x="14" y="104" font-size="10.5" font-weight="700" fill="#047857">&#x2714; Motor barrou no Fuzzy!</text>
+            <text x="14" y="122" font-size="10.5" font-weight="600" fill="#047857">&#x2714; Roteado p/ REVISAO</text>
         </g>
 
         <!-- Rodapé explicativo -->
-        <text x="50" y="505" font-size="11" fill="#94a3b8">Nota: 90% da amostra (45/50) concentrou-se na faixa de confiança máxima [0.96, 1.00] com 100% de precisão observada.</text>
+        <text x="50" y="525" font-size="11" fill="#94a3b8">Nota: 90% da amostra (45/50) concentrou-se na faixa de confiança máxima [0.96, 1.00] com 100% de precisão observada.</text>
     </svg>
     """
     return svg
@@ -417,12 +418,11 @@ def gerar_svg_g4() -> str:
     sm = box_stats(tm)
     sa = box_stats(ta)
 
-    y_base = 380
-    altura_grafico = 240
+    y_base = 395
+    altura_grafico = 230
     max_s = 140.0
-    # Afasta os dois boxplots para deixar 260px no centro para o selo de Speed-Up
     x_manual = 250
-    x_auto = 700
+    x_auto = 740
 
     def y_sec(s):
         return y_base - (s / max_s) * altura_grafico
@@ -453,7 +453,7 @@ def gerar_svg_g4() -> str:
             <line x1="{bx-45}" y1="{y_med:.1f}" x2="{bx+45}" y2="{y_med:.1f}" stroke="#ffffff" stroke-width="3" />
             <circle cx="{bx}" cy="{y_med:.1f}" r="4" fill="#ffffff" />
 
-            <!-- Rótulo Mediana reposicionado -->
+            <!-- Rótulo Mediana -->
             <rect x="{x_rotulo:.1f}" y="{y_med-12:.1f}" width="70" height="24" fill="#ffffff" stroke="{cor_linha}" stroke-width="1.2" rx="4" />
             <text x="{x_rotulo+35:.1f}" y="{y_med+4:.1f}" text-anchor="middle" font-size="12" font-weight="700" fill="{cor_linha}">{st['med']:.1f}s</text>
 
@@ -464,51 +464,49 @@ def gerar_svg_g4() -> str:
         </g>
         """
 
-    # Box Manual com rótulo à esquerda para afastar do centro
     box_m_svg = render_box(x_manual, sm, "#94a3b8", "#475569", "Manual (Humano)", "3 erros observados (10.0%)", lado_rotulo="esq")
-    # Box Auto com rótulo à direita
     box_a_svg = render_box(x_auto, sa, "#3b82f6", "#1d4ed8", "Orquestrador IPA", "0 erros observados (0.0%)", lado_rotulo="dir")
 
     speedup = sm["med"] / sa["med"]
 
     svg = f"""
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="960" height="540" style="background:#ffffff; font-family:'Segoe UI',system-ui,sans-serif;">
-        <!-- Cabeçalho -->
-        <text x="50" y="42" font-size="20" font-weight="700" fill="#0f172a">Figura G4: Distribuição dos Tempos Operacionais por Pedido (EXP1)</text>
-        <text x="50" y="68" font-size="13" font-weight="400" fill="#64748b">Comparativo empírico entre digitação manual no ERP e orquestração automatizada (N=30 pedidos pareados)</text>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" width="1000" height="560" style="background:#ffffff; font-family:'Segoe UI',system-ui,sans-serif;">
+        <!-- Cabeçalho (Área 1) -->
+        <text x="50" y="36" font-size="19" font-weight="700" fill="#0f172a">Figura G4: Distribuição dos Tempos Operacionais por Pedido (EXP1)</text>
+        <text x="50" y="58" font-size="12.5" font-weight="400" fill="#64748b">Comparativo empírico entre digitação manual no ERP e orquestração automatizada (N=30 pedidos pareados)</text>
 
         <!-- Selo de Speed-Up Centralizado com ampla folga de ambos os lados -->
-        <g transform="translate(410, 160)">
-            <rect x="0" y="0" width="140" height="68" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5" rx="8" />
-            <text x="70" y="26" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">GANHO DE VELOCIDADE</text>
-            <text x="70" y="52" text-anchor="middle" font-size="20" font-weight="800" fill="#065f46">{speedup:.1f}x MAIS RÁPIDO</text>
+        <g transform="translate(425, 175)">
+            <rect x="0" y="0" width="150" height="70" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5" rx="8" />
+            <text x="75" y="27" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">GANHO DE VELOCIDADE</text>
+            <text x="75" y="53" text-anchor="middle" font-size="20" font-weight="800" fill="#065f46">{speedup:.1f}x MAIS RÁPIDO</text>
         </g>
 
         <!-- Linhas de Grade e Eixo Y -->
         <g stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4">
-            <line x1="100" y1="{y_base}" x2="880" y2="{y_base}" stroke="#94a3b8" stroke-dasharray="0" stroke-width="1.5" />
-            <line x1="100" y1="{y_sec(35):.1f}" x2="880" y2="{y_sec(35):.1f}" />
-            <line x1="100" y1="{y_sec(70):.1f}" x2="880" y2="{y_sec(70):.1f}" />
-            <line x1="100" y1="{y_sec(105):.1f}" x2="880" y2="{y_sec(105):.1f}" />
-            <line x1="100" y1="{y_sec(140):.1f}" x2="880" y2="{y_sec(140):.1f}" />
+            <line x1="90" y1="{y_base}" x2="920" y2="{y_base}" stroke="#94a3b8" stroke-dasharray="0" stroke-width="1.5" />
+            <line x1="90" y1="{y_sec(35):.1f}" x2="920" y2="{y_sec(35):.1f}" />
+            <line x1="90" y1="{y_sec(70):.1f}" x2="920" y2="{y_sec(70):.1f}" />
+            <line x1="90" y1="{y_sec(105):.1f}" x2="920" y2="{y_sec(105):.1f}" />
+            <line x1="90" y1="{y_sec(140):.1f}" x2="920" y2="{y_sec(140):.1f}" />
         </g>
 
         <!-- Rótulos Eixo Y -->
         <g font-size="12" fill="#64748b" text-anchor="end">
-            <text x="90" y="{y_base+4}">0s</text>
-            <text x="90" y="{y_sec(35)+4:.1f}">35s</text>
-            <text x="90" y="{y_sec(70)+4:.1f}">70s</text>
-            <text x="90" y="{y_sec(105)+4:.1f}">105s</text>
-            <text x="90" y="{y_sec(140)+4:.1f}">140s</text>
+            <text x="80" y="{y_base+4}">0s</text>
+            <text x="80" y="{y_sec(35)+4:.1f}">35s</text>
+            <text x="80" y="{y_sec(70)+4:.1f}">70s</text>
+            <text x="80" y="{y_sec(105)+4:.1f}">105s</text>
+            <text x="80" y="{y_sec(140)+4:.1f}">140s</text>
         </g>
-        <text x="40" y="{y_base - altura_grafico/2}" font-size="13" font-weight="600" fill="#475569" transform="rotate(-90 40 {y_base - altura_grafico/2})" text-anchor="middle">Tempo de Processamento por Pedido (s)</text>
+        <text x="35" y="{y_base - altura_grafico/2}" font-size="13" font-weight="600" fill="#475569" transform="rotate(-90 35 {y_base - altura_grafico/2})" text-anchor="middle">Tempo de Processamento por Pedido (s)</text>
 
         <!-- Boxplots -->
         {box_m_svg}
         {box_a_svg}
 
         <!-- Rodapé explicativo -->
-        <text x="50" y="505" font-size="11" fill="#94a3b8">Nota: Redução no tempo mediano de 74,4s para 9,0s (-87,9%). O processo manual apresentou fadiga e digitação errônea em 10% dos casos.</text>
+        <text x="50" y="525" font-size="11" fill="#94a3b8">Nota: Redução no tempo mediano de 74,4s para 9,0s (-87,9%). O processo manual apresentou fadiga e digitação errônea em 10% dos casos.</text>
     </svg>
     """
     return svg
@@ -538,11 +536,11 @@ def gerar_svg_g5() -> str:
         stats.append(conta_rotas(sub))
     stats.append(conta_rotas(dados))
 
-    y_base = 380
-    altura_grafico = 240
+    y_base = 395
+    altura_grafico = 230
     largura_barra = 96
-    espaco = 92
-    x_inicio = 135
+    espaco = 96
+    x_inicio = 150
 
     svg_barras = ""
     for i, (aut, rev, rej) in enumerate(stats):
@@ -586,30 +584,30 @@ def gerar_svg_g5() -> str:
         """
 
     svg = f"""
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="960" height="540" style="background:#ffffff; font-family:'Segoe UI',system-ui,sans-serif;">
-        <!-- Cabeçalho -->
-        <text x="50" y="42" font-size="20" font-weight="700" fill="#0f172a">Figura G5: Destinos Operacionais da Triagem em Três Vias (EXP3 / EXP4)</text>
-        <text x="50" y="68" font-size="13" font-weight="400" fill="#64748b">Distribuição proporcional de decisões por categoria: Automação direta, Fila Humana ou Rejeição de Segurança</text>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" width="1000" height="560" style="background:#ffffff; font-family:'Segoe UI',system-ui,sans-serif;">
+        <!-- Cabeçalho (Área 1) -->
+        <text x="50" y="36" font-size="19" font-weight="700" fill="#0f172a">Figura G5: Destinos Operacionais da Triagem em Três Vias (EXP3 / EXP4)</text>
+        <text x="50" y="58" font-size="12.5" font-weight="400" fill="#64748b">Distribuição proporcional de decisões por categoria: Automação direta, Fila Humana ou Rejeição de Segurança</text>
 
-        <!-- Legenda compacta com ampla folga -->
-        <g transform="translate(460, 42)">
+        <!-- Faixa de Legenda Dedicada (Área 2) -->
+        <g transform="translate(50, 85)">
             <rect x="0" y="0" width="14" height="14" fill="#10b981" rx="3" />
-            <text x="20" y="12" font-size="12" font-weight="600" fill="#047857">AUTOMATICO</text>
+            <text x="20" y="12" font-size="12" font-weight="600" fill="#047857">AUTOMATICO (Despacho Direto ao RPA)</text>
 
-            <rect x="150" y="0" width="14" height="14" fill="#f59e0b" rx="3" />
-            <text x="170" y="12" font-size="12" font-weight="600" fill="#b45309">REVISAO</text>
+            <rect x="290" y="0" width="14" height="14" fill="#f59e0b" rx="3" />
+            <text x="310" y="12" font-size="12" font-weight="600" fill="#b45309">REVISAO (Fila Human-in-the-Loop)</text>
 
-            <rect x="280" y="0" width="14" height="14" fill="#ef4444" rx="3" />
-            <text x="300" y="12" font-size="12" font-weight="600" fill="#b91c1c">REJEICAO</text>
+            <rect x="580" y="0" width="14" height="14" fill="#ef4444" rx="3" />
+            <text x="600" y="12" font-size="12" font-weight="600" fill="#b91c1c">REJEICAO (Bloqueio Anti-Injection)</text>
         </g>
 
         <!-- Linhas de Grade e Eixo Y -->
         <g stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4">
-            <line x1="95" y1="{y_base}" x2="905" y2="{y_base}" stroke="#94a3b8" stroke-dasharray="0" stroke-width="1.5" />
-            <line x1="95" y1="{y_base - altura_grafico*0.25:.1f}" x2="905" y2="{y_base - altura_grafico*0.25:.1f}" />
-            <line x1="95" y1="{y_base - altura_grafico*0.50:.1f}" x2="905" y2="{y_base - altura_grafico*0.50:.1f}" />
-            <line x1="95" y1="{y_base - altura_grafico*0.75:.1f}" x2="905" y2="{y_base - altura_grafico*0.75:.1f}" />
-            <line x1="95" y1="{y_base - altura_grafico:.1f}" x2="905" y2="{y_base - altura_grafico:.1f}" />
+            <line x1="95" y1="{y_base}" x2="940" y2="{y_base}" stroke="#94a3b8" stroke-dasharray="0" stroke-width="1.5" />
+            <line x1="95" y1="{y_base - altura_grafico*0.25:.1f}" x2="940" y2="{y_base - altura_grafico*0.25:.1f}" />
+            <line x1="95" y1="{y_base - altura_grafico*0.50:.1f}" x2="940" y2="{y_base - altura_grafico*0.50:.1f}" />
+            <line x1="95" y1="{y_base - altura_grafico*0.75:.1f}" x2="940" y2="{y_base - altura_grafico*0.75:.1f}" />
+            <line x1="95" y1="{y_base - altura_grafico:.1f}" x2="940" y2="{y_base - altura_grafico:.1f}" />
         </g>
 
         <!-- Rótulos Eixo Y -->
@@ -626,7 +624,7 @@ def gerar_svg_g5() -> str:
         {svg_barras}
 
         <!-- Rodapé explicativo -->
-        <text x="50" y="505" font-size="11" fill="#94a3b8">Nota: 100% dos documentos limpos foram aprovados para RPA; 60% dos adversariais foram bloqueados por injeção e os demais encaminhados para homologação.</text>
+        <text x="50" y="525" font-size="11" fill="#94a3b8">Nota: 100% dos documentos limpos foram aprovados para RPA; 60% dos adversariais foram bloqueados por injeção e os demais encaminhados para homologação.</text>
     </svg>
     """
     return svg
@@ -641,81 +639,82 @@ def gerar_svg_g6() -> str:
     custos = [float(d["custo_estimado_brl"]) for d in dados]
     custo_medio = sum(custos) / len(custos) if custos else 0.00044
 
-    # Canvas ampliado para 1020x560 para respiro total em ambos os painéis
+    # Canvas ampliado para 1040x580 com corredores de respiro total
     svg = f"""
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 560" width="1020" height="560" style="background:#ffffff; font-family:'Segoe UI',system-ui,sans-serif;">
-        <!-- Cabeçalho -->
-        <text x="50" y="42" font-size="20" font-weight="700" fill="#0f172a">Figura G6: Decomposição de Latência e Análise de Custos por Estágio (EXP7)</text>
-        <text x="50" y="68" font-size="13" font-weight="400" fill="#64748b">Análise temporal dos módulos da esteira IPA e projeção financeira com Gemini 2.5 Flash</text>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 580" width="1040" height="580" style="background:#ffffff; font-family:'Segoe UI',system-ui,sans-serif;">
+        <!-- Cabeçalho (Área 1) -->
+        <text x="50" y="38" font-size="19" font-weight="700" fill="#0f172a">Figura G6: Decomposição de Latência e Análise de Custos por Estágio (EXP7)</text>
+        <text x="50" y="62" font-size="12.5" font-weight="400" fill="#64748b">Análise temporal dos módulos da esteira IPA e projeção financeira com Gemini 2.5 Flash</text>
 
-        <!-- Painel Esquerdo: Decomposição de Latência (Largura ampliada para 435px) -->
-        <g transform="translate(50, 105)">
-            <rect x="0" y="0" width="435" height="385" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.2" rx="8" />
-            <text x="24" y="32" font-size="15" font-weight="700" fill="#0f172a">Painel A: Latência Mediana por Estágio</text>
-            <text x="24" y="52" font-size="12" fill="#64748b">Tempo de resposta em execução com chamada live vs. cache local</text>
+        <!-- Painel Esquerdo: Decomposição de Latência (Largura 445px) -->
+        <g transform="translate(50, 95)">
+            <rect x="0" y="0" width="445" height="425" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.2" rx="8" />
+            <text x="24" y="34" font-size="15" font-weight="700" fill="#0f172a">Painel A: Latência Mediana por Estágio</text>
+            <text x="24" y="54" font-size="12" fill="#64748b">Tempo de resposta em execução com chamada live vs. cache local</text>
 
             <!-- Barra 1: Extração Inteligente IA -->
-            <text x="24" y="92" font-size="12" font-weight="600" fill="#1e293b">1. Extração LLM (Gemini Flash)</text>
-            <rect x="24" y="102" width="270" height="26" fill="#3b82f6" rx="4" />
-            <text x="30" y="119" font-size="10" font-weight="600" fill="#ffffff">Processamento multimodal e JSON schema</text>
-            <text x="305" y="119" font-size="12" font-weight="700" fill="#1d4ed8">8.95s (Live)</text>
+            <text x="24" y="98" font-size="12" font-weight="600" fill="#1e293b">1. Extração LLM (Gemini Flash)</text>
+            <rect x="24" y="108" width="270" height="26" fill="#3b82f6" rx="4" />
+            <text x="32" y="125" font-size="10" font-weight="600" fill="#ffffff">Processamento multimodal e JSON schema</text>
+            <text x="306" y="125" font-size="12" font-weight="700" fill="#1d4ed8">8.95s (Live)</text>
 
             <!-- Barra 2: Regras e Fuzzy Matching -->
-            <text x="24" y="162" font-size="12" font-weight="600" fill="#1e293b">2. Motor de Regras e Fuzzy Matching</text>
-            <rect x="24" y="172" width="30" height="26" fill="#10b981" rx="4" />
-            <text x="65" y="189" font-size="12" font-weight="700" fill="#047857">0.14s (Local)</text>
-            <text x="24" y="212" font-size="10.5" fill="#64748b">Validação fiscal CNPJ, catálogo P-001 a P-040 e barreira injection</text>
+            <text x="24" y="172" font-size="12" font-weight="600" fill="#1e293b">2. Motor de Regras e Fuzzy Matching</text>
+            <rect x="24" y="182" width="30" height="26" fill="#10b981" rx="4" />
+            <text x="65" y="199" font-size="12" font-weight="700" fill="#047857">0.14s (Local)</text>
+            <text x="24" y="224" font-size="10.5" fill="#64748b">Validação fiscal CNPJ, catálogo P-001 a P-040 e barreira injection</text>
 
             <!-- Barra 3: Robô RPA Playwright -->
-            <text x="24" y="250" font-size="12" font-weight="600" fill="#1e293b">3. Lançamento ERP (Robô RPA)</text>
-            <rect x="24" y="260" width="20" height="26" fill="#f59e0b" rx="4" />
-            <text x="55" y="277" font-size="12" font-weight="700" fill="#b45309">0.05s (API) / 2.8s (Browser)</text>
-            <text x="24" y="300" font-size="10.5" fill="#64748b">Preenchimento idempotente com evidência de auditoria</text>
+            <text x="24" y="265" font-size="12" font-weight="600" fill="#1e293b">3. Lançamento ERP (Robô RPA)</text>
+            <rect x="24" y="275" width="20" height="26" fill="#f59e0b" rx="4" />
+            <text x="55" y="292" font-size="12" font-weight="700" fill="#b45309">0.05s (API) / 2.8s (Browser)</text>
+            <text x="24" y="318" font-size="10.5" fill="#64748b">Preenchimento idempotente com evidência de auditoria</text>
 
-            <!-- Resumo Total com respiro -->
-            <line x1="24" y1="325" x2="410" y2="325" stroke="#cbd5e1" />
-            <text x="24" y="352" font-size="13" font-weight="700" fill="#0f172a">Tempo Total Mediano Ponta a Ponta: ~9.03s</text>
+            <!-- Resumo Total -->
+            <line x1="24" y1="350" x2="420" y2="350" stroke="#cbd5e1" />
+            <text x="24" y="382" font-size="13" font-weight="700" fill="#0f172a">Tempo Total Mediano Ponta a Ponta: ~9.03s</text>
+            <text x="24" y="402" font-size="11" font-weight="500" fill="#64748b">(Com cache local offline: 0.20s total)</text>
         </g>
 
-        <!-- Painel Direito: Análise de Custo Financeiro (Largura ampliada para 445px) -->
-        <g transform="translate(525, 105)">
-            <rect x="0" y="0" width="445" height="385" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.2" rx="8" />
-            <text x="24" y="32" font-size="15" font-weight="700" fill="#0f172a">Painel B: Viabilidade Econômica (R$)</text>
-            <text x="24" y="52" font-size="12" fill="#64748b">Custo marginal de computação por volume de pedidos</text>
+        <!-- Painel Direito: Análise de Custo Financeiro (Largura 460px) -->
+        <g transform="translate(530, 95)">
+            <rect x="0" y="0" width="460" height="425" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.2" rx="8" />
+            <text x="24" y="34" font-size="15" font-weight="700" fill="#0f172a">Painel B: Viabilidade Econômica (R$)</text>
+            <text x="24" y="54" font-size="12" fill="#64748b">Custo marginal de computação por volume de pedidos</text>
 
-            <!-- Card Destaque Custo Unitário com espaçamento lateral -->
-            <rect x="24" y="74" width="395" height="74" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1.2" rx="6" />
+            <!-- Card Destaque Custo Unitário -->
+            <rect x="24" y="74" width="412" height="74" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1.2" rx="6" />
             <text x="40" y="98" font-size="11" font-weight="700" fill="#065f46">CUSTO MÉDIO POR PEDIDO DE COMPRA</text>
             <text x="40" y="132" font-size="24" font-weight="800" fill="#047857">R$ {custo_medio:.5f}</text>
-            <text x="230" y="130" font-size="11.5" font-weight="500" fill="#065f46">(&lt; 5 centésimos de centavo)</text>
+            <text x="235" y="130" font-size="11.5" font-weight="500" fill="#065f46">(&lt; 5 centésimos de centavo)</text>
 
-            <!-- Tabela de Projeção em Escala com alinhamentos perfeitos -->
-            <g transform="translate(24, 175)">
-                <text x="0" y="14" font-size="12" font-weight="700" fill="#1e293b">Volume de Operação</text>
-                <text x="190" y="14" font-size="12" font-weight="700" fill="#1e293b">Custo Total IPA</text>
-                <text x="395" y="14" font-size="12" font-weight="700" fill="#1e293b" text-anchor="end">Economia vs. Humano</text>
-                <line x1="0" y1="24" x2="395" y2="24" stroke="#cbd5e1" stroke-width="1.5" />
+            <!-- Tabela de Projeção em Escala com colunas bem distanciadas -->
+            <g transform="translate(24, 180)">
+                <text x="0" y="14" font-size="12" font-weight="700" fill="#1e293b" text-anchor="start">Volume Mensal</text>
+                <text x="175" y="14" font-size="12" font-weight="700" fill="#1e293b" text-anchor="start">Custo Total IPA</text>
+                <text x="412" y="14" font-size="12" font-weight="700" fill="#1e293b" text-anchor="end">Economia vs. Humano</text>
+                <line x1="0" y1="24" x2="412" y2="24" stroke="#cbd5e1" stroke-width="1.5" />
 
-                <text x="0" y="48" font-size="12" fill="#334155">100 pedidos / mês</text>
-                <text x="190" y="48" font-size="12" font-weight="600" fill="#047857">R$ 0,04</text>
-                <text x="395" y="48" font-size="12" fill="#059669" font-weight="600" text-anchor="end">&gt; 99,9% economia</text>
+                <text x="0" y="52" font-size="12" fill="#334155" text-anchor="start">100 pedidos</text>
+                <text x="175" y="52" font-size="12" font-weight="600" fill="#047857" text-anchor="start">R$ 0,04</text>
+                <text x="412" y="52" font-size="12" font-weight="600" fill="#059669" text-anchor="end">&gt; 99,9% economia</text>
 
-                <text x="0" y="76" font-size="12" fill="#334155">1.000 pedidos / mês</text>
-                <text x="190" y="76" font-size="12" font-weight="600" fill="#047857">R$ 0,44</text>
-                <text x="395" y="76" font-size="12" fill="#059669" font-weight="600" text-anchor="end">&gt; 99,9% economia</text>
+                <text x="0" y="84" font-size="12" fill="#334155" text-anchor="start">1.000 pedidos</text>
+                <text x="175" y="84" font-size="12" font-weight="600" fill="#047857" text-anchor="start">R$ 0,44</text>
+                <text x="412" y="84" font-size="12" font-weight="600" fill="#059669" text-anchor="end">&gt; 99,9% economia</text>
 
-                <text x="0" y="104" font-size="12" fill="#334155">10.000 pedidos / mês</text>
-                <text x="190" y="104" font-size="12" font-weight="600" fill="#047857">R$ 4,37</text>
-                <text x="395" y="104" font-size="12" fill="#059669" font-weight="600" text-anchor="end">&gt; 99,9% economia</text>
+                <text x="0" y="116" font-size="12" fill="#334155" text-anchor="start">10.000 pedidos</text>
+                <text x="175" y="116" font-size="12" font-weight="600" fill="#047857" text-anchor="start">R$ 4,37</text>
+                <text x="412" y="116" font-size="12" font-weight="600" fill="#059669" text-anchor="end">&gt; 99,9% economia</text>
             </g>
 
-            <rect x="24" y="320" width="395" height="42" fill="#eff6ff" stroke="#bfdbfe" rx="4" />
-            <text x="36" y="338" font-size="11" font-weight="700" fill="#1d4ed8">&#x2022; Viabilidade Absoluta para MPMEs brasileiras</text>
-            <text x="36" y="352" font-size="10" fill="#3b82f6">Elimina gargalos operacionais sem necessidade de licenças caras de RPA proprietário.</text>
+            <rect x="24" y="345" width="412" height="44" fill="#eff6ff" stroke="#bfdbfe" rx="4" />
+            <text x="36" y="364" font-size="11" font-weight="700" fill="#1d4ed8">&#x2022; Viabilidade Absoluta para MPMEs brasileiras</text>
+            <text x="36" y="379" font-size="10" fill="#3b82f6">Elimina gargalos operacionais sem necessidade de licenças caras de RPA proprietário.</text>
         </g>
 
         <!-- Rodapé explicativo -->
-        <text x="50" y="525" font-size="11" fill="#94a3b8">Nota: Preços calculados com base na tabela oficial Google AI Studio (US$ 0,075 / 1M tokens de entrada e US$ 0,30 / 1M tokens de saída com câmbio R$ 5,60).</text>
+        <text x="50" y="545" font-size="11" fill="#94a3b8">Nota: Preços calculados com base na tabela oficial Google AI Studio (US$ 0,075 / 1M tokens de entrada e US$ 0,30 / 1M tokens de saída com câmbio R$ 5,60).</text>
     </svg>
     """
     return svg
@@ -736,7 +735,7 @@ async def renderizar_figuras_png():
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         # device_scale_factor=2 garante qualidade de impressão (alta densidade de pixels)
-        page = await browser.new_page(viewport={"width": 1050, "height": 600}, device_scale_factor=2)
+        page = await browser.new_page(viewport={"width": 1080, "height": 620}, device_scale_factor=2)
 
         for nome_arquivo, svg_conteudo in geradores:
             if not svg_conteudo.strip():
